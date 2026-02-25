@@ -8,6 +8,7 @@
     --font-main: 'Segoe UI', sans-serif;
 }
 
+html { scroll-behavior: smooth; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body { font-family: var(--font-main); line-height: 1.6; color: var(--text-color); }
@@ -50,6 +51,25 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
 .newsletter-form { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 .newsletter-form input { padding: 0.8rem; border-radius: 5px; border: none; width: 300px; }
 .newsletter-form button { padding: 0.8rem 1.5rem; border-radius: 5px; border: none; background: var(--accent-color); color: var(--white); font-weight: bold; cursor: pointer; }
+
+.newsletter-feedback {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #4ade80; /* Verde claro para contraste no fundo azul */
+    min-height: 1.5em;
+}
+
+/* Utilitários de Acessibilidade */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
 
 footer { background: #1f2937; color: #d1d5db; padding: 2rem; text-align: center; }
 
