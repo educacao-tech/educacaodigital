@@ -38,8 +38,23 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
 .bg-light { background-color: var(--bg-light); }
 
 /* Grid Layouts */
+.section-content-narrow {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+.section-content-narrow p + p {
+    margin-top: 1rem;
+}
+.section-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
 .about-image-placeholder { background: #e5e7eb; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #666; }
+.about-image-placeholder.large-icon { font-size: 5rem; background: transparent; }
+.about-text h3 + h3 { margin-top: 1.5rem; }
 
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
 .card { background: var(--white); padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; }

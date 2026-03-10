@@ -42,4 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => { feedbackElement.textContent = ''; }, 5000);
         }
     });
+
+    // Controle do Acordeão (para abrir um por vez)
+    const accordions = document.querySelectorAll('.accordion-item');
+    accordions.forEach(accordion => {
+        // O evento 'toggle' é disparado pelo elemento <details> sempre que seu estado (aberto/fechado) muda.
+        accordion.addEventListener('toggle', () => {
+            // Se o <details> atual foi aberto...
+            if (accordion.open) {
+                // ...percorremos todos os outros e os fechamos.
+                accordions.forEach(otherAccordion => {
+                    if (otherAccordion !== accordion) {
+                        otherAccordion.open = false;
+                    }
+                });
+            }
+        });
+    });
+
 });
