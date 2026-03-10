@@ -46,6 +46,13 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
 .card:hover { transform: translateY(-5px); }
 .card-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
 
+/* Estilo específico para os cards de planejamento (links) */
+.planning-card { display: block; border: 2px solid transparent; cursor: pointer; }
+.planning-card:hover { 
+    border-color: var(--primary-color); 
+    background-color: #f0f9ff; /* Azul muito claro */
+}
+
 /* Newsletter & Footer */
 .newsletter { background: var(--secondary-color); color: var(--white); text-align: center; padding: 3rem 2rem; }
 .newsletter-form { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
