@@ -79,6 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    
+    // Previne pulo de página em links vazios (#)
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+    });
 
     // Controle do Botão "Voltar ao Topo"
     const backToTopButton = document.getElementById('back-to-top');
@@ -92,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Animação de entrada para os cards ao rolar a página
-    const cards = document.querySelectorAll('.card');
-    if (cards.length > 0) {
+    // Animação de entrada para cards e títulos
+    const animatedElements = document.querySelectorAll('.card, .section-title');
+    if (animatedElements.length > 0) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -106,9 +113,31 @@ document.addEventListener('DOMContentLoaded', () => {
             threshold: 0.1 // Inicia a animação quando 10% do card está visível
         });
 
-        cards.forEach(card => {
-            observer.observe(card);
+        animatedElements.forEach(el => {
+            observer.observe(el);
         });
     }
+
+    // ScrollSpy: Destacar menu ativo
+    const sections = document.querySelectorAll('section');
+    const navLinksItems = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let currentSection = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= (sectionTop - 150)) { // 150px de compensação para o header
+                currentSection = section.getAttribute('id');
+            }
+        });
+
+        navLinksItems.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(currentSection) && currentSection !== '') {
+                link.classList.add('active');
+            }
+        });
+    });
 
 });
