@@ -57,6 +57,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Ativa/Desativa botões de bimestre e gerencia ícones automaticamente
+    const bimestreButtons = document.querySelectorAll('.btn-bimestre');
+    if (bimestreButtons.length > 0) {
+        bimestreButtons.forEach(button => {
+            const link = button.getAttribute('href');
+            const hasLink = link && link.trim() !== '#';
+
+            if (hasLink) {
+                // Botão ativo: remove 'disabled' e garante o ícone de download
+                button.classList.remove('disabled');
+                if (!button.querySelector('svg')) {
+                    const iconSVG = ` <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+                    button.insertAdjacentHTML('beforeend', iconSVG);
+                }
+            } else {
+                // Botão inativo: adiciona 'disabled' e remove qualquer ícone
+                button.classList.add('disabled');
+                const icon = button.querySelector('svg');
+                if (icon) icon.remove();
+            }
+        });
+    }
+
     // Atualização dinâmica do ano no rodapé
     const yearElement = document.getElementById('current-year');
     if (yearElement) {
