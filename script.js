@@ -35,23 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Controle do Formulário de Newsletter
-    const form = document.getElementById('form-newsletter');
-    
-    if (form) {
-        const feedbackElement = document.getElementById('newsletter-feedback');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault(); // Impede o recarregamento da página
-            const emailInput = form.querySelector('input[type="email"]');
-            
-            if(emailInput && emailInput.value && feedbackElement) {
-                feedbackElement.textContent = `Obrigado! O e-mail ${emailInput.value} foi cadastrado com sucesso.`;
-                emailInput.value = ''; // Limpa o campo
-                setTimeout(() => { feedbackElement.textContent = ''; }, 5000);
-            }
-        });
-    }
-
     // Controle do Acordeão (para abrir um por vez)
     const accordions = document.querySelectorAll('.accordion-item');
     if (accordions.length > 0) {
@@ -78,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (hasLink) {
                 // Botão ativo: remove 'disabled' e garante o ícone de download
                 button.classList.remove('disabled');
+                button.setAttribute('target', '_blank');
+                button.setAttribute('rel', 'noopener noreferrer');
                 if (!button.querySelector('svg')) {
                     const iconSVG = ` <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
                     button.insertAdjacentHTML('beforeend', iconSVG);
@@ -130,6 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 backToTopButton.classList.remove('visible');
             }
+        });
+
+        // Ação de clique para voltar ao topo
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     }
 
