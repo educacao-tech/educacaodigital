@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Fechar o menu ao clicar fora dele
+        document.addEventListener('click', (e) => {
+            const isClickInsideMenu = navLinks.contains(e.target);
+            const isClickOnIcon = menuIcon.contains(e.target);
+            if (!isClickInsideMenu && !isClickOnIcon && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuIcon.setAttribute('aria-expanded', 'false');
+                menuIcon.setAttribute('aria-label', 'Abrir menu');
+            }
+        });
     }
 
     // Controle do Formulário de Newsletter

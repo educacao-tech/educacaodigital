@@ -244,7 +244,7 @@ footer { background: #1f2937; color: #d1d5db; padding: 2rem; text-align: center;
     .nav-links {
         display: none; /* Escondido por padrão no mobile */
         position: absolute;
-        top: 70px;
+        top: 100%;
         left: 0;
         width: 100%;
         background: var(--white);
