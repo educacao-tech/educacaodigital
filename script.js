@@ -92,4 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Animação de entrada para os cards ao rolar a página
+    const cards = document.querySelectorAll('.card');
+    if (cards.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Anima apenas uma vez
+                }
+            });
+        }, {
+            threshold: 0.1 // Inicia a animação quando 10% do card está visível
+        });
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    }
+
 });

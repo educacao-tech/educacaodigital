@@ -59,7 +59,16 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
 .about-text h3 + h3 { margin-top: 1.5rem; }
 
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
-.card { background: var(--white); padding: 2.5rem 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; transition: all 0.3s ease; border: 1px solid rgba(0,0,0,0.05); }
+.card {
+    background: var(--white); padding: 2.5rem 2rem; border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center;
+    border: 1px solid rgba(0,0,0,0.05);
+    /* Animação de entrada */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card.is-visible { opacity: 1; transform: translateY(0); }
 .card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); border-color: transparent; }
 .card-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
 
@@ -109,10 +118,30 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
 
 .accordion-icon { font-size: 1.5rem; }
 
-.accordion-arrow { font-size: 1rem; transition: transform 0.3s ease; }
+/* Estilo do ícone +/- do Acordeão */
+.accordion-arrow {
+    position: relative;
+    width: 18px;
+    height: 18px;
+}
+.accordion-arrow::before,
+.accordion-arrow::after {
+    content: '';
+    position: absolute;
+    background-color: var(--secondary-color);
+    transition: transform 0.3s ease-out;
+}
+.accordion-arrow::before { /* Linha horizontal */
+    top: 50%; left: 0; width: 100%; height: 2px; margin-top: -1px;
+}
+.accordion-arrow::after { /* Linha vertical */
+    top: 0; left: 50%; width: 2px; height: 100%; margin-left: -1px;
+}
 
 /* Rotate arrow when accordion is open */
-.accordion-item[open] > .accordion-header .accordion-arrow { transform: rotate(90deg); }
+.accordion-item[open] > .accordion-header .accordion-arrow::after {
+    transform: scaleY(0); /* Esconde a linha vertical para formar um '-' */
+}
 
 .accordion-content {
     padding: 1.5rem;
