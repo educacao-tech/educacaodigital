@@ -119,25 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ScrollSpy: Destacar menu ativo
-    const sections = document.querySelectorAll('section');
-    const navLinksItems = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksItems = document.querySelectorAll('.nav-links a:not(.btn-cta)');
 
-    window.addEventListener('scroll', () => {
-        let currentSection = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= (sectionTop - 150)) { // 150px de compensação para o header
-                currentSection = section.getAttribute('id');
-            }
-        });
+    if (sections.length > 0 && navLinksItems.length > 0) {
+        const observerOptions = {
+            root: null, // Observa em relação ao viewport
+            rootMargin: '-150px 0px -50% 0px', // [top, right, bottom, left] - Offset para o header e para ativar na metade superior da tela
+            threshold: 0
+        };
 
-        navLinksItems.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(currentSection) && currentSection !== '') {
-                link.classList.add('active');
-            }
-        });
-    });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    
+                    // Remove a classe 'active' de todos os links
+                    navLinksItems.forEach(link => {
+                        link.classList.remove('active');
+                    });
+
+                    // Adiciona a classe 'active' ao link correspondente
+                    const activeLink = document.querySelector(`.nav-links a[href="#${id}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+    }
 
 });
