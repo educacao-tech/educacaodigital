@@ -11,11 +11,17 @@
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
-body { font-family: var(--font-main); line-height: 1.6; color: var(--text-color); }
+body { 
+    font-family: var(--font-main); 
+    line-height: 1.7; 
+    color: var(--text-color); 
+    /* Adiciona um espaço no topo para compensar o cabeçalho fixo */
+    padding-top: 72px; /* Altura aproximada do cabeçalho: 40px (logo) + 2rem (padding) */
+}
 a { text-decoration: none; color: inherit; }
 
 /* Header */
-header { background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+header { background: var(--white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
 nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
 .logo { display: flex; align-items: center; gap: 0.8rem; font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
 .logo img { height: 40px; width: auto; }
@@ -222,7 +228,55 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
     border: 0;
 }
 
-footer { background: #1f2937; color: #d1d5db; padding: 2rem; text-align: center; }
+footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: center; }
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.footer-email {
+    color: inherit;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.footer-email:hover { color: var(--accent-color); text-decoration: underline; }
+
+/* Seção QR Code Instagram */
+.qrcode-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+}
+.qrcode-img {
+    max-width: 250px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+.qrcode-img:hover { transform: scale(1.05); }
+
+.social-links { display: flex; gap: 1rem; }
+.social-links a {
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.social-links a:hover { background-color: var(--primary-color); transform: translateY(-3px); }
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -254,4 +308,11 @@ footer { background: #1f2937; color: #d1d5db; padding: 2rem; text-align: center;
         pointer-events: auto;
     }
     .about-grid { grid-template-columns: 1fr; }
+
+    .logo-text { display: none; } /* Esconde o texto do logo em telas menores */
+
+    .footer-content {
+        flex-direction: column;
+        justify-content: center;
+    }
 }
