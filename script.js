@@ -117,23 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
         yearElement.textContent = new Date().getFullYear();
     }
 
-    // Rolagem suave explícita para links âncora (mais robusto em iframes)
-    document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault(); // Previne o comportamento padrão do link
-
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-
-            if (targetElement) {
-                // Rola a visão até o elemento alvo de forma suave
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-    
     // Previne pulo de página em links vazios (#)
     document.querySelectorAll('a[href="#"]').forEach(link => {
         link.addEventListener('click', (e) => {

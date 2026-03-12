@@ -39,7 +39,13 @@ body {
 a { text-decoration: none; color: inherit; }
 
 /* Header */
-header { background: var(--white); box-shadow: var(--header-shadow); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
+header { 
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px); 
+    box-shadow: var(--header-shadow); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; 
+}
+
 nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
 .logo { display: flex; align-items: center; gap: 0.8rem; font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
 .logo img { height: 40px; width: auto; }
@@ -47,6 +53,7 @@ nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; just
 html[data-theme="dark"] .logo img {
     filter: invert(10%) sepia(100%) saturate(200%) hue-rotate(180deg) brightness(1.2);
 }
+html[data-theme="dark"] header { background: rgba(17, 24, 39, 0.85); }
 
 .nav-controls { display: flex; align-items: center; gap: 1.5rem; }
 
@@ -100,7 +107,12 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
 
 /* Hero */
 .hero { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: #fff; padding: 3rem 2rem; text-align: center; }
-.hero h1 { font-size: 2.8rem; margin-bottom: 1.5rem; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.hero h1 { 
+    font-size: 2.8rem; margin-bottom: 1.5rem; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    /* Opcional: Efeito de destaque sutil no texto */
+    background: linear-gradient(to right, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+}
 .btn-hero { background: var(--accent-color); color: var(--white); padding: 1rem 2.5rem; border-radius: 50px; font-weight: bold; display: inline-block; margin-top: 1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
 .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6); }
 
