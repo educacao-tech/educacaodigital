@@ -50,11 +50,11 @@ html[data-theme="dark"] .logo img {
 
 .nav-controls { display: flex; align-items: center; gap: 1.5rem; }
 
-.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links { display: flex; gap: 1rem; list-style: none; font-size: 0.95rem; }
 .nav-links a:hover { color: var(--primary-color); font-weight: 600; }
 
 /* Estilo para o link ativo (ScrollSpy) */
-.nav-links a { position: relative; transition: color 0.3s; }
+.nav-links a { position: relative; transition: color 0.3s; white-space: nowrap; }
 .nav-links a:not(.btn-cta).active { color: var(--primary-color); font-weight: 600; }
 .nav-links a:not(.btn-cta).active::after {
     content: ''; position: absolute; bottom: -5px; left: 0;
@@ -344,6 +344,10 @@ footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: 
 .social-links a:hover { background-color: var(--primary-color); transform: translateY(-3px); }
 
 /* Responsividade */
+@media (max-width: 1100px) {
+    .logo-text { display: none; } /* Esconde o texto do logo em telas médias para dar espaço ao menu */
+}
+
 @media (max-width: 768px) {
     .mobile-menu-icon { display: block; z-index: 1; }
     
@@ -378,8 +382,6 @@ footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: 
         gap: 0.5rem;
     }
     .about-grid { grid-template-columns: 1fr; }
-
-    .logo-text { display: none; } /* Esconde o texto do logo em telas menores */
 
     .footer-content {
         flex-direction: column;
