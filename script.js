@@ -5,6 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.getElementById('nav-links');
 
     if (menuIcon && navLinks) {
+        // Função auxiliar para fechar o menu (princípio DRY)
+        const closeMenu = () => {
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuIcon.classList.remove('is-active');
+                menuIcon.setAttribute('aria-expanded', 'false');
+                menuIcon.setAttribute('aria-label', 'Abrir menu');
+            }
+        };
+
         menuIcon.addEventListener('click', () => {
             navLinks.classList.toggle('active');
             menuIcon.classList.toggle('is-active'); // Adiciona classe ao ícone para animação
@@ -16,12 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Fechar o menu mobile ao clicar em um link
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    menuIcon.classList.remove('is-active');
-                    menuIcon.setAttribute('aria-expanded', 'false');
-                    menuIcon.setAttribute('aria-label', 'Abrir menu');
-                }
+                closeMenu();
             });
         });
 
@@ -30,10 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const isClickInsideMenu = navLinks.contains(e.target);
             const isClickOnIcon = menuIcon.contains(e.target);
             if (!isClickInsideMenu && !isClickOnIcon && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                menuIcon.classList.remove('is-active');
-                menuIcon.setAttribute('aria-expanded', 'false');
-                menuIcon.setAttribute('aria-label', 'Abrir menu');
+                closeMenu();
+            }
+        });
+
+        // Fechar menu com a tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                closeMenu();
+                menuIcon.focus();
             }
         });
     }
@@ -56,7 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (otherAccordion !== accordion && otherAccordion.open) {
                         const otherContent = otherAccordion.querySelector('.accordion-content');
                         otherAccordion.dataset.animating = true;
-                        otherContent.style.maxHeight = '0px';
+                        
+                        // Fix: Define altura em px antes de zerar para garantir animação suave
+                        otherContent.style.maxHeight = otherContent.scrollHeight + 'px';
+                        setTimeout(() => {
+                            otherContent.style.maxHeight = '0px';
+                        }, 10);
+
                         otherContent.addEventListener('transitionend', () => {
                             otherAccordion.removeAttribute('open');
                             delete otherAccordion.dataset.animating;
@@ -67,7 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Toggle the clicked accordion
                 if (accordion.open) {
                     accordion.dataset.animating = true;
-                    content.style.maxHeight = '0px';
+                    
+                    // Fix: Define altura em px antes de zerar para garantir animação suave
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    setTimeout(() => {
+                        content.style.maxHeight = '0px';
+                    }, 10);
+
                     content.addEventListener('transitionend', () => {
                         accordion.removeAttribute('open');
                         delete accordion.dataset.animating;
@@ -111,6 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Segurança: Configura automaticamente links externos
+    document.querySelectorAll('a[href^="http"]').forEach(link => {
+        // Se o link for externo (host diferente do atual)
+        if (link.hostname !== window.location.hostname) {
+            link.setAttribute('target', '_blank');
+            if (!link.hasAttribute('rel')) link.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
+
     // Atualização dinâmica do ano no rodapé
     const yearElement = document.getElementById('current-year');
     if (yearElement) {
@@ -127,11 +158,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Controle do Botão "Voltar ao Topo"
     const backToTopButton = document.getElementById('back-to-top');
     if (backToTopButton) {
+        let isScrolling = false;
+
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) { // Mostra o botão após rolar 300px
-                backToTopButton.classList.add('visible');
-            } else {
-                backToTopButton.classList.remove('visible');
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    // Toggle classe baseado na posição (mais performático)
+                    backToTopButton.classList.toggle('visible', window.scrollY > 300);
+                    isScrolling = false;
+                });
+                isScrolling = true;
             }
         });
 
@@ -203,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (themeToggleButton && htmlElement) {
         // Função para aplicar o tema
-        const applyTheme = (theme) => {
+        const applyTheme = (theme, persist = false) => {
             htmlElement.setAttribute('data-theme', theme);
             if (theme === 'dark') {
                 themeToggleButton.setAttribute('aria-label', 'Ativar modo claro');
@@ -212,14 +248,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeToggleButton.setAttribute('aria-label', 'Ativar modo escuro');
                 themeToggleButton.setAttribute('title', 'Alterar para modo escuro');
             }
-            localStorage.setItem('theme', theme);
+            
+            // Apenas salva no localStorage se for uma ação explícita do usuário
+            if (persist) {
+                localStorage.setItem('theme', theme);
+            }
         };
 
         // Evento de clique no botão
         themeToggleButton.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme') || 'light';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            applyTheme(newTheme);
+            applyTheme(newTheme, true); // true = persistir escolha
         });
 
         // Verifica preferência do sistema e tema salvo no localStorage
@@ -228,13 +268,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (savedTheme) {
             // Usa o tema salvo se existir
-            applyTheme(savedTheme);
+            applyTheme(savedTheme, false);
         } else if (prefersDark) {
             // Usa a preferência do sistema se não houver tema salvo
-            applyTheme('dark');
+            applyTheme('dark', false);
         } else {
-            applyTheme('light'); // Padrão para light
+            applyTheme('light', false); // Padrão para light
         }
+
+        // Monitora mudanças no tema do sistema em tempo real
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) { // Apenas se o usuário não definiu manualmente
+                applyTheme(e.matches ? 'dark' : 'light', false);
+            }
+        });
     }
 
 });

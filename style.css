@@ -112,6 +112,8 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     /* Opcional: Efeito de destaque sutil no texto */
     background: linear-gradient(to right, #ffffff, #e0e7ff);
     -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 .btn-hero { background: var(--accent-color); color: var(--white); padding: 1rem 2.5rem; border-radius: 50px; font-weight: bold; display: inline-block; margin-top: 1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
 .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6); }
@@ -140,9 +142,20 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     margin-bottom: 2rem;
 }
 
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-.about-image-placeholder { background: #e5e7eb; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #666; }
-.about-image-placeholder.large-icon { font-size: 5rem; background: transparent; }
+.about-image-placeholder { 
+    background: #e5e7eb linear-gradient(to right, #e5e7eb 4%, #f3f4f6 25%, #e5e7eb 36%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+    height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #666; 
+}
+/* Remove animação de fundo se for apenas um ícone grande transparente */
+.about-image-placeholder.large-icon { font-size: 5rem; background: transparent; animation: none; }
 .about-text h3 + h3 { margin-top: 1.5rem; }
 
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
@@ -156,8 +169,8 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.3s ease, border-color 0.3s ease, background-color var(--transition-speed) ease;
 }
 .card.is-visible { opacity: 1; transform: translateY(0); }
-.card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); border-color: transparent; }
 .card-icon { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.15); border-color: var(--primary-color); }
 
 /* Estilo específico para os cards de planejamento (links) */
 .planning-card { display: block; border: 2px solid transparent; cursor: pointer; }
@@ -290,6 +303,7 @@ html[data-theme="dark"] .btn-bimestre:hover svg {
 :focus-visible {
     outline: 3px solid var(--accent-color);
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3); /* Melhora visibilidade do foco */
     border-radius: 5px;
 }
 /* Utilitários de Acessibilidade */
@@ -303,6 +317,15 @@ html[data-theme="dark"] .btn-bimestre:hover svg {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-light); }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; border: 2px solid var(--bg-light); }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+html[data-theme="dark"] ::-webkit-scrollbar-track { background: #1f2937; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #4b5563; border-color: #1f2937; }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
 
 footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: center; }
 .footer-content {
@@ -378,6 +401,7 @@ footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: 
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);
+        border-top: 1px solid var(--border-color);
         transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
         pointer-events: none; /* Impede cliques quando invisível */
     }
@@ -399,4 +423,31 @@ footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: 
         flex-direction: column;
         justify-content: center;
     }
+}
+
+/* Estilos de Impressão (Para professores imprimirem planejamentos) */
+@media print {
+    header, .theme-toggle, .mobile-menu-icon, .btn-hero, .btn-cta, .back-to-top, footer, .qrcode-container {
+        display: none !important;
+    }
+
+    body { 
+        padding-top: 0; 
+        background-color: white !important; 
+        color: black !important; 
+    }
+
+    .section { padding: 1rem 0; }
+    
+    /* Expande todos os acordeões na impressão */
+    .accordion-content { 
+        max-height: none !important; 
+        opacity: 1 !important; 
+        display: flex !important; 
+        padding-top: 1rem;
+    }
+    
+    .accordion-header .accordion-chevron { display: none; }
+    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    a[href]:after { content: " (" attr(href) ")"; font-size: 0.8em; } /* Exibe URLs na impressão */
 }
