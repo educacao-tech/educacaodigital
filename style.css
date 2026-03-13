@@ -32,8 +32,6 @@ body {
     line-height: 1.7;
     color: var(--text-color);
     background-color: var(--bg-light);
-    /* Adiciona um espaço no topo para compensar o cabeçalho fixo */
-    padding-top: 72px; /* Altura aproximada do cabeçalho: 40px (logo) + 2rem (padding) */
     transition: color var(--transition-speed) ease, background-color var(--transition-speed) ease;
 }
 a { text-decoration: none; color: inherit; }
@@ -43,7 +41,7 @@ header {
     background: rgba(255, 255, 255, 0.85); 
     backdrop-filter: blur(12px); 
     -webkit-backdrop-filter: blur(12px); 
-    box-shadow: var(--header-shadow); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; 
+    box-shadow: var(--header-shadow); position: sticky; top: 0; left: 0; right: 0; z-index: 1000; transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; 
 }
 
 nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
