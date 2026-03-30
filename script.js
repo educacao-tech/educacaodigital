@@ -203,7 +203,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section[id]');
     const navLinksItems = document.querySelectorAll('.nav-links a:not(.btn-cta)');
 
-    if (sections.length > 0 && navLinksItems.length > 0) {
+    // Só ativa o ScrollSpy se houver seções na página atual. 
+    // No Google Sites, se o menu estiver em uma página sem essas seções, o script não deve quebrar.
+    const hasSections = Array.from(sections).some(section => document.getElementById(section.id));
+
+    if (hasSections && navLinksItems.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação ao viewport
             rootMargin: '-150px 0px -50% 0px', // [top, right, bottom, left] - Offset para o header e para ativar na metade superior da tela
