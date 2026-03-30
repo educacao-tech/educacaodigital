@@ -58,50 +58,49 @@ document.addEventListener('DOMContentLoaded', () => {
             summary.addEventListener('click', (e) => {
                 e.preventDefault();
 
-                // If it's already animating, ignore click
-                if (accordion.dataset.animating) return;
+                // Se já estiver animando, ignora o clique para evitar bugs
+                if (accordion.classList.contains('is-animating')) return;
 
-                // Close other open accordions
+                // Fecha outros acordeões abertos (estilo sanfona)
                 accordions.forEach(otherAccordion => {
                     if (otherAccordion !== accordion && otherAccordion.open) {
                         const otherContent = otherAccordion.querySelector('.accordion-content');
-                        otherAccordion.dataset.animating = true;
+                        otherAccordion.classList.add('is-animating');
                         
-                        // Fix: Define altura em px antes de zerar para garantir animação suave
                         otherContent.style.maxHeight = otherContent.scrollHeight + 'px';
-                        setTimeout(() => {
-                            otherContent.style.maxHeight = '0px';
-                        }, 10);
+                        // Força um reflow para o navegador registrar a altura antes de animar para 0
+                        otherContent.offsetHeight; 
+                        otherContent.style.maxHeight = '0px';
 
                         otherContent.addEventListener('transitionend', () => {
                             otherAccordion.removeAttribute('open');
-                            delete otherAccordion.dataset.animating;
+                            otherAccordion.classList.remove('is-animating');
                         }, { once: true });
                     }
                 });
 
-                // Toggle the clicked accordion
+                // Alterna o acordeão clicado
                 if (accordion.open) {
-                    accordion.dataset.animating = true;
-                    
-                    // Fix: Define altura em px antes de zerar para garantir animação suave
+                    accordion.classList.add('is-animating');
                     content.style.maxHeight = content.scrollHeight + 'px';
-                    setTimeout(() => {
-                        content.style.maxHeight = '0px';
-                    }, 10);
+                    content.offsetHeight;
+                    content.style.maxHeight = '0px';
 
                     content.addEventListener('transitionend', () => {
                         accordion.removeAttribute('open');
-                        delete accordion.dataset.animating;
+                        accordion.classList.remove('is-animating');
                     }, { once: true });
                 } else {
-                    accordion.dataset.animating = true;
+                    accordion.classList.add('is-animating');
                     accordion.setAttribute('open', '');
-                    content.style.maxHeight = content.scrollHeight + 'px';
+                    
+                    requestAnimationFrame(() => {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    });
+
                     content.addEventListener('transitionend', () => {
-                        // Allows content to resize if window changes
                         content.style.maxHeight = 'auto';
-                        delete accordion.dataset.animating;
+                        accordion.classList.remove('is-animating');
                     }, { once: true });
                 }
             });
