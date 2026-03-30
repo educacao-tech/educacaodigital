@@ -396,7 +396,7 @@ footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: 
 
 @media (max-width: 768px) {
     .mobile-menu-icon { display: block; }
-    .nav-controls { position: relative; z-index: 1002; }
+    .nav-controls { position: relative; z-index: 1010; }
     
     .nav-links {
         display: flex;
@@ -404,7 +404,7 @@ footer { background: #1f2937; color: #d1d5db; padding: 2.5rem 2rem; text-align: 
         top: 100%;
         left: 0;
         width: 100%;
-        background: var(--white);
+        background-color: var(--white) !important; /* Força cor sólida no mobile */
         flex-direction: column;
         align-items: center;
         padding: 2rem 0;

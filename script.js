@@ -203,11 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section[id]');
     const navLinksItems = document.querySelectorAll('.nav-links a:not(.btn-cta)');
 
-    // Só ativa o ScrollSpy se houver seções na página atual. 
-    // No Google Sites, se o menu estiver em uma página sem essas seções, o script não deve quebrar.
-    const hasSections = Array.from(sections).some(section => document.getElementById(section.id));
-
-    if (hasSections && navLinksItems.length > 0) {
+    // O ScrollSpy só deve rodar se as seções de destino estiverem no mesmo documento.
+    // Em blocos de menu globais no Google Sites, as seções geralmente não estão no mesmo iframe.
+    if (sections.length > 0 && navLinksItems.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação ao viewport
             rootMargin: '-150px 0px -50% 0px', // [top, right, bottom, left] - Offset para o header e para ativar na metade superior da tela
@@ -224,8 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         link.classList.remove('active');
                     });
 
-                    // Adiciona a classe 'active' ao link correspondente
-                    const activeLink = document.querySelector(`.nav-links a[href="#${id}"]`);
+                    // Adiciona a classe 'active' ao link correspondente (usa $= para encontrar links que terminam com o ID)
+                    const activeLink = document.querySelector(`.nav-links a[href$="#${id}"]`);
                     if (activeLink) {
                         activeLink.classList.add('active');
                     }
