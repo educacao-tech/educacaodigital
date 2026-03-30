@@ -25,7 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Fechar o menu mobile ao clicar em um link
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                
+                // Lógica de navegação inteligente para Google Sites
+                if (href.includes('#')) {
+                    const id = href.split('#')[1];
+                    const targetElement = document.getElementById(id);
+                    
+                    if (targetElement) {
+                        // Se a seção existe nesta página, faz scroll suave e evita reload
+                        e.preventDefault();
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        window.history.pushState(null, null, `#${id}`);
+                    }
+                }
+                
                 closeMenu();
             });
         });
@@ -203,9 +218,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section[id]');
     const navLinksItems = document.querySelectorAll('.nav-links a:not(.btn-cta)');
 
-    // O ScrollSpy só deve rodar se as seções de destino estiverem no mesmo documento.
-    // Em blocos de menu globais no Google Sites, as seções geralmente não estão no mesmo iframe.
-    if (sections.length > 0 && navLinksItems.length > 0) {
+    // O ScrollSpy só deve ser ativado se as seções existirem na página atual.
+    // Isso evita erros em subpáginas do Google Sites onde o menu é fixo mas o conteúdo varia.
+    const isMainPage = sections.length > 0;
+
+    if (isMainPage && navLinksItems.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação ao viewport
             rootMargin: '-150px 0px -50% 0px', // [top, right, bottom, left] - Offset para o header e para ativar na metade superior da tela
@@ -281,6 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             if (!localStorage.getItem('theme')) { // Apenas se o usuário não definiu manualmente
                 applyTheme(e.matches ? 'dark' : 'light', false);
+            }
+        });
+
+        // Fecha o menu automaticamente se a tela for redimensionada para desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+                closeMenu();
             }
         });
     }
