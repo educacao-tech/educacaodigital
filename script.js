@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         otherContent.style.maxHeight = otherContent.scrollHeight + 'px';
                         // Força um reflow para o navegador registrar a altura antes de animar para 0
                         otherContent.offsetHeight; 
+                        otherAccordion.classList.remove('is-open');
                         otherContent.style.maxHeight = '0px';
 
                         otherContent.addEventListener('transitionend', () => {
@@ -96,10 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Alterna o acordeão clicado
                 if (accordion.open) {
+                    accordion.classList.remove('is-open');
                     accordion.classList.add('is-animating');
                     content.style.maxHeight = content.scrollHeight + 'px';
                     content.offsetHeight;
-                    content.style.maxHeight = '0px';
+                    requestAnimationFrame(() => content.style.maxHeight = '0px');
 
                     content.addEventListener('transitionend', () => {
                         accordion.removeAttribute('open');
@@ -108,13 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     accordion.classList.add('is-animating');
                     accordion.setAttribute('open', '');
+                    accordion.classList.add('is-open');
                     
                     requestAnimationFrame(() => {
                         content.style.maxHeight = content.scrollHeight + 'px';
                     });
 
                     content.addEventListener('transitionend', () => {
-                        content.style.maxHeight = 'auto';
                         accordion.classList.remove('is-animating');
                     }, { once: true });
                 }
@@ -124,28 +126,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ativa/Desativa botões de bimestre e gerencia ícones automaticamente
     const bimestreButtons = document.querySelectorAll('.btn-bimestre');
-    if (bimestreButtons.length > 0) {
-        bimestreButtons.forEach(button => {
-            const link = button.getAttribute('href');
-            const hasLink = link && link.trim() !== '#';
+    bimestreButtons.forEach(button => {
+        const link = button.getAttribute('href');
+        const isInactive = !link || link.trim() === '#';
 
-            if (hasLink) {
-                // Botão ativo: remove 'disabled' e garante o ícone de download
-                button.classList.remove('disabled');
-                button.setAttribute('target', '_blank');
-                button.setAttribute('rel', 'noopener noreferrer');
-                if (!button.querySelector('svg')) {
-                    const iconSVG = ` <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
-                    button.insertAdjacentHTML('beforeend', iconSVG);
-                }
-            } else {
-                // Botão inativo: adiciona 'disabled' e remove qualquer ícone
-                button.classList.add('disabled');
-                const icon = button.querySelector('svg');
-                if (icon) icon.remove();
-            }
-        });
-    }
+        if (isInactive) {
+            button.classList.add('disabled');
+            button.setAttribute('aria-disabled', 'true');
+            button.setAttribute('tabindex', '-1');
+            button.querySelector('svg')?.remove();
+        } else {
+            button.setAttribute('target', '_blank');
+            button.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
 
     // Segurança: Configura automaticamente links externos
     document.querySelectorAll('a[href^="http"]').forEach(link => {
@@ -222,6 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Isso evita erros em subpáginas do Google Sites onde o menu é fixo mas o conteúdo varia.
     const isMainPage = sections.length > 0;
 
+    // Cache de links para performance
+    const navLinksMap = {};
+    navLinksItems.forEach(link => {
+        const href = link.getAttribute('href').split('#')[1];
+        if (href) navLinksMap[href] = link;
+    });
+
     if (isMainPage && navLinksItems.length > 0) {
         const observerOptions = {
             root: null, // Observa em relação ao viewport
@@ -239,8 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         link.classList.remove('active');
                     });
 
-                    // Adiciona a classe 'active' ao link correspondente (usa $= para encontrar links que terminam com o ID)
-                    const activeLink = document.querySelector(`.nav-links a[href$="#${id}"]`);
+                    // Adiciona a classe 'active' usando o cache
+                    const activeLink = navLinksMap[id];
                     if (activeLink) {
                         activeLink.classList.add('active');
                     }
@@ -301,12 +302,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Fecha o menu automaticamente se a tela for redimensionada para desktop
+        // Fecha o menu automaticamente se a tela for redimensionada (com debounce simples)
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
-                closeMenu();
-            }
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+                    closeMenu();
+                }
+            }, 250);
         });
     }
-
 });
