@@ -238,12 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Remove a classe 'active' de todos os links
                     navLinksItems.forEach(link => {
                         link.classList.remove('active');
+                        link.removeAttribute('aria-current');
                     });
 
                     // Adiciona a classe 'active' usando o cache
                     const activeLink = navLinksMap[id];
                     if (activeLink) {
                         activeLink.classList.add('active');
+                        activeLink.setAttribute('aria-current', 'page');
                     }
                 }
             });
