@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Link para o arquivo CSS -->
     <link rel="icon" href="logo.png" type="image/png">
@@ -23,6 +26,7 @@
     <!-- Garante que todos os links abram na página principal do Google Sites -->
     <base target="_top">
 </head>
+
 <body>
 
     <a href="#planejamentos" class="skip-link visually-hidden">Pular para o conteúdo principal</a>
@@ -30,7 +34,8 @@
     <!-- Navegação -->
     <header>
         <nav>
-            <a href="https://sites.google.com/educacao.batatais.sp.gov.br/seceduc/in%c3%adcio" class="logo" target="_top">
+            <a href="https://sites.google.com/educacao.batatais.sp.gov.br/seceduc/in%c3%adcio" class="logo"
+                target="_top">
                 <img src="logo.png" alt="Logo EduMídia" width="150" height="40">
                 <span class="logo-text">Educação Digital e Midiática</span>
             </a>
@@ -40,15 +45,20 @@
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#inicio" target="_top">Início</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                        Materiais 
-                        <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        Materiais
+                        <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="https://sites.google.com/view/edumidia-batatais/#planejamentos" target="_top">Planejamentos</a></li>
-                        <li><a href="https://sites.google.com/view/edumidia-batatais/#atividades" target="_top">Atividades Práticas</a></li>
-                        <li><a href="https://sites.google.com/view/edumidia-batatais/#bncc-videos" target="_top">BNCC Computação</a></li>
+                        <li><a href="https://sites.google.com/view/edumidia-batatais/#planejamentos"
+                                target="_top">Planejamentos</a></li>
+                        <li><a href="https://sites.google.com/view/edumidia-batatais/#atividades"
+                                target="_top">Atividades Práticas</a></li>
+                        <li><a href="https://sites.google.com/view/edumidia-batatais/#bncc-videos" target="_top">BNCC
+                                Computação</a></li>
                     </ul>
                 </li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#pilares" target="_top">Eixos</a></li>
@@ -58,23 +68,48 @@
 
             <div class="nav-controls">
                 <div class="accessibility-controls">
-                    <button id="font-decrease" aria-label="Diminuir tamanho da fonte" title="Diminuir Fonte (A-)" class="access-btn">A-</button>
-                    <button id="font-increase" aria-label="Aumentar tamanho da fonte" title="Aumentar Fonte (A+)" class="access-btn">A+</button>
-                    <button id="contrast-toggle" aria-label="Alternar alto contraste" title="Alto Contraste" class="access-btn contrast-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/>
+                    <button id="font-decrease" aria-label="Diminuir tamanho da fonte" title="Diminuir Fonte (A-)"
+                        class="access-btn">A-</button>
+                    <button id="font-increase" aria-label="Aumentar tamanho da fonte" title="Aumentar Fonte (A+)"
+                        class="access-btn">A+</button>
+                    <button id="contrast-toggle" aria-label="Alternar alto contraste" title="Alto Contraste"
+                        class="access-btn contrast-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor" />
                         </svg>
                     </button>
                 </div>
 
                 <button class="theme-toggle" id="theme-toggle" aria-label="Ativar modo escuro" title="Alterar tema">
-                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
                 </button>
                 <!-- Botão Menu Mobile -->
-                <button class="mobile-menu-icon" id="mobile-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-                    <svg class="hamburger-icon" viewBox="0 0 100 80" width="24" height="24" aria-hidden="true"><rect width="100" height="15" rx="8"></rect><rect y="30" width="100" height="15" rx="8"></rect><rect y="60" width="100" height="15" rx="8"></rect></svg>
+                <button class="mobile-menu-icon" id="mobile-menu" aria-label="Abrir menu" aria-expanded="false"
+                    aria-controls="nav-links">
+                    <svg class="hamburger-icon" viewBox="0 0 100 80" width="24" height="24" aria-hidden="true">
+                        <rect width="100" height="15" rx="8"></rect>
+                        <rect y="30" width="100" height="15" rx="8"></rect>
+                        <rect y="60" width="100" height="15" rx="8"></rect>
+                    </svg>
                 </button>
             </div>
         </nav>
@@ -84,10 +119,13 @@
     <section class="hero" id="inicio">
         <div class="hero-content">
             <h1>Educação Digital em São Paulo</h1>
-            <p class="hero-subtitle">Portal de Educação Digital e Midiática da Rede Municipal de Batatais. Acesse os planejamentos, atividades práticas e recursos para a sala de aula.</p>
+            <p class="hero-subtitle">Portal de Educação Digital e Midiática da Rede Municipal de Batatais. Acesse os
+                planejamentos, atividades práticas e recursos para a sala de aula.</p>
             <div class="hero-buttons">
-                <a href="https://drive.google.com/file/d/1UHh3iLtP54oTOKOUK-8CGi44D_cobQwI/view?usp=sharing" class="btn-hero" target="_blank" rel="noopener noreferrer">Acessar Currículo EF1</a>
-                <a href="https://drive.google.com/drive/folders/177WODrM4SrMP3Hjqtmz4akIFkQHRS0rB?usp=sharing" class="btn-hero btn-hero-secondary" target="_blank" rel="noopener noreferrer">Livros Didáticos</a>
+                <a href="https://drive.google.com/file/d/1UHh3iLtP54oTOKOUK-8CGi44D_cobQwI/view?usp=sharing"
+                    class="btn-hero" target="_blank" rel="noopener noreferrer">Acessar Currículo EF1</a>
+                <a href="https://drive.google.com/drive/folders/177WODrM4SrMP3Hjqtmz4akIFkQHRS0rB?usp=sharing"
+                    class="btn-hero btn-hero-secondary" target="_blank" rel="noopener noreferrer">Livros Didáticos</a>
             </div>
         </div>
     </section>
@@ -100,11 +138,13 @@
         </div>
         <div class="filter-wrapper" id="planejamentos-filter">
             <div class="search-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
-                <input type="text" class="search-input" placeholder="Pesquisar por ano... (ex: 2º ano)" aria-label="Pesquisar planejamentos">
+                <input type="text" class="search-input" placeholder="Pesquisar por ano... (ex: 2º ano)"
+                    aria-label="Pesquisar planejamentos">
             </div>
             <div class="category-tags">
                 <button class="category-tag active" data-category="all">Todos os Temas</button>
@@ -126,17 +166,34 @@
             <!-- 1º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">1️⃣</span><h3>1º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">1️⃣</span>
+                    <h3>1º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" data-category="desplugada">
+                    <a href="https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" data-category="desplugada">
                         1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
-                    <a href="https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" data-category="desplugada">
+                    <a href="https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" data-category="desplugada">
                         2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
                     <a href="#" class="btn-bimestre disabled" data-category="scratch">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
@@ -145,17 +202,34 @@
             <!-- 2º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">2️⃣</span><h3>2º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">2️⃣</span>
+                    <h3>2º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada">
+                    <a href="https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada">
                         1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
-                    <a href="https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" data-category="cidadania">
+                    <a href="https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" data-category="cidadania">
                         2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
                     <a href="#" class="btn-bimestre disabled" data-category="scratch">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
@@ -164,17 +238,34 @@
             <!-- 3º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">3️⃣</span><h3>3º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">3️⃣</span>
+                    <h3>3º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada">
+                    <a href="https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada">
                         1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
-                    <a href="https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" data-category="scratch">
+                    <a href="https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" data-category="scratch">
                         2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
                     <a href="#" class="btn-bimestre disabled" data-category="cidadania">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
@@ -183,17 +274,34 @@
             <!-- 4º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">4️⃣</span><h3>4º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">4️⃣</span>
+                    <h3>4º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania">
+                    <a href="https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania">
                         1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
-                    <a href="https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" data-category="scratch">
+                    <a href="https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" data-category="scratch">
                         2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
                     <a href="#" class="btn-bimestre disabled" data-category="desplugada">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
@@ -202,17 +310,34 @@
             <!-- 5º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">5️⃣</span><h3>5º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">5️⃣</span>
+                    <h3>5º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica">
+                    <a href="https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica">
                         1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
-                    <a href="https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" class="btn-bimestre" data-category="robotica">
+                    <a href="https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
+                        class="btn-bimestre" data-category="robotica">
                         2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                     </a>
                     <a href="#" class="btn-bimestre disabled" data-category="desplugada">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="cidadania">4º Bimestre</a>
@@ -229,11 +354,13 @@
         </div>
         <div class="filter-wrapper" id="atividades-filter">
             <div class="search-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <svg xmlns="http://www.w3.org/2000/svg" class="search-icon" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
-                <input type="text" class="search-input" placeholder="Pesquisar por ano... (ex: 3º ano)" aria-label="Pesquisar atividades">
+                <input type="text" class="search-input" placeholder="Pesquisar por ano... (ex: 3º ano)"
+                    aria-label="Pesquisar atividades">
             </div>
             <div class="category-tags">
                 <button class="category-tag active" data-category="all">Todos os Temas</button>
@@ -255,8 +382,13 @@
             <!-- 1º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">1️⃣</span><h3>1º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">1️⃣</span>
+                    <h3>1º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
                     <a href="#" class="btn-bimestre disabled" data-category="desplugada">1º Bimestre</a>
@@ -268,12 +400,21 @@
             <!-- 2º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">2️⃣</span><h3>2º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">2️⃣</span>
+                    <h3>2º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://drive.google.com/drive/folders/13jyFSO2ewcOAF9jYGLYEx6xRvGRF7o9-?usp=sharing" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada">1º Bimestre</a>
-                    <a href="https://drive.google.com/drive/folders/1CV-1vJXkLfrxWSs2emvJjs8a-3c6PE8z?usp=sharing" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania">2º Bimestre</a>
+                    <a href="https://drive.google.com/drive/folders/13jyFSO2ewcOAF9jYGLYEx6xRvGRF7o9-?usp=sharing"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada">1º
+                        Bimestre</a>
+                    <a href="https://drive.google.com/drive/folders/1CV-1vJXkLfrxWSs2emvJjs8a-3c6PE8z?usp=sharing"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania">2º
+                        Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="desplugada">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="cidadania">4º Bimestre</a>
                 </div>
@@ -281,12 +422,19 @@
             <!-- 3º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">3️⃣</span><h3>3º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">3️⃣</span>
+                    <h3>3º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
                     <a href="#" class="btn-bimestre disabled" data-category="desplugada">1º Bimestre</a>
-                    <a href="https://drive.google.com/drive/folders/1pUjVDb9GyJIEaTaZ4IY-m807ApamEYsC?usp=sharing" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="scratch">2º Bimestre</a>
+                    <a href="https://drive.google.com/drive/folders/1pUjVDb9GyJIEaTaZ4IY-m807ApamEYsC?usp=sharing"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="scratch">2º
+                        Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="cidadania">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="scratch">4º Bimestre</a>
                 </div>
@@ -294,11 +442,18 @@
             <!-- 4º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">4️⃣</span><h3>4º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">4️⃣</span>
+                    <h3>4º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://drive.google.com/drive/folders/1E7nrhcV8AxaS92d0HS0wiNNvfwL8x1sn?usp=drive_link" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania">1º Bimestre</a>
+                    <a href="https://drive.google.com/drive/folders/1E7nrhcV8AxaS92d0HS0wiNNvfwL8x1sn?usp=drive_link"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania">1º
+                        Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="scratch">2º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="desplugada">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
@@ -307,16 +462,83 @@
             <!-- 5º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">5️⃣</span><h3>5º Ano</h3><span class="accordion-arrow"></span>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">5️⃣</span>
+                    <h3>5º Ano</h3><span class="accordion-arrow"></span>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica">1º Bimestre</a>
-                    <a href="https://drive.google.com/drive/folders/1FZdietHnQiuzco7l2zmHGzMXC4NZ6tKB?usp=sharing" class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica">2º Bimestre</a>
+                    <a href="https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica">1º
+                        Bimestre</a>
+                    <a href="https://drive.google.com/drive/folders/1FZdietHnQiuzco7l2zmHGzMXC4NZ6tKB?usp=sharing"
+                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica">2º
+                        Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="scratch">3º Bimestre</a>
                     <a href="#" class="btn-bimestre disabled" data-category="cidadania">4º Bimestre</a>
                 </div>
             </details>
+        </div>
+    </section>
+
+    <!-- Seção Carrossel de Galeria -->
+    <section id="galeria" class="section">
+        <h2 class="section-title">Nossas Práticas em Ação</h2>
+        <div class="section-intro">
+            <p>Visualize as experiências digitais e midiáticas desenvolvidas na rede municipal de Batatais.</p>
+        </div>
+        
+        <div class="carousel-container">
+            <div class="carousel-track-wrapper">
+                <div class="carousel-track" id="carousel-track">
+                    <!-- Slide 1: Atividades Desplugadas -->
+                    <div class="carousel-slide">
+                        <img src="atividades_desplugadas.png" alt="Crianças em atividade desplugada de pensamento computacional" class="carousel-img" loading="lazy">
+                        <div class="carousel-caption">
+                            <h3>Pensamento Computacional Desplugado</h3>
+                            <p>Resolução de problemas, lógica e algoritmos através de jogos e dinâmicas colaborativas sem o uso de telas.</p>
+                        </div>
+                    </div>
+                    <!-- Slide 2: Scratch -->
+                    <div class="carousel-slide">
+                        <img src="programacao_scratch.png" alt="Estudante programando com o Scratch" class="carousel-img" loading="lazy">
+                        <div class="carousel-caption">
+                            <h3>Programação Criativa no Scratch</h3>
+                            <p>Criação de histórias interativas, jogos e animações utilizando lógica de blocos de arrastar e soltar.</p>
+                        </div>
+                    </div>
+                    <!-- Slide 3: Robótica -->
+                    <div class="carousel-slide">
+                        <img src="robotica_educativa.png" alt="Alunos montando robô educativo" class="carousel-img" loading="lazy">
+                        <div class="carousel-caption">
+                            <h3>Robótica e Cultura Maker</h3>
+                            <p>Montagem e programação de pequenos robôs e dispositivos eletrônicos, integrando hardware e software na prática.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles do Carrossel -->
+            <button class="carousel-arrow prev" id="carousel-prev" aria-label="Slide anterior" title="Anterior">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="carousel-arrow next" id="carousel-next" aria-label="Próximo slide" title="Próximo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+            
+            <!-- Indicadores (Dots) -->
+            <div class="carousel-indicators" id="carousel-indicators">
+                <button class="carousel-dot active" data-slide="0" aria-label="Ir para o slide 1" aria-current="true"></button>
+                <button class="carousel-dot" data-slide="1" aria-label="Ir para o slide 2"></button>
+                <button class="carousel-dot" data-slide="2" aria-label="Ir para o slide 3"></button>
+            </div>
         </div>
     </section>
 
@@ -327,7 +549,8 @@
             <p>Explore nossa coleção de vídeos que desmistificam a BNCC Computação e suas aplicações práticas.</p>
         </div>
         <div class="cards-grid">
-            <a href="https://www.youtube.com/watch?v=4En8ISFWTjs&list=PLmYgSblYLMBqBW2o_P7EwDQXI-suXEhf4&index=2" target="_blank" rel="noopener noreferrer" class="card video-card">
+            <a href="https://www.youtube.com/watch?v=4En8ISFWTjs&list=PLmYgSblYLMBqBW2o_P7EwDQXI-suXEhf4&index=2"
+                target="_blank" rel="noopener noreferrer" class="card video-card">
                 <span class="card-icon" role="img" aria-label="Ícone de Play">▶️</span>
                 <h3>Introdução à BNCC Computação</h3>
                 <p>Entenda os fundamentos e a importância da BNCC Computação no currículo escolar.</p>
@@ -359,8 +582,17 @@
     <section id="proposito" class="section">
         <h2 class="section-title">Propósito e Implementação</h2>
         <div class="section-content-narrow">
-            <p>O novo currículo visa consolidar os fundamentos da <span class="glossary-term" data-tooltip="Uso crítico, reflexivo e ético das ferramentas digitais no dia a dia.">Educação Digital e Midiática</span>, alinhando o contexto paulista às competências de computação previstas na <span class="glossary-term" data-tooltip="Base Nacional Comum Curricular: documento nacional que define as aprendizagens essenciais.">Base Nacional Comum Curricular (BNCC)</span>.</p>
-            <p>A implementação sistemática nas redes estadual e municipais de São Paulo está prevista para iniciar no <strong>primeiro semestre de 2026</strong>, preparando os estudantes para um futuro cada vez mais tecnológico.</p>
+            <p>O novo currículo visa consolidar os fundamentos da <span class="glossary-term"
+                    data-tooltip="Uso crítico, reflexivo e ético das ferramentas digitais no dia a dia.">Educação
+                    Digital e Midiática</span>, alinhando o contexto paulista às competências de computação previstas na
+                <span class="glossary-term"
+                    data-tooltip="Base Nacional Comum Curricular: documento nacional que define as aprendizagens essenciais.">Base
+                    Nacional Comum Curricular (BNCC)</span>.
+            </p>
+            <p>A implementação sistemática nas redes estadual e municipais de São Paulo está prevista para iniciar no
+                <strong>primeiro semestre de 2026</strong>, preparando os estudantes para um futuro cada vez mais
+                tecnológico.
+            </p>
         </div>
     </section>
 
@@ -371,17 +603,22 @@
             <div class="card clickable-card" data-axis="pensamento">
                 <span class="card-icon" role="img" aria-label="Ícone de Lupa">🔍</span>
                 <h3>Pensamento Computacional</h3>
-                <p>Focado em estratégias de raciocínio lógico, decomposição de problemas e criação de <span class="glossary-term" data-tooltip="Instruções passo a passo criadas para resolver um problema específico.">algoritmos</span> para resolver desafios. (Clique para ver mais)</p>
+                <p>Focado em estratégias de raciocínio lógico, decomposição de problemas e criação de <span
+                        class="glossary-term"
+                        data-tooltip="Instruções passo a passo criadas para resolver um problema específico.">algoritmos</span>
+                    para resolver desafios. (Clique para ver mais)</p>
             </div>
             <div class="card clickable-card" data-axis="mundo">
                 <span class="card-icon" role="img" aria-label="Ícone de Computador Portátil">💻</span>
                 <h3>Mundo Digital</h3>
-                <p>Compreensão técnica e crítica de ferramentas, dispositivos, redes de comunicação e o funcionamento da infraestrutura digital. (Clique para ver mais)</p>
+                <p>Compreensão técnica e crítica de ferramentas, dispositivos, redes de comunicação e o funcionamento da
+                    infraestrutura digital. (Clique para ver mais)</p>
             </div>
             <div class="card clickable-card" data-axis="cultura">
                 <span class="card-icon" role="img" aria-label="Ícone de Aperto de Mãos">🤝</span>
                 <h3>Cultura Digital</h3>
-                <p>Aborda as dimensões sociais e éticas, incluindo produção de conteúdo, segurança, cidadania e o impacto das tecnologias. (Clique para ver mais)</p>
+                <p>Aborda as dimensões sociais e éticas, incluindo produção de conteúdo, segurança, cidadania e o
+                    impacto das tecnologias. (Clique para ver mais)</p>
             </div>
         </div>
     </section>
@@ -393,17 +630,20 @@
             <div class="card">
                 <span class="card-icon" role="img" aria-label="Ícone de Urso de Pelúcia">🧸</span>
                 <h3>Educação Infantil</h3>
-                <p>Foco no desenvolvimento lúdico e na conscientização sobre hábitos saudáveis de uso de telas e dispositivos digitais.</p>
+                <p>Foco no desenvolvimento lúdico e na conscientização sobre hábitos saudáveis de uso de telas e
+                    dispositivos digitais.</p>
             </div>
             <div class="card">
                 <span class="card-icon" role="img" aria-label="Ícone de Pilha de Livros">📚</span>
                 <h3>Ensino Fundamental</h3>
-                <p>Domínio de linguagens digitais, resolução de problemas e debates sobre cyberbullying, privacidade e sustentabilidade.</p>
+                <p>Domínio de linguagens digitais, resolução de problemas e debates sobre cyberbullying, privacidade e
+                    sustentabilidade.</p>
             </div>
             <div class="card">
                 <span class="card-icon" role="img" aria-label="Ícone de Chapéu de Formatura">🎓</span>
                 <h3>Ensino Médio</h3>
-                <p>Integração transversal da educação digital, focando em projetos de vida, autonomia e cidadania digital plena.</p>
+                <p>Integração transversal da educação digital, focando em projetos de vida, autonomia e cidadania
+                    digital plena.</p>
             </div>
         </div>
     </section>
@@ -414,9 +654,15 @@
         <div class="about-grid">
             <div class="about-text">
                 <h3>Educação para Todos</h3>
-                <p>O currículo enfatiza a Educação Especial e Inclusiva, utilizando tecnologias assistivas para reduzir barreiras e garantir que todos os estudantes tenham acesso equitativo ao ambiente digital.</p>
+                <p>O currículo enfatiza a Educação Especial e Inclusiva, utilizando tecnologias assistivas para reduzir
+                    barreiras e garantir que todos os estudantes tenham acesso equitativo ao ambiente digital.</p>
                 <h3>Marco Legal</h3>
-                <p>Reforça a necessidade de respeitar legislações como o <strong><span class="glossary-term" data-tooltip="Lei brasileira que regulamenta os direitos e deveres na internet.">Marco Civil da Internet</span></strong> e a <strong><span class="glossary-term" data-tooltip="Lei Geral de Proteção de Dados: protege a privacidade e dados dos cidadãos.">Lei Geral de Proteção de Dados (LGPD)</span></strong>, formando cidadãos conscientes de seus direitos e deveres online.</p>
+                <p>Reforça a necessidade de respeitar legislações como o <strong><span class="glossary-term"
+                            data-tooltip="Lei brasileira que regulamenta os direitos e deveres na internet.">Marco Civil
+                            da Internet</span></strong> e a <strong><span class="glossary-term"
+                            data-tooltip="Lei Geral de Proteção de Dados: protege a privacidade e dados dos cidadãos.">Lei
+                            Geral de Proteção de Dados (LGPD)</span></strong>, formando cidadãos conscientes de seus
+                    direitos e deveres online.</p>
             </div>
             <div class="about-image-placeholder large-icon">
                 <span role="img" aria-label="Símbolo Universal de Acessibilidade">♿</span>
@@ -431,7 +677,8 @@
             <!-- Certifique-se de salvar a imagem do QR Code como 'qrcode.png' na pasta do projeto -->
             <img src="qrcode.png" alt="QR Code do Instagram" class="qrcode-img" loading="lazy">
             <p>Escaneie o código acima ou clique no botão para nos seguir no Instagram.</p>
-            <a href="https://www.instagram.com/educacaodig/" target="_blank" rel="noopener noreferrer" class="btn-hero">Acessar Instagram</a>
+            <a href="https://www.instagram.com/educacaodig/" target="_blank" rel="noopener noreferrer"
+                class="btn-hero">Acessar Instagram</a>
         </div>
     </section>
 
@@ -447,11 +694,68 @@
                 </div>
             </div>
             <div class="partner-item-badge">
-                <img src="secretaria.png" alt="Logo Secretaria de Educação de Batatais" class="partner-img" loading="lazy">
+                <img src="secretaria.png" alt="Logo Secretaria de Educação de Batatais" class="partner-img"
+                    loading="lazy">
                 <div class="partner-name">
                     <strong>Secretaria de Educação</strong>
                     <span>de Batatais</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Quiz Interativo -->
+    <section id="quiz-section" class="section bg-light reveal-on-scroll">
+        <h2 class="section-title">Desafio Cidadania Digital</h2>
+        <div class="section-intro">
+            <p>Teste seus conhecimentos sobre o uso seguro, ético e crítico da tecnologia com o nosso mini quiz interativo.</p>
+        </div>
+        
+        <div class="quiz-container" id="quiz-container">
+            <!-- Tela Inicial / Start Screen -->
+            <div id="quiz-start-screen" class="quiz-screen active">
+                <div class="quiz-badge-icon">🛡️</div>
+                <h3>Você é um Cidadão Digital Consciente?</h3>
+                <p>Responda a 4 perguntas rápidas sobre segurança online, senhas, fake news e convivência na rede.</p>
+                <button class="btn-hero" id="start-quiz-btn">Iniciar o Desafio</button>
+            </div>
+            
+            <!-- Tela de Perguntas / Question Screen -->
+            <div id="quiz-question-screen" class="quiz-screen">
+                <div class="quiz-progress">
+                    <span id="quiz-question-number">Pergunta 1 de 4</span>
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+                    </div>
+                </div>
+                
+                <h3 id="quiz-question-text">Texto da Pergunta</h3>
+                
+                <div class="quiz-options" id="quiz-options-container">
+                    <!-- Botões de opção injetados via JS -->
+                </div>
+                
+                <!-- Feedback Box -->
+                <div class="quiz-feedback" id="quiz-feedback">
+                    <div class="feedback-icon" id="feedback-icon"></div>
+                    <div class="feedback-text">
+                        <strong id="feedback-title">Correto!</strong>
+                        <p id="feedback-explanation">Explicação da resposta.</p>
+                    </div>
+                    <button class="btn-hero" id="next-question-btn">Próxima Pergunta</button>
+                </div>
+            </div>
+            
+            <!-- Tela de Resultados / Results Screen -->
+            <div id="quiz-results-screen" class="quiz-screen">
+                <div class="quiz-badge-icon" id="results-icon">🏆</div>
+                <h3>Desafio Concluído!</h3>
+                <div class="quiz-score-circle">
+                    <span id="quiz-score-text">3/4</span>
+                </div>
+                <h4 id="quiz-results-title">Parabéns!</h4>
+                <p id="quiz-results-description">Descrição personalizada baseada no seu resultado.</p>
+                <button class="btn-hero" id="restart-quiz-btn">Refazer Desafio</button>
             </div>
         </div>
     </section>
@@ -466,41 +770,74 @@
             <!-- Pergunta 1 -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">❓</span><h3>Como funciona a Computação Desplugada?</h3>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">❓</span>
+                    <h3>Como funciona a Computação Desplugada?</h3>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <p style="padding-bottom: 1rem;">A Computação Desplugada é uma abordagem para ensinar conceitos da Ciência da Computação (como algoritmos, binários e criptografia) sem o uso de computadores ou celulares. Utiliza jogos, atividades corporais, desafios de lógica, cartas, barbantes e desenhos, sendo excelente para escolas com recursos tecnológicos limitados ou turmas da Educação Infantil e anos iniciais.</p>
+                    <p style="padding-bottom: 1rem;">A Computação Desplugada é uma abordagem para ensinar conceitos da
+                        Ciência da Computação (como algoritmos, binários e criptografia) sem o uso de computadores ou
+                        celulares. Utiliza jogos, atividades corporais, desafios de lógica, cartas, barbantes e
+                        desenhos, sendo excelente para escolas com recursos tecnológicos limitados ou turmas da Educação
+                        Infantil e anos iniciais.</p>
                 </div>
             </details>
             <!-- Pergunta 2 -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">❓</span><h3>Quando inicia a implementação obrigatória deste currículo?</h3>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">❓</span>
+                    <h3>Quando inicia a implementação obrigatória deste currículo?</h3>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <p style="padding-bottom: 1rem;">A implementação sistemática e o ensino das habilidades previstas na BNCC de Computação estão previstos para iniciar oficialmente a partir de 2026 nas redes estadual e municipais de São Paulo, permitindo que as escolas façam formações pedagógicas ao longo de 2025.</p>
+                    <p style="padding-bottom: 1rem;">A implementação sistemática e o ensino das habilidades previstas na
+                        BNCC de Computação estão previstos para iniciar oficialmente a partir de 2026 nas redes estadual
+                        e municipais de São Paulo, permitindo que as escolas façam formações pedagógicas ao longo de
+                        2025.</p>
                 </div>
             </details>
             <!-- Pergunta 3 -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">❓</span><h3>Como posso acessar os cursos de formação continuada?</h3>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">❓</span>
+                    <h3>Como posso acessar os cursos de formação continuada?</h3>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <p style="padding-bottom: 1rem;">Os cursos de formação continuada em Educação Digital e Cultura Digital são disponibilizados periodicamente pela Secretaria de Educação de Batatais através de plataformas de capacitação e parcerias com o Estado de São Paulo. Fique atento aos memorandos oficiais enviados ao seu e-mail corporativo ou à sua unidade escolar.</p>
+                    <p style="padding-bottom: 1rem;">Os cursos de formação continuada em Educação Digital e Cultura
+                        Digital são disponibilizados periodicamente pela Secretaria de Educação de Batatais através de
+                        plataformas de capacitação e parcerias com o Estado de São Paulo. Fique atento aos memorandos
+                        oficiais enviados ao seu e-mail corporativo ou à sua unidade escolar.</p>
                 </div>
             </details>
             <!-- Pergunta 4 -->
             <details class="accordion-item">
                 <summary class="accordion-header">
-                    <span class="accordion-icon">❓</span><h3>Onde posso sugerir novos materiais ou relatar erros?</h3>
-                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <span class="accordion-icon">❓</span>
+                    <h3>Onde posso sugerir novos materiais ou relatar erros?</h3>
+                    <svg class="accordion-chevron" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                 </summary>
                 <div class="accordion-content">
-                    <p style="padding-bottom: 1rem;">Você pode utilizar o formulário de feedback localizado logo abaixo nesta página. Basta preencher seu nome, e-mail institucional corporativo, selecionar o assunto correspondente e descrever a sua sugestão ou erro encontrado. Nossa equipe analisa os envios regularmente.</p>
+                    <p style="padding-bottom: 1rem;">Você pode utilizar o formulário de feedback localizado logo abaixo
+                        nesta página. Basta preencher seu nome, e-mail institucional corporativo, selecionar o assunto
+                        correspondente e descrever a sua sugestão ou erro encontrado. Nossa equipe analisa os envios
+                        regularmente.</p>
                 </div>
             </details>
         </div>
@@ -510,7 +847,8 @@
     <section id="contato" class="contact-section">
         <div class="contact-container">
             <h2 class="section-title">Dúvidas ou Sugestões?</h2>
-            <p class="section-intro">Professor(a), envie sua mensagem de feedback sobre os planejamentos, atividades práticas ou sugestões de novos temas. Ficaremos felizes em ouvir você!</p>
+            <p class="section-intro">Professor(a), envie sua mensagem de feedback sobre os planejamentos, atividades
+                práticas ou sugestões de novos temas. Ficaremos felizes em ouvir você!</p>
             <form id="feedback-form" class="contact-form">
                 <div class="form-group">
                     <label for="form-name">Nome Completo</label>
@@ -518,7 +856,8 @@
                 </div>
                 <div class="form-group">
                     <label for="form-email">E-mail Corporativo</label>
-                    <input type="email" id="form-email" class="form-control" placeholder="seu.nome@educacao.batatais.sp.gov.br" required>
+                    <input type="email" id="form-email" class="form-control"
+                        placeholder="seu.nome@educacao.batatais.sp.gov.br" required>
                 </div>
                 <div class="form-group">
                     <label for="form-subject">Assunto</label>
@@ -532,14 +871,16 @@
                 </div>
                 <div class="form-group">
                     <label for="form-message">Sua Mensagem</label>
-                    <textarea id="form-message" class="form-control" placeholder="Escreva aqui sua mensagem detalhada..." required></textarea>
+                    <textarea id="form-message" class="form-control"
+                        placeholder="Escreva aqui sua mensagem detalhada..." required></textarea>
                 </div>
                 <div>
                     <button type="submit" class="btn-submit">
                         <span>Enviar Mensagem</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="22" y1="2" x2="11" y2="13"/>
-                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
                         </svg>
                     </button>
                 </div>
@@ -557,9 +898,10 @@
     <div class="modal-overlay" id="bncc-modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
         <div class="modal-container">
             <button class="modal-close-btn" id="modal-close" aria-label="Fechar Modal">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
             </button>
             <div class="modal-header">
@@ -575,7 +917,8 @@
         <div class="footer-main">
             <div class="footer-column footer-about">
                 <h3 class="footer-logo">EduMídia</h3>
-                <p>Portal de Educação Digital e Midiática focado no desenvolvimento do pensamento computacional, cultura digital e cidadania.</p>
+                <p>Portal de Educação Digital e Midiática focado no desenvolvimento do pensamento computacional, cultura
+                    digital e cidadania.</p>
             </div>
             <div class="footer-column">
                 <h3>Links Úteis</h3>
@@ -595,33 +938,53 @@
             </div>
             <div class="footer-column">
                 <h3>Contato</h3>
-                <p style="margin-bottom: 0.8rem; font-size: 0.9rem;">Dúvidas ou sugestões? Envie um e-mail para a nossa equipe:</p>
-                <a href="mailto:edm@educacao.batatais.sp.gov.br" class="footer-email">edm@educacao.batatais.sp.gov.br</a>
+                <p style="margin-bottom: 0.8rem; font-size: 0.9rem;">Dúvidas ou sugestões? Envie um e-mail para a nossa
+                    equipe:</p>
+                <a href="mailto:edm@educacao.batatais.sp.gov.br"
+                    class="footer-email">edm@educacao.batatais.sp.gov.br</a>
                 <div class="social-links" style="margin-top: 1.5rem;">
                     <a href="#" aria-label="Link para o Facebook" title="Facebook">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                        </svg>
                     </a>
-                    <a href="https://www.instagram.com/educacaodig/" target="_blank" rel="noopener noreferrer" aria-label="Link para o Instagram" title="Instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.415 2.175 8.796 2.163 12 2.163zm0 1.441c-3.171 0-3.543.012-4.782.069-2.834.129-4.043 1.33-4.172 4.172-.057 1.239-.069 1.618-.069 4.782s.012 3.543.069 4.782c.129 2.841 1.338 4.043 4.172 4.172 1.239.057 1.611.069 4.782.069s3.543-.012 4.782-.069c2.834-.129 4.043-1.33 4.172-4.172.057-1.239.069-1.618.069-4.782s-.012-3.543-.069-4.782c-.129-2.841-1.338-4.043-4.172-4.172-1.239-.057-1.611-.069-4.782-.069zm0 5.838a3.558 3.558 0 1 0 0 7.116 3.558 3.558 0 0 0 0-7.116zm0 5.676a2.118 2.118 0 1 1 0-4.236 2.118 2.118 0 0 1 0 4.236zm6.225-8.212a.84.84 0 1 0 0 1.68.84.84 0 0 0 0-1.68z"/></svg>
+                    <a href="https://www.instagram.com/educacaodig/" target="_blank" rel="noopener noreferrer"
+                        aria-label="Link para o Instagram" title="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.585-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.585-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.585.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.415 2.175 8.796 2.163 12 2.163zm0 1.441c-3.171 0-3.543.012-4.782.069-2.834.129-4.043 1.33-4.172 4.172-.057 1.239-.069 1.618-.069 4.782s.012 3.543.069 4.782c.129 2.841 1.338 4.043 4.172 4.172 1.239.057 1.611.069 4.782.069s3.543-.012 4.782-.069c2.834-.129 4.043-1.33 4.172-4.172.057-1.239.069-1.618.069-4.782s-.012-3.543-.069-4.782c-.129-2.841-1.338-4.043-4.172-4.172-1.239-.057-1.611-.069-4.782-.069zm0 5.838a3.558 3.558 0 1 0 0 7.116 3.558 3.558 0 0 0 0-7.116zm0 5.676a2.118 2.118 0 1 1 0-4.236 2.118 2.118 0 0 1 0 4.236zm6.225-8.212a.84.84 0 1 0 0 1.68.84.84 0 0 0 0-1.68z" />
+                        </svg>
                     </a>
                     <a href="#" aria-label="Link para o YouTube" title="YouTube">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                        </svg>
                     </a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <span id="current-year">2024</span> EduMídia. Todos os direitos reservados. Rede Municipal de Ensino de Batatais.</p>
+            <p>&copy; <span id="current-year">2024</span> EduMídia. Todos os direitos reservados. Rede Municipal de
+                Ensino de Batatais.</p>
         </div>
     </footer>
 
     <!-- Botão Voltar ao Topo -->
     <a href="#" class="back-to-top" id="back-to-top" aria-label="Voltar ao topo da página">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 19V5M5 12l7-7 7 7" />
+        </svg>
     </a>
 
     <!-- Link para o arquivo JavaScript -->
     <script src="script.js" defer></script>
 
 </body>
+
 </html>

@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Animação de entrada para cards e títulos
-    const animatedElements = document.querySelectorAll('.card, .section-title');
+    const animatedElements = document.querySelectorAll('.card, .section-title, .reveal-on-scroll');
     if (animatedElements.length > 0) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -714,4 +714,282 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Controle do Carrossel de Galeria
+    const track = document.getElementById('carousel-track');
+    const prevButton = document.getElementById('carousel-prev');
+    const nextButton = document.getElementById('carousel-next');
+    const dotContainer = document.getElementById('carousel-indicators');
+    
+    if (track && prevButton && nextButton && dotContainer) {
+        const slides = Array.from(track.children);
+        const dots = Array.from(dotContainer.children);
+        let currentIndex = 0;
+        let autoplayTimer = null;
+        
+        const updateCarousel = (index) => {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+            
+            currentIndex = index;
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            dots.forEach((dot, idx) => {
+                if (idx === currentIndex) {
+                    dot.classList.add('active');
+                    dot.setAttribute('aria-current', 'true');
+                } else {
+                    dot.classList.remove('active');
+                    dot.removeAttribute('aria-current');
+                }
+            });
+        };
+        
+        const startAutoplay = () => {
+            stopAutoplay();
+            autoplayTimer = setInterval(() => {
+                updateCarousel(currentIndex + 1);
+            }, 5000);
+        };
+        
+        const stopAutoplay = () => {
+            if (autoplayTimer) {
+                clearInterval(autoplayTimer);
+                autoplayTimer = null;
+            }
+        };
+        
+        prevButton.addEventListener('click', () => {
+            updateCarousel(currentIndex - 1);
+            startAutoplay();
+        });
+        
+        nextButton.addEventListener('click', () => {
+            updateCarousel(currentIndex + 1);
+            startAutoplay();
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                updateCarousel(index);
+                startAutoplay();
+            });
+        });
+        
+        const container = track.closest('.carousel-container');
+        if (container) {
+            container.addEventListener('mouseenter', stopAutoplay);
+            container.addEventListener('mouseleave', startAutoplay);
+            container.addEventListener('focusin', stopAutoplay);
+            container.addEventListener('focusout', startAutoplay);
+        }
+        
+        // Touch events para swipe no mobile
+        let startX = 0;
+        let endX = 0;
+        
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            stopAutoplay();
+        }, { passive: true });
+        
+        track.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    updateCarousel(currentIndex + 1);
+                } else {
+                    updateCarousel(currentIndex - 1);
+                }
+            }
+            startAutoplay();
+        }, { passive: true });
+        
+        updateCarousel(0);
+        startAutoplay();
+    }
+
+    // ==========================================
+    // LÓGICA DO QUIZ INTERATIVO
+    // ==========================================
+    const quizQuestions = [
+        {
+            question: "Você recebeu um e-mail dizendo que ganhou um celular grátis e pedindo para clicar em um link para digitar seus dados. O que você deve fazer?",
+            options: [
+                "Clicar imediatamente para não perder a promoção.",
+                "Ignorar o e-mail, não clicar em nada e avisar um adulto/professor, pois pode ser um golpe (Phishing).",
+                "Compartilhar com todos os amigos para que eles também ganhem.",
+                "Clicar no link apenas para ver se é verdade."
+            ],
+            correct: 1,
+            explanation: "Mensagens com promessas de prêmios fáceis e links suspeitos são truques comuns de cibercriminosos (Phishing) para capturar senhas e dados confidenciais."
+        },
+        {
+            question: "Qual das seguintes senhas é a mais segura para proteger suas contas online contra invasores?",
+            options: [
+                "Sua data de nascimento ou '123456'.",
+                "O nome do seu animal de estimação em letras minúsculas.",
+                "Uma palavra simples toda junta, como 'amofutebol'.",
+                "Uma combinação de letras maiúsculas, minúsculas, números e caracteres especiais (ex: 'Bata#2026!')."
+            ],
+            correct: 3,
+            explanation: "Senhas fortes devem ter de 8 a 12 caracteres contendo letras maiúsculas, minúsculas, números e símbolos, impossibilitando adivinhações por sistemas automatizados."
+        },
+        {
+            question: "Você leu uma notícia surpreendente em uma rede social, mas ela não cita quem escreveu ou a fonte oficial. O que deve fazer antes de compartilhar?",
+            options: [
+                "Compartilhar imediatamente, pois parece muito interessante.",
+                "Curtir a postagem para dar engajamento, mas não compartilhar.",
+                "Verificar em canais de notícias confiáveis se a informação é verdadeira antes de repassar.",
+                "Compartilhar e colocar na legenda que não sabe se é verdade."
+            ],
+            correct: 2,
+            explanation: "Notícias falsas (Fake News) propagam-se rapidamente. Sempre cheque a veracidade em fontes jornalísticas sérias antes de repassar dados adiante."
+        },
+        {
+            question: "Se você notar que um colega está sofrendo ofensas frequentes ou exclusão em grupos de conversa da turma, qual a atitude correta?",
+            options: [
+                "Rir e endossar os comentários para continuar enturmado no grupo.",
+                "Ficar calado e sair do grupo para não se comprometer.",
+                "Acolher o colega privadamente, tirar prints das agressões e relatar o caso a um professor ou responsável.",
+                "Responder com insultos ainda mais fortes para defender a pessoa."
+            ],
+            correct: 2,
+            explanation: "O cyberbullying causa sérias consequências. Ser um aliado digital ativo consiste em documentar a agressão, acolher a vítima e notificar a equipe escolar."
+        }
+    ];
+
+    const quizStartScreen = document.getElementById('quiz-start-screen');
+    const quizQuestionScreen = document.getElementById('quiz-question-screen');
+    const quizResultsScreen = document.getElementById('quiz-results-screen');
+    
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+    const nextQuestionBtn = document.getElementById('next-question-btn');
+    const restartQuizBtn = document.getElementById('restart-quiz-btn');
+    
+    const questionNumberText = document.getElementById('quiz-question-number');
+    const progressFill = document.getElementById('quiz-progress-fill');
+    const questionText = document.getElementById('quiz-question-text');
+    const optionsContainer = document.getElementById('quiz-options-container');
+    const feedbackBox = document.getElementById('quiz-feedback');
+    const feedbackIcon = document.getElementById('feedback-icon');
+    const feedbackTitle = document.getElementById('feedback-title');
+    const feedbackExplanation = document.getElementById('feedback-explanation');
+    
+    const scoreText = document.getElementById('quiz-score-text');
+    const resultsTitle = document.getElementById('quiz-results-title');
+    const resultsDescription = document.getElementById('quiz-results-description');
+    
+    if (quizStartScreen && quizQuestionScreen && quizResultsScreen && startQuizBtn) {
+        let currentQuestionIdx = 0;
+        let score = 0;
+        let selectedOptionIdx = null;
+
+        const startQuiz = () => {
+            currentQuestionIdx = 0;
+            score = 0;
+            quizStartScreen.classList.remove('active');
+            quizResultsScreen.classList.remove('active');
+            quizQuestionScreen.classList.add('active');
+            showQuestion();
+        };
+
+        const showQuestion = () => {
+            const currentQ = quizQuestions[currentQuestionIdx];
+            selectedOptionIdx = null;
+            
+            feedbackBox.classList.remove('active');
+            
+            questionNumberText.textContent = `Pergunta ${currentQuestionIdx + 1} de ${quizQuestions.length}`;
+            const progressPercent = (currentQuestionIdx / quizQuestions.length) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+            
+            questionText.textContent = currentQ.question;
+            optionsContainer.innerHTML = '';
+            
+            currentQ.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option-btn';
+                btn.innerHTML = `<span class="opt-letter">${String.fromCharCode(65 + idx)})</span> ${optText}`;
+                btn.setAttribute('aria-label', `Opção ${String.fromCharCode(65 + idx)}: ${optText}`);
+                btn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(btn);
+            });
+        };
+
+        const selectOption = (optIndex) => {
+            if (selectedOptionIdx !== null) return;
+            
+            selectedOptionIdx = optIndex;
+            const currentQ = quizQuestions[currentQuestionIdx];
+            const optionBtns = optionsContainer.querySelectorAll('.quiz-option-btn');
+            
+            const isCorrect = optIndex === currentQ.correct;
+            if (isCorrect) score++;
+
+            optionBtns.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === currentQ.correct) {
+                    btn.classList.add('correct');
+                } else if (idx === optIndex) {
+                    btn.classList.add('wrong');
+                } else {
+                    btn.classList.add('fade-out');
+                }
+            });
+
+            feedbackBox.classList.add('active');
+            if (isCorrect) {
+                feedbackTitle.textContent = "Correto! 🎉";
+                feedbackIcon.textContent = "✅";
+                feedbackExplanation.textContent = currentQ.explanation;
+            } else {
+                feedbackTitle.textContent = "Não foi dessa vez...";
+                feedbackIcon.textContent = "❌";
+                feedbackExplanation.textContent = currentQ.explanation;
+            }
+
+            const progressPercent = ((currentQuestionIdx + 1) / quizQuestions.length) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+
+            if (currentQuestionIdx === quizQuestions.length - 1) {
+                nextQuestionBtn.textContent = "Ver Resultado";
+            } else {
+                nextQuestionBtn.textContent = "Próxima Pergunta";
+            }
+        };
+
+        const handleNext = () => {
+            if (currentQuestionIdx === quizQuestions.length - 1) {
+                showResults();
+            } else {
+                currentQuestionIdx++;
+                showQuestion();
+            }
+        };
+
+        const showResults = () => {
+            quizQuestionScreen.classList.remove('active');
+            quizResultsScreen.classList.add('active');
+            
+            scoreText.textContent = `${score}/${quizQuestions.length}`;
+            
+            if (score === quizQuestions.length) {
+                resultsTitle.textContent = "Cidadão Digital Nota 10! 🏆";
+                resultsDescription.textContent = "Excelente! Você demonstrou domínio pleno de segurança na rede, criação de senhas robustas, identificação de fake news e empatia nas relações online. Continue agindo assim e ensinando seus colegas!";
+            } else if (score >= 2) {
+                resultsTitle.textContent = "Bom trabalho! Cidadão em Evolução 🌟";
+                resultsDescription.textContent = "Você compreende os princípios básicos da segurança e ética digital, mas ainda restam alguns detalhes para polir. Continue navegando pelo portal para fixar o aprendizado!";
+            } else {
+                resultsTitle.textContent = "Que tal aprender mais? 📚";
+                resultsDescription.textContent = "Cidadania e segurança digital são essenciais hoje em dia. Recomendamos ler com carinho os materiais curriculares do portal para reforçar os conceitos de comportamento e privacidade online.";
+            }
+        };
+
+        startQuizBtn.addEventListener('click', startQuiz);
+        nextQuestionBtn.addEventListener('click', handleNext);
+        restartQuizBtn.addEventListener('click', startQuiz);
+    }
 });
