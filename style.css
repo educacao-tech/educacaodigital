@@ -2169,3 +2169,127 @@ html[data-contrast="high"] .quiz-feedback {
         width: 100%;
     }
 }
+
+/* ==========================================
+   TELA DE SUCESSO DO FORMULÁRIO DE CONTATO
+   ========================================== */
+.form-success-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.form-success-screen.active {
+    display: flex;
+}
+
+.form-fields-wrapper.inactive {
+    display: none;
+}
+
+/* Animação do Checkmark SVG */
+.success-svg {
+    width: 80px;
+    height: 80px;
+    display: block;
+    margin: 0 auto 1.5rem;
+    stroke: #10b981;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #10b981;
+    animation: fillSuccess 0.4s ease-in-out 0.4s forwards, scaleSuccess 0.3s ease-in-out 0.9s both;
+    border-radius: 50%;
+}
+
+.success-svg-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    fill: none;
+    animation: strokeCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.success-svg-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: strokeCheck 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes strokeCircle {
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes strokeCheck {
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes fillSuccess {
+    100% { box-shadow: inset 0px 0px 0px 40px rgba(16, 185, 129, 0.1); }
+}
+
+@keyframes scaleSuccess {
+    0%, 100% { transform: none; }
+    50% { transform: scale3d(1.1, 1.1, 1); }
+}
+
+/* Alto Contraste */
+html[data-contrast="high"] .form-success-screen {
+    border: 2px solid #ffffff !important;
+    background: #000000 !important;
+}
+
+html[data-contrast="high"] .success-svg {
+    stroke: #00ff00 !important;
+    box-shadow: none !important;
+}
+
+html[data-contrast="high"] .success-svg-circle {
+    stroke: #ffffff !important;
+}
+
+html[data-contrast="high"] .success-svg-check {
+    stroke: #00ff00 !important;
+}
+
+/* ==========================================
+   DESTAQUE DE BUSCA EM TEMPO REAL
+   ========================================== */
+.btn-bimestre.search-highlight {
+    animation: searchPulse 1.5s infinite alternate;
+    border-color: #3b82f6 !important;
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+@keyframes searchPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+    }
+}
+
+/* Alto Contraste */
+html[data-contrast="high"] .btn-bimestre.search-highlight {
+    animation: searchPulseHighContrast 1.5s infinite alternate;
+    border: 3px solid #00ff00 !important;
+    background-color: #000000 !important;
+    color: #00ff00 !important;
+}
+
+@keyframes searchPulseHighContrast {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 0 8px rgba(0, 255, 0, 0);
+    }
+}

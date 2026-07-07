@@ -407,30 +407,59 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Filtro por ano letivo (botão filter-tag)
                 const matchesFilter = currentFilter === 'all' || itemYear === currentFilter;
 
-                // Filtro por texto digitado
-                const matchesSearch = headerText.includes(currentSearch);
-
-                // Filtro por tema/categoria (botão category-tag)
                 const bimestreBtns = item.querySelectorAll('.btn-bimestre');
                 let hasVisibleBimestre = false;
+                let hasSearchMatchInBimestres = false;
 
                 bimestreBtns.forEach(btn => {
                     const btnCategory = btn.getAttribute('data-category') || '';
+                    const btnTitle = (btn.getAttribute('data-title') || '').toLowerCase();
+                    const btnText = btn.textContent.toLowerCase();
+
                     const matchesCategory = currentCategory === 'all' || btnCategory === currentCategory;
                     
-                    if (matchesCategory) {
+                    // Verifica se o texto digitado bate com o título da atividade, tema ou ano
+                    const matchesSearchQuery = currentSearch === '' || 
+                                               btnTitle.includes(currentSearch) || 
+                                               btnCategory.includes(currentSearch) || 
+                                               btnText.includes(currentSearch) ||
+                                               headerText.includes(currentSearch);
+
+                    if (matchesCategory && matchesSearchQuery) {
                         btn.style.display = 'inline-flex';
                         hasVisibleBimestre = true;
+                        
+                        // Adiciona destaque visual se houver pesquisa ativa e correspondência
+                        if (currentSearch !== '' && (btnTitle.includes(currentSearch) || btnCategory.includes(currentSearch))) {
+                            btn.classList.add('search-highlight');
+                            hasSearchMatchInBimestres = true;
+                        } else {
+                            btn.classList.remove('search-highlight');
+                        }
                     } else {
                         btn.style.display = 'none';
+                        btn.classList.remove('search-highlight');
                     }
                 });
+
+                // O card bate com a pesquisa se a query for vazia, se o nome do ano bater ou se algum bimestre bater
+                const matchesSearch = currentSearch === '' || headerText.includes(currentSearch) || hasSearchMatchInBimestres;
 
                 // Se houver filtro por categoria ativo, e o card não tiver nenhum bimestre correspondente, oculta o card
                 const matchesCategoryFilter = currentCategory === 'all' || hasVisibleBimestre;
 
                 if (matchesFilter && matchesSearch && matchesCategoryFilter) {
                     item.style.display = 'block';
+                    
+                    // Expande o acordeão automaticamente se houver correspondência com o termo buscado
+                    if (currentSearch !== '' && hasSearchMatchInBimestres) {
+                        item.setAttribute('open', '');
+                        item.classList.add('is-open');
+                        const content = item.querySelector('.accordion-content');
+                        if (content) {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        }
+                    }
                 } else {
                     item.style.display = 'none';
                     // Se estiver aberto e for ocultado, fecha para evitar layout quebrado
@@ -564,41 +593,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackForm = document.getElementById('feedback-form');
     const successMsg = document.getElementById('form-success-msg');
     const errorMsg = document.getElementById('form-error-msg');
+    const formFieldsWrapper = document.getElementById('form-fields-wrapper');
+    const formSuccessScreen = document.getElementById('form-success-screen');
+    const formResetBtn = document.getElementById('form-reset-btn');
 
-    if (feedbackForm) {
+    if (feedbackForm && formFieldsWrapper && formSuccessScreen) {
         feedbackForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const submitBtn = feedbackForm.querySelector('.btn-submit');
             const originalBtnText = submitBtn.innerHTML;
 
-            // Feedback visual de carregamento
+            // Feedback visual de carregamento no botão
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span>Enviando...</span> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>';
 
             if (successMsg) successMsg.style.display = 'none';
             if (errorMsg) errorMsg.style.display = 'none';
 
-            // Simula uma requisição de rede de 1.2 segundos
+            // Simula envio de e-mail (1.2 segundos)
             setTimeout(() => {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
 
-                // Sucesso simulado
-                if (successMsg) {
-                    successMsg.style.display = 'block';
-                    feedbackForm.reset();
-                    
-                    // Rola suavemente até a mensagem de sucesso
-                    successMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-                    // Oculta a mensagem de sucesso após 7 segundos
-                    setTimeout(() => {
-                        successMsg.style.display = 'none';
-                    }, 7000);
-                }
+                // Sucesso: transiciona para a tela animada
+                formFieldsWrapper.classList.add('inactive');
+                formSuccessScreen.classList.add('active');
+                
+                feedbackForm.reset();
+                
+                // Rola suavemente até o topo do form para centralizar a animação
+                feedbackForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 1200);
         });
+
+        // Botão para redefinir o formulário e enviar outra mensagem
+        if (formResetBtn) {
+            formResetBtn.addEventListener('click', () => {
+                formSuccessScreen.classList.remove('active');
+                formFieldsWrapper.classList.remove('inactive');
+                
+                // Foca o primeiro input para melhorar UX
+                const nameInput = document.getElementById('form-name');
+                if (nameInput) nameInput.focus();
+            });
+        }
     }
 
     // Acessibilidade: Controle de Tamanho de Fonte
