@@ -130,6 +130,21 @@
         </div>
     </section>
 
+    <!-- Barra de Foco Global por Ano Letivo -->
+    <div class="focus-bar-container" id="global-focus-bar">
+        <div class="focus-bar-content">
+            <span class="focus-bar-label">🎯 Modo Foco:</span>
+            <div class="focus-bar-pills">
+                <button class="focus-pill active" data-focus="all">Todos os Anos</button>
+                <button class="focus-pill" data-focus="1">1º Ano</button>
+                <button class="focus-pill" data-focus="2">2º Ano</button>
+                <button class="focus-pill" data-focus="3">3º Ano</button>
+                <button class="focus-pill" data-focus="4">4º Ano</button>
+                <button class="focus-pill" data-focus="5">5º Ano</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Menu de Planejamentos (1º ao 5º Ano) -->
     <section id="planejamentos" class="section">
         <h2 class="section-title">Planejamentos Anuais (EF1) da rede Municipal de Batatais</h2>
@@ -152,15 +167,6 @@
                 <button class="category-tag" data-category="scratch">#Scratch</button>
                 <button class="category-tag" data-category="robotica">#Robótica</button>
                 <button class="category-tag" data-category="cidadania">#Cidadania</button>
-            </div>
-            <div class="filter-tags">
-                <button class="filter-tag active" data-filter="all">Todos os Anos</button>
-                <button class="filter-tag" data-filter="1">1º Ano</button>
-                <button class="filter-tag" data-filter="2">2º Ano</button>
-                <button class="filter-tag" data-filter="3">3º Ano</button>
-                <button class="filter-tag" data-filter="4">4º Ano</button>
-                <button class="filter-tag" data-filter="5">5º Ano</button>
-            </div>
         </div>
         <div class="accordion-container">
             <!-- 1º Ano -->
@@ -175,28 +181,80 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" data-category="desplugada" data-title="Algoritmos Desplugados e Direções">
-                        1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" data-category="desplugada" data-title="Pensamento Computacional e Lógica">
-                        2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="#" class="btn-bimestre disabled" data-category="scratch">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
+                    <div class="material-card" data-category="desplugada" data-title="Algoritmos Desplugados e Direções">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Algoritmos Desplugados e Direções</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-1-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="desplugada" data-title="Pensamento Computacional e Lógica">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Pensamento Computacional e Lógica</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-1-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Programação e Blocos Lógicos</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="robotica">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Introdução à Robótica Educativa</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 2º Ano -->
@@ -211,28 +269,80 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada" data-title="Segurança Online e Senhas Fortes">
-                        1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" data-category="cidadania" data-title="Cidadania Digital e Cyberbullying">
-                        2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="#" class="btn-bimestre disabled" data-category="scratch">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
+                    <div class="material-card" data-category="desplugada" data-title="Segurança Online e Senhas Fortes">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Segurança Online e Senhas Fortes</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-2-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="cidadania" data-title="Cidadania Digital e Cyberbullying">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Cidadania Digital e Cyberbullying</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-2-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Histórias Animadas no Scratch Jr</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="robotica">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Robótica Física e Motores</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 3º Ano -->
@@ -247,28 +357,80 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada" data-title="Algoritmos e Jogos Desplugados">
-                        1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" data-category="scratch" data-title="Histórias Interativas no Scratch">
-                        2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
+                    <div class="material-card" data-category="desplugada" data-title="Algoritmos e Jogos Desplugados">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Algoritmos e Jogos Desplugados</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-3-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="scratch" data-title="Histórias Interativas no Scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Histórias Interativas no Scratch</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-3-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Ética e Empatia Digital</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="robotica">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Programação Física e Sensores</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 4º Ano -->
@@ -283,28 +445,80 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania" data-title="Combate a Fake News e Desinformação">
-                        1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" data-category="scratch" data-title="Jogos Educativos no Scratch">
-                        2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="robotica">4º Bimestre</a>
+                    <div class="material-card" data-category="cidadania" data-title="Combate a Fake News e Desinformação">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Combate a Fake News e Desinformação</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-4-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="scratch" data-title="Jogos Educativos no Scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Jogos Educativos no Scratch</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-4-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="desplugada">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Estruturas Lógicas Desplugadas</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="robotica">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Projetos de Automação Maker</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 5º Ano -->
@@ -319,28 +533,80 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica" data-title="Robótica Prática com Sucata">
-                        1º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true"
-                        class="btn-bimestre" data-category="robotica" data-title="Automação com Sensores e Motores">
-                        2º Bimestre
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>
-                    </a>
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania">4º Bimestre</a>
+                    <div class="material-card" data-category="robotica" data-title="Robótica Prática com Sucata">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Robótica Prática com Sucata</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-5-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="robotica" data-title="Automação com Sensores e Motores">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Automação com Sensores e Motores</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="planejamento-5-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="desplugada">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Algoritmos de Busca Desplugados</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Segurança Avançada e LGPD</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
         </div>
@@ -368,15 +634,6 @@
                 <button class="category-tag" data-category="scratch">#Scratch</button>
                 <button class="category-tag" data-category="robotica">#Robótica</button>
                 <button class="category-tag" data-category="cidadania">#Cidadania</button>
-            </div>
-            <div class="filter-tags">
-                <button class="filter-tag active" data-filter="all">Todos os Anos</button>
-                <button class="filter-tag" data-filter="1">1º Ano</button>
-                <button class="filter-tag" data-filter="2">2º Ano</button>
-                <button class="filter-tag" data-filter="3">3º Ano</button>
-                <button class="filter-tag" data-filter="4">4º Ano</button>
-                <button class="filter-tag" data-filter="5">5º Ano</button>
-            </div>
         </div>
         <div class="accordion-container">
             <!-- 1º Ano -->
@@ -391,10 +648,54 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada" data-title="Caça ao Tesouro Desplugada">1º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada" data-title="Labirinto com Blocos de Lógica">2º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania" data-title="Jogo da Privacidade de Dados">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania" data-title="Regras de Comportamento na Rede">4º Bimestre</a>
+                    <div class="material-card disabled" data-category="desplugada" data-title="Caça ao Tesouro Desplugada">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Caça ao Tesouro Desplugada</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="desplugada" data-title="Labirinto com Blocos de Lógica">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Labirinto com Blocos de Lógica</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania" data-title="Jogo da Privacidade de Dados">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Jogo da Privacidade de Dados</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania" data-title="Regras de Comportamento na Rede">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Regras de Comportamento na Rede</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 2º Ano -->
@@ -409,14 +710,80 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://drive.google.com/drive/folders/13jyFSO2ewcOAF9jYGLYEx6xRvGRF7o9-?usp=sharing"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="desplugada" data-title="Pixel Art no Papel Quadriculado">1º
-                        Bimestre</a>
-                    <a href="https://drive.google.com/drive/folders/1CV-1vJXkLfrxWSs2emvJjs8a-3c6PE8z?usp=sharing"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania" data-title="Jogo da Chave e Senhas Seguras">2º
-                        Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada" data-title="Detetive de Fake News e Fontes">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania" data-title="Simulações de Respeito Coletivo">4º Bimestre</a>
+                    <div class="material-card" data-category="desplugada" data-title="Pixel Art no Papel Quadriculado">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Pixel Art no Papel Quadriculado</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="atividade-2-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://drive.google.com/drive/folders/13jyFSO2ewcOAF9jYGLYEx6xRvGRF7o9-?usp=sharing" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="cidadania" data-title="Jogo da Chave e Senhas Seguras">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Jogo da Chave e Senhas Seguras</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="atividade-2-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://drive.google.com/drive/folders/1CV-1vJXkLfrxWSs2emvJjs8a-3c6PE8z?usp=sharing" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="desplugada" data-title="Detetive de Fake News e Fontes">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Detetive de Fake News e Fontes</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania" data-title="Simulações de Respeito Coletivo">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Simulações de Respeito Coletivo</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 3º Ano -->
@@ -431,14 +798,69 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada" data-title="Siga o Algoritmo e Movimentos">1º Bimestre</a>
-                    <a href="https://drive.google.com/drive/folders/1pUjVDb9GyJIEaTaZ4IY-m807ApamEYsC?usp=sharing"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="scratch" data-title="Siga o Algoritmo e Movimentos">2º
-                        Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania" data-title="Limpeza da Pegada Digital">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="scratch" data-title="Animação de Diálogos no Scratch">4º Bimestre</a>
+                    <div class="material-card disabled" data-category="desplugada" data-title="Siga o Algoritmo e Movimentos">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Siga o Algoritmo e Movimentos</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="scratch" data-title="Siga o Algoritmo e Movimentos">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Siga o Algoritmo e Movimentos</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="atividade-3-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://drive.google.com/drive/folders/1pUjVDb9GyJIEaTaZ4IY-m807ApamEYsC?usp=sharing" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania" data-title="Limpeza da Pegada Digital">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Limpeza da Pegada Digital</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="scratch" data-title="Animação de Diálogos no Scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Animação de Diálogos no Scratch</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
-            </details>
+            </</details>
             <!-- 4º Ano -->
             <details class="accordion-item">
                 <summary class="accordion-header">
@@ -451,12 +873,67 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://drive.google.com/drive/folders/1E7nrhcV8AxaS92d0HS0wiNNvfwL8x1sn?usp=drive_link"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="cidadania" data-title="Verificador de Notícias e Fatos">1º
-                        Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="scratch" data-title="Criação de Banda Musical no Scratch">2º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="desplugada" data-title="Simulação Física de Internet">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="robotica" data-title="Construção Maker com Papelão">4º Bimestre</a>
+                    <div class="material-card" data-category="cidadania" data-title="Verificador de Notícias e Fatos">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Verificador de Notícias e Fatos</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="atividade-4-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://drive.google.com/drive/folders/1E7nrhcV8AxaS92d0HS0wiNNvfwL8x1sn?usp=drive_link" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="scratch" data-title="Criação de Banda Musical no Scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Criação de Banda Musical no Scratch</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="desplugada" data-title="Simulação Física de Internet">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-desplugada">#Desplugada</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Simulação Física de Internet</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="robotica" data-title="Construção Maker com Papelão">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Construção Maker com Papelão</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
             <!-- 5º Ano -->
@@ -471,76 +948,86 @@
                     </svg>
                 </summary>
                 <div class="accordion-content">
-                    <a href="https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica" data-title="Semáforo Inteligente com Sucata">1º
-                        Bimestre</a>
-                    <a href="https://drive.google.com/drive/folders/1FZdietHnQiuzco7l2zmHGzMXC4NZ6tKB?usp=sharing"
-                        class="btn-bimestre" target="_blank" rel="noopener noreferrer" data-category="robotica" data-title="Robô Segue-Linha Desplugado">2º
-                        Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="scratch" data-title="Labirinto com Variáveis no Scratch">3º Bimestre</a>
-                    <a href="#" class="btn-bimestre disabled" data-category="cidadania" data-title="Debates sobre Rastreabilidade Digital">4º Bimestre</a>
+                    <div class="material-card" data-category="robotica" data-title="Semáforo Inteligente com Sucata">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">1º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Semáforo Inteligente com Sucata</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="atividade-5-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card" data-category="robotica" data-title="Robô Segue-Linha Desplugado">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">2º Bimestre</span>
+                            <span class="category-badge badge-robotica">#Robótica</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Robô Segue-Linha Desplugado</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <button class="btn-material-action btn-open-material" data-material-id="atividade-5-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Detalhes
+                            </button>
+                            <button class="btn-copy-link" data-url="https://drive.google.com/drive/folders/1FZdietHnQiuzco7l2zmHGzMXC4NZ6tKB?usp=sharing" title="Copiar Link" aria-label="Copiar link do material">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="scratch" data-title="Labirinto com Variáveis no Scratch">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">3º Bimestre</span>
+                            <span class="category-badge badge-scratch">#Scratch</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Labirinto com Variáveis no Scratch</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
+                    <div class="material-card disabled" data-category="cidadania" data-title="Debates sobre Rastreabilidade Digital">
+                        <div class="material-card-header">
+                            <span class="material-bimestre">4º Bimestre</span>
+                            <span class="category-badge badge-cidadania">#Cidadania</span>
+                        </div>
+                        <div class="material-card-body">
+                            <h4 class="material-title">Debates sobre Rastreabilidade Digital</h4>
+                        </div>
+                        <div class="material-card-footer">
+                            <span class="badge-soon">Em breve</span>
+                        </div>
+                    </div>
                 </div>
             </details>
         </div>
     </section>
 
-    <!-- Seção Carrossel de Galeria -->
-    <section id="galeria" class="section">
-        <h2 class="section-title">Nossas Práticas em Ação</h2>
-        <div class="section-intro">
-            <p>Visualize as experiências digitais e midiáticas desenvolvidas na rede municipal de Batatais.</p>
-        </div>
-        
-        <div class="carousel-container">
-            <div class="carousel-track-wrapper">
-                <div class="carousel-track" id="carousel-track">
-                    <!-- Slide 1: Atividades Desplugadas -->
-                    <div class="carousel-slide">
-                        <img src="atividades_desplugadas.png" alt="Crianças em atividade desplugada de pensamento computacional" class="carousel-img" loading="lazy">
-                        <div class="carousel-caption">
-                            <h3>Pensamento Computacional Desplugado</h3>
-                            <p>Resolução de problemas, lógica e algoritmos através de jogos e dinâmicas colaborativas sem o uso de telas.</p>
-                        </div>
-                    </div>
-                    <!-- Slide 2: Scratch -->
-                    <div class="carousel-slide">
-                        <img src="programacao_scratch.png" alt="Estudante programando com o Scratch" class="carousel-img" loading="lazy">
-                        <div class="carousel-caption">
-                            <h3>Programação Criativa no Scratch</h3>
-                            <p>Criação de histórias interativas, jogos e animações utilizando lógica de blocos de arrastar e soltar.</p>
-                        </div>
-                    </div>
-                    <!-- Slide 3: Robótica -->
-                    <div class="carousel-slide">
-                        <img src="robotica_educativa.png" alt="Alunos montando robô educativo" class="carousel-img" loading="lazy">
-                        <div class="carousel-caption">
-                            <h3>Robótica e Cultura Maker</h3>
-                            <p>Montagem e programação de pequenos robôs e dispositivos eletrônicos, integrando hardware e software na prática.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Controles do Carrossel -->
-            <button class="carousel-arrow prev" id="carousel-prev" aria-label="Slide anterior" title="Anterior">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <button class="carousel-arrow next" id="carousel-next" aria-label="Próximo slide" title="Próximo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-            
-            <!-- Indicadores (Dots) -->
-            <div class="carousel-indicators" id="carousel-indicators">
-                <button class="carousel-dot active" data-slide="0" aria-label="Ir para o slide 1" aria-current="true"></button>
-                <button class="carousel-dot" data-slide="1" aria-label="Ir para o slide 2"></button>
-                <button class="carousel-dot" data-slide="2" aria-label="Ir para o slide 3"></button>
-            </div>
-        </div>
-    </section>
+
 
     <!-- BNCC Computação - Vídeos Explicativos -->
     <section id="bncc-videos" class="section bg-light">
@@ -716,14 +1203,26 @@
             <div id="quiz-start-screen" class="quiz-screen active">
                 <div class="quiz-badge-icon">🛡️</div>
                 <h3>Você é um Cidadão Digital Consciente?</h3>
-                <p>Responda a 4 perguntas rápidas sobre segurança online, senhas, fake news e convivência na rede.</p>
+                <p>Teste seus conhecimentos com perguntas dinâmicas sobre tecnologia, segurança, mídias e lógica.</p>
+                
+                <div class="quiz-category-select-wrapper">
+                    <span class="quiz-category-label">Escolha uma categoria para jogar:</span>
+                    <div class="quiz-category-pills" id="quiz-category-pills">
+                        <button class="quiz-category-pill active" data-category="all">🔀 Aleatório (Geral)</button>
+                        <button class="quiz-category-pill" data-category="seguranca">🛡️ Segurança Online</button>
+                        <button class="quiz-category-pill" data-category="fakenews">📰 Fake News & Mídias</button>
+                        <button class="quiz-category-pill" data-category="convivencia">💬 Convivência Digital</button>
+                        <button class="quiz-category-pill" data-category="computacao">🧠 Pensamento Computacional</button>
+                    </div>
+                </div>
+                
                 <button class="btn-hero" id="start-quiz-btn">Iniciar o Desafio</button>
             </div>
             
             <!-- Tela de Perguntas / Question Screen -->
             <div id="quiz-question-screen" class="quiz-screen">
                 <div class="quiz-progress">
-                    <span id="quiz-question-number">Pergunta 1 de 4</span>
+                    <span id="quiz-question-number">Pergunta 1 de 5</span>
                     <div class="quiz-progress-bar">
                         <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
                     </div>
@@ -748,10 +1247,12 @@
             
             <!-- Tela de Resultados / Results Screen -->
             <div id="quiz-results-screen" class="quiz-screen">
+                <div id="quiz-badge-container"></div>
                 <div class="quiz-badge-icon" id="results-icon">🏆</div>
                 <h3>Desafio Concluído!</h3>
+                <p class="quiz-result-meta">Categoria: <span id="quiz-result-category" style="font-weight: 700;">Aleatório</span></p>
                 <div class="quiz-score-circle">
-                    <span id="quiz-score-text">3/4</span>
+                    <span id="quiz-score-text">5/5</span>
                 </div>
                 <h4 id="quiz-results-title">Parabéns!</h4>
                 <p id="quiz-results-description">Descrição personalizada baseada no seu resultado.</p>
@@ -922,6 +1423,71 @@
             </div>
             <div class="modal-body" id="modal-content">
                 <!-- Conteúdo preenchido por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Detalhes de Materiais (Ficha Técnica + Preview) -->
+    <div class="modal-overlay" id="material-modal" aria-hidden="true" role="dialog" aria-labelledby="material-modal-title">
+        <div class="modal-container material-modal-container">
+            <button class="modal-close-btn" id="material-modal-close" aria-label="Fechar Modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+            <div class="material-modal-layout">
+                <!-- Coluna de Metadados -->
+                <div class="material-modal-details">
+                    <div class="material-modal-header">
+                        <span class="material-modal-subtitle" id="material-modal-subtitle">1º Bimestre</span>
+                        <span class="category-badge" id="material-modal-badge">#Categoria</span>
+                    </div>
+                    <h3 id="material-modal-title">Título do Material</h3>
+                    <p class="material-modal-description" id="material-modal-description">Descrição longa...</p>
+                    
+                    <div class="material-modal-info-group">
+                        <div class="material-modal-info-item">
+                            <span class="info-label">⏱️ Duração recomendada:</span>
+                            <span class="info-value" id="material-modal-duration">4 aulas</span>
+                        </div>
+                        <div class="material-modal-info-item">
+                            <span class="info-label">🎯 Habilidades / Eixos:</span>
+                            <span class="info-value" id="material-modal-skills">Habilidade...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="material-modal-objectives">
+                        <h4>Objetivos de Aprendizagem</h4>
+                        <ul id="material-modal-objectives-list">
+                            <li>Objetivo 1</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="material-modal-actions-footer">
+                        <a href="#" id="material-modal-access-btn" class="btn-hero" target="_blank" rel="noopener noreferrer">Acessar Completo</a>
+                        <a href="#" id="material-modal-pdf-btn" class="btn-pdf" target="_blank" rel="noopener noreferrer" title="Baixar como PDF" aria-label="Baixar planejamento em PDF">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            PDF
+                        </a>
+                        <button id="material-modal-copy-btn" class="btn-copy-link" title="Copiar Link" aria-label="Copiar link do material">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Coluna de Pré-visualização / Iframe -->
+                <div class="material-modal-preview" id="material-modal-preview-container">
+                    <!-- Preenchido dinamicamente via JS -->
+                </div>
             </div>
         </div>
     </div>

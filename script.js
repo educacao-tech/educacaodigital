@@ -128,11 +128,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     accordion.setAttribute('open', '');
                     accordion.classList.add('is-open');
                     
+                    // Duplo rAF: garante que o grid de colunas já está calculado antes de medir
                     requestAnimationFrame(() => {
-                        content.style.maxHeight = content.scrollHeight + 'px';
+                        requestAnimationFrame(() => {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        });
                     });
 
                     content.addEventListener('transitionend', () => {
+                        // Após a transição, usa 'none' para que o conteúdo cresça livremente
+                        // (ex: imagens ou iframes que carregam depois)
+                        content.style.maxHeight = 'none';
                         accordion.classList.remove('is-animating');
                     }, { once: true });
                 }
@@ -140,28 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Ativa/Desativa botões de bimestre e gerencia ícones automaticamente
-    const bimestreButtons = document.querySelectorAll('.btn-bimestre');
-    bimestreButtons.forEach(button => {
-        const link = button.getAttribute('href');
-        const isInactive = !link || link.trim() === '#';
 
-        if (isInactive) {
-            button.classList.add('disabled');
-            button.setAttribute('aria-disabled', 'true');
-            button.setAttribute('tabindex', '-1');
-            button.querySelector('svg')?.remove();
-
-            // Adiciona uma indicação visual de "Em breve"
-            const badge = document.createElement('span');
-            badge.classList.add('btn-bimestre-badge');
-            badge.textContent = 'Em breve';
-            button.appendChild(badge);
-        } else {
-            button.setAttribute('target', '_blank');
-            button.setAttribute('rel', 'noopener noreferrer');
-        }
-    });
 
     // Segurança: Configura automaticamente links externos
     document.querySelectorAll('a[href^="http"]').forEach(link => {
@@ -181,7 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Previne pulo de página em links vazios (#)
     document.querySelectorAll('a[href="#"]').forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
+            if (link.getAttribute('href') === '#') {
+                e.preventDefault();
+            }
         });
     });
 
@@ -388,12 +375,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!section) return;
 
         const searchInput = section.querySelector('.search-input');
-        const tags = section.querySelectorAll('.filter-tag');
         const categoryTags = section.querySelectorAll('.category-tag');
         const accordions = section.querySelectorAll('.accordion-item');
 
         let currentSearch = '';
-        let currentFilter = 'all';
         let currentCategory = 'all';
 
         const filterItems = () => {
@@ -404,41 +389,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 const yearMatch = headerText.match(/(\d+)/);
                 const itemYear = yearMatch ? yearMatch[1] : '';
 
-                // Filtro por ano letivo (botão filter-tag)
-                const matchesFilter = currentFilter === 'all' || itemYear === currentFilter;
+                // Filtro por ano letivo (usa o filtro global de foco)
+                const matchesFilter = globalFocusYear === 'all' || itemYear === globalFocusYear;
 
-                const bimestreBtns = item.querySelectorAll('.btn-bimestre');
+                const materialCards = item.querySelectorAll('.material-card');
                 let hasVisibleBimestre = false;
                 let hasSearchMatchInBimestres = false;
 
-                bimestreBtns.forEach(btn => {
-                    const btnCategory = btn.getAttribute('data-category') || '';
-                    const btnTitle = (btn.getAttribute('data-title') || '').toLowerCase();
-                    const btnText = btn.textContent.toLowerCase();
+                materialCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category') || '';
+                    const cardTitle = (card.getAttribute('data-title') || '').toLowerCase();
+                    const cardText = card.textContent.toLowerCase();
 
-                    const matchesCategory = currentCategory === 'all' || btnCategory === currentCategory;
+                    const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
                     
                     // Verifica se o texto digitado bate com o título da atividade, tema ou ano
                     const matchesSearchQuery = currentSearch === '' || 
-                                               btnTitle.includes(currentSearch) || 
-                                               btnCategory.includes(currentSearch) || 
-                                               btnText.includes(currentSearch) ||
+                                               cardTitle.includes(currentSearch) || 
+                                               cardCategory.includes(currentSearch) || 
+                                               cardText.includes(currentSearch) ||
                                                headerText.includes(currentSearch);
 
                     if (matchesCategory && matchesSearchQuery) {
-                        btn.style.display = 'inline-flex';
+                        card.style.display = 'flex';
                         hasVisibleBimestre = true;
                         
                         // Adiciona destaque visual se houver pesquisa ativa e correspondência
-                        if (currentSearch !== '' && (btnTitle.includes(currentSearch) || btnCategory.includes(currentSearch))) {
-                            btn.classList.add('search-highlight');
+                        if (currentSearch !== '' && (cardTitle.includes(currentSearch) || cardCategory.includes(currentSearch))) {
+                            card.classList.add('search-highlight');
                             hasSearchMatchInBimestres = true;
                         } else {
-                            btn.classList.remove('search-highlight');
+                            card.classList.remove('search-highlight');
                         }
                     } else {
-                        btn.style.display = 'none';
-                        btn.classList.remove('search-highlight');
+                        card.style.display = 'none';
+                        card.classList.remove('search-highlight');
                     }
                 });
 
@@ -449,16 +434,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 const matchesCategoryFilter = currentCategory === 'all' || hasVisibleBimestre;
 
                 if (matchesFilter && matchesSearch && matchesCategoryFilter) {
-                    item.style.display = 'block';
+                    // Remove o display inline para deixar o CSS controlar (volta ao padrão "block")
+                    item.style.removeProperty('display');
                     
-                    // Expande o acordeão automaticamente se houver correspondência com o termo buscado
-                    if (currentSearch !== '' && hasSearchMatchInBimestres) {
+                    // Expande o acordeão automaticamente se houver correspondência com o termo buscado ou se for o ano em foco específico
+                    const isSpecificYearFocused = globalFocusYear !== 'all' && itemYear === globalFocusYear;
+                    if ((currentSearch !== '' && hasSearchMatchInBimestres) || isSpecificYearFocused) {
                         item.setAttribute('open', '');
                         item.classList.add('is-open');
                         const content = item.querySelector('.accordion-content');
                         if (content) {
-                            content.style.maxHeight = content.scrollHeight + 'px';
+                            // Duplo rAF para garantir medição correta após layout de grid
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    content.style.maxHeight = content.scrollHeight + 'px';
+                                    // Após transição, libera a altura para crescer com conteúdo dinâmico
+                                    content.addEventListener('transitionend', () => {
+                                        content.style.maxHeight = 'none';
+                                    }, { once: true });
+                                });
+                            });
                         }
+                    } else if (globalFocusYear === 'all' && currentSearch === '') {
+                        // Volta ao estado fechado padrão ao sair do modo foco
+                        item.removeAttribute('open');
+                        item.classList.remove('is-open');
+                        const content = item.querySelector('.accordion-content');
+                        if (content) content.style.maxHeight = '0px';
                     }
                 } else {
                     item.style.display = 'none';
@@ -481,17 +483,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Evento de Clique nas Tags de Ano Letivo
-        tags.forEach(tag => {
-            tag.addEventListener('click', () => {
-                tags.forEach(t => t.classList.remove('active'));
-                tag.classList.add('active');
-                currentFilter = tag.getAttribute('data-filter');
-                filterItems();
-                autoExpandSingleAccordion();
-            });
-        });
-
         // Evento de Clique nas Tags de Categorias (Temas)
         categoryTags.forEach(catTag => {
             catTag.addEventListener('click', () => {
@@ -506,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Auxiliar: abre automaticamente se restar apenas um acordeão visível
         const autoExpandSingleAccordion = () => {
             const visibleAccordions = Array.from(accordions).filter(acc => acc.style.display !== 'none');
-            if (visibleAccordions.length === 1 && (currentFilter !== 'all' || currentCategory !== 'all')) {
+            if (visibleAccordions.length === 1 && (globalFocusYear !== 'all' || currentCategory !== 'all')) {
                 const singleAcc = visibleAccordions[0];
                 if (!singleAcc.hasAttribute('open')) {
                     singleAcc.setAttribute('open', '');
@@ -518,10 +509,77 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         };
+
+        return {
+            filter: filterItems,
+            autoExpand: autoExpandSingleAccordion
+        };
     };
 
-    setupFilters('planejamentos');
-    setupFilters('atividades');
+    // Variável e Ouvinte de Foco Global
+    let globalFocusYear = 'all';
+
+    // Função auxiliar para sincronizar o ano ativo com a URL
+    const syncYearToURL = (year) => {
+        const url = new URL(window.location.href);
+        if (year === 'all') {
+            url.searchParams.delete('ano');
+        } else {
+            url.searchParams.set('ano', year);
+        }
+        history.replaceState(null, '', url.toString());
+    };
+
+    // Inicializa as instâncias de filtro e expõe seus métodos
+    const filterPlanejamentos = setupFilters('planejamentos');
+    const filterAtividades = setupFilters('atividades');
+
+    const focusPills = document.querySelectorAll('.focus-pill');
+
+    // Função central que ativa um filtro de ano, atualiza a UI e sincroniza a URL
+    const activateFocusYear = (year, scrollToSection = false) => {
+        globalFocusYear = year;
+        focusPills.forEach(p => {
+            p.classList.toggle('active', p.getAttribute('data-focus') === year);
+        });
+
+        if (filterPlanejamentos) {
+            filterPlanejamentos.filter();
+            filterPlanejamentos.autoExpand();
+        }
+        if (filterAtividades) {
+            filterAtividades.filter();
+            filterAtividades.autoExpand();
+        }
+
+        syncYearToURL(year);
+
+        if (scrollToSection && year !== 'all') {
+            const planejaSection = document.getElementById('planejamentos');
+            if (planejaSection) {
+                planejaSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+
+    if (focusPills.length > 0) {
+        focusPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                const year = pill.getAttribute('data-focus');
+                activateFocusYear(year, true);
+            });
+        });
+
+        // Restaura o filtro a partir da URL ao carregar a página (?ano=3)
+        const urlParams = new URLSearchParams(window.location.search);
+        const anoParam = urlParams.get('ano');
+        if (anoParam) {
+            // Aguarda o DOM estar totalmente renderizado antes de aplicar o filtro
+            requestAnimationFrame(() => {
+                activateFocusYear(anoParam, false);
+            });
+        }
+    }
 
     // Lógica do Modal BNCC
     const modal = document.getElementById('bncc-modal');
@@ -754,107 +812,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Controle do Carrossel de Galeria
-    const track = document.getElementById('carousel-track');
-    const prevButton = document.getElementById('carousel-prev');
-    const nextButton = document.getElementById('carousel-next');
-    const dotContainer = document.getElementById('carousel-indicators');
-    
-    if (track && prevButton && nextButton && dotContainer) {
-        const slides = Array.from(track.children);
-        const dots = Array.from(dotContainer.children);
-        let currentIndex = 0;
-        let autoplayTimer = null;
-        
-        const updateCarousel = (index) => {
-            if (index < 0) index = slides.length - 1;
-            if (index >= slides.length) index = 0;
-            
-            currentIndex = index;
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
-            dots.forEach((dot, idx) => {
-                if (idx === currentIndex) {
-                    dot.classList.add('active');
-                    dot.setAttribute('aria-current', 'true');
-                } else {
-                    dot.classList.remove('active');
-                    dot.removeAttribute('aria-current');
-                }
-            });
-        };
-        
-        const startAutoplay = () => {
-            stopAutoplay();
-            autoplayTimer = setInterval(() => {
-                updateCarousel(currentIndex + 1);
-            }, 5000);
-        };
-        
-        const stopAutoplay = () => {
-            if (autoplayTimer) {
-                clearInterval(autoplayTimer);
-                autoplayTimer = null;
-            }
-        };
-        
-        prevButton.addEventListener('click', () => {
-            updateCarousel(currentIndex - 1);
-            startAutoplay();
-        });
-        
-        nextButton.addEventListener('click', () => {
-            updateCarousel(currentIndex + 1);
-            startAutoplay();
-        });
-        
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                updateCarousel(index);
-                startAutoplay();
-            });
-        });
-        
-        const container = track.closest('.carousel-container');
-        if (container) {
-            container.addEventListener('mouseenter', stopAutoplay);
-            container.addEventListener('mouseleave', startAutoplay);
-            container.addEventListener('focusin', stopAutoplay);
-            container.addEventListener('focusout', startAutoplay);
-        }
-        
-        // Touch events para swipe no mobile
-        let startX = 0;
-        let endX = 0;
-        
-        track.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            stopAutoplay();
-        }, { passive: true });
-        
-        track.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            const diffX = startX - endX;
-            
-            if (Math.abs(diffX) > 50) {
-                if (diffX > 0) {
-                    updateCarousel(currentIndex + 1);
-                } else {
-                    updateCarousel(currentIndex - 1);
-                }
-            }
-            startAutoplay();
-        }, { passive: true });
-        
-        updateCarousel(0);
-        startAutoplay();
-    }
+
 
     // ==========================================
-    // LÓGICA DO QUIZ INTERATIVO
+    // LÓGICA DO QUIZ INTERATIVO COM BANCO E CATEGORIAS
     // ==========================================
-    const quizQuestions = [
+    const QUIZ_BANK = [
+        // CATEGORIA: SEGURANÇA ONLINE
         {
+            category: "seguranca",
+            categoryName: "Segurança Online",
             question: "Você recebeu um e-mail dizendo que ganhou um celular grátis e pedindo para clicar em um link para digitar seus dados. O que você deve fazer?",
             options: [
                 "Clicar imediatamente para não perder a promoção.",
@@ -866,6 +833,8 @@ document.addEventListener('DOMContentLoaded', () => {
             explanation: "Mensagens com promessas de prêmios fáceis e links suspeitos são truques comuns de cibercriminosos (Phishing) para capturar senhas e dados confidenciais."
         },
         {
+            category: "seguranca",
+            categoryName: "Segurança Online",
             question: "Qual das seguintes senhas é a mais segura para proteger suas contas online contra invasores?",
             options: [
                 "Sua data de nascimento ou '123456'.",
@@ -874,9 +843,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Uma combinação de letras maiúsculas, minúsculas, números e caracteres especiais (ex: 'Bata#2026!')."
             ],
             correct: 3,
-            explanation: "Senhas fortes devem ter de 8 a 12 caracteres contendo letras maiúsculas, minúsculas, números e símbolos, impossibilitando adivinhações por sistemas automatizados."
+            explanation: "Senhas fortes devem ter letras maiúsculas, minúsculas, números e símbolos. Isso impede que sistemas automatizados descubram sua senha facilmente."
         },
         {
+            category: "seguranca",
+            categoryName: "Segurança Online",
+            question: "Você quer instalar um jogo ou aplicativo novo no seu celular ou tablet. O que é mais seguro fazer?",
+            options: [
+                "Baixar de qualquer site que aparecer na pesquisa do Google.",
+                "Clicar em anúncios que prometem o jogo grátis com recursos extras.",
+                "Baixar apenas de lojas de aplicativos oficiais e pedir ajuda ou permissão de um adulto responsável.",
+                "Pedir o link para um desconhecido em um fórum ou chat."
+            ],
+            correct: 2,
+            explanation: "Baixar arquivos de sites não oficiais aumenta muito o risco de infectar seu aparelho com vírus ou softwares maliciosos. Use sempre lojas oficiais."
+        },
+        {
+            category: "seguranca",
+            categoryName: "Segurança Online",
+            question: "Seu melhor amigo pediu a senha do seu perfil de jogo para passar de fase para você. Qual é a atitude recomendada?",
+            options: [
+                "Passar a senha imediatamente, afinal ele é seu melhor amigo.",
+                "Explicar que senhas são de uso estritamente pessoal e que você não deve compartilhá-las com ninguém, nem com amigos.",
+                "Passar a senha mas pedir para ele não contar para ninguém.",
+                "Escrever a senha em um papel e entregar para ele na escola."
+            ],
+            correct: 1,
+            explanation: "Senhas devem ser secretas e pessoais. Mesmo sem querer, um amigo pode deixar sua conta exposta ou logada em locais inseguros."
+        },
+
+        // CATEGORIA: FAKE NEWS & MÍDIAS
+        {
+            category: "fakenews",
+            categoryName: "Fake News & Mídias",
             question: "Você leu uma notícia surpreendente em uma rede social, mas ela não cita quem escreveu ou a fonte oficial. O que deve fazer antes de compartilhar?",
             options: [
                 "Compartilhar imediatamente, pois parece muito interessante.",
@@ -885,9 +884,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Compartilhar e colocar na legenda que não sabe se é verdade."
             ],
             correct: 2,
-            explanation: "Notícias falsas (Fake News) propagam-se rapidamente. Sempre cheque a veracidade em fontes jornalísticas sérias antes de repassar dados adiante."
+            explanation: "Notícias falsas (Fake News) espalham-se rápido quando não são checadas. Sempre procure a mesma notícia em sites de jornalismo confiáveis antes de repassar."
         },
         {
+            category: "fakenews",
+            categoryName: "Fake News & Mídias",
+            question: "Você viu uma foto muito estranha na internet acompanhada de uma legenda chocante, mas suspeita que seja uma montagem. Como agir?",
+            options: [
+                "Acreditar na legenda, pois fotos não podem ser manipuladas.",
+                "Fazer uma pesquisa reversa de imagem ou buscar o assunto em sites de checagem para ver se é real.",
+                "Enviar em grupos afirmando que é 100% verídico.",
+                "Deixar para lá, mas salvar a imagem para usar depois."
+            ],
+            correct: 1,
+            explanation: "Hoje é muito fácil editar fotos e criar imagens falsas usando Inteligência Artificial. Sempre cheque o contexto antes de repassar."
+        },
+        {
+            category: "fakenews",
+            categoryName: "Fake News & Mídias",
+            question: "No grupo de família, enviaram um texto dizendo que um alimento comum causa uma doença grave. O texto não tem links nem referências de médicos. O que fazer?",
+            options: [
+                "Avisar no grupo que a informação parece suspeita e sem base científica, recomendando não compartilhar.",
+                "Compartilhar com seus amigos para alertá-los também.",
+                "Parar de comer o alimento imediatamente por precaução.",
+                "Ignorar o texto e não falar nada, mesmo sabendo que é mentira."
+            ],
+            correct: 0,
+            explanation: "Textos alarmistas sem fontes médicas ou links oficiais são quase sempre boatos. Alertar quem compartilhou ajuda a parar a desinformação."
+        },
+        {
+            category: "fakenews",
+            categoryName: "Fake News & Mídias",
+            question: "O que é uma 'bolha de informação' (filtro bolha) nas redes sociais?",
+            options: [
+                "Uma proteção que impede que você pegue vírus no computador.",
+                "Uma rede social voltada apenas para crianças.",
+                "A tendência dos algoritmos de nos mostrar apenas opiniões que combinam com o que já curtimos, limitando outros pontos de vista.",
+                "O limite diário de tempo que o aplicativo deixa você usar."
+            ],
+            correct: 2,
+            explanation: "Os algoritmos das redes sociais mostram conteúdo que mantém sua atenção. Isso cria 'bolhas' onde você só vê opiniões parecidas com a sua."
+        },
+
+        // CATEGORIA: CONVIVÊNCIA DIGITAL
+        {
+            category: "convivencia",
+            categoryName: "Convivência Digital",
             question: "Se você notar que um colega está sofrendo ofensas frequentes ou exclusão em grupos de conversa da turma, qual a atitude correta?",
             options: [
                 "Rir e endossar os comentários para continuar enturmado no grupo.",
@@ -896,9 +938,112 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Responder com insultos ainda mais fortes para defender a pessoa."
             ],
             correct: 2,
-            explanation: "O cyberbullying causa sérias consequências. Ser um aliado digital ativo consiste em documentar a agressão, acolher a vítima e notificar a equipe escolar."
+            explanation: "O cyberbullying causa sofrimento real. Ser um aliado ativo envolve apoiar quem está sofrendo, documentar as ofensas e avisar a escola."
+        },
+        {
+            category: "convivencia",
+            categoryName: "Convivência Digital",
+            question: "Você tirou uma foto engraçada de um colega na escola e quer postar nas suas redes sociais. Qual é o primeiro passo correto?",
+            options: [
+                "Postar logo antes que perca a graça.",
+                "Enviar apenas para alguns amigos próximos no privado.",
+                "Perguntar ao colega se ele se importa e pedir permissão antes de publicar qualquer imagem dele.",
+                "Postar e marcar o colega para que ele veja a brincadeira."
+            ],
+            correct: 2,
+            explanation: "A privacidade e a imagem de cada pessoa devem ser respeitadas. Sempre peça consentimento antes de publicar fotos ou vídeos de terceiros."
+        },
+        {
+            category: "convivencia",
+            categoryName: "Convivência Digital",
+            question: "Enquanto você jogava online, um usuário desconhecido começou a te mandar mensagens agressivas e pedir seus dados pessoais. O que fazer?",
+            options: [
+                "Responder na mesma moeda para se defender.",
+                "Mandar os dados mas pedir para ele parar de ser agressivo.",
+                "Usar as ferramentas do jogo para bloquear e denunciar o jogador, e avisar seus pais ou responsáveis.",
+                "Apagar o jogo do celular sem contar para ninguém."
+            ],
+            correct: 2,
+            explanation: "Nunca passe dados para desconhecidos e não responda a ofensas. Bloquear e denunciar afasta o jogador tóxico da plataforma."
+        },
+        {
+            category: "convivencia",
+            categoryName: "Convivência Digital",
+            question: "Você e um amigo estão discutindo por texto em um grupo e a conversa está ficando muito tensa e irritada. Qual a melhor decisão?",
+            options: [
+                "Continuar digitando rápido para provar que você está certo.",
+                "Parar de responder por escrito, respirar e propor conversar pessoalmente ou por ligação com calma mais tarde.",
+                "Escrever em letras maiúsculas para mostrar que está bravo.",
+                "Chamar outros amigos no grupo para apoiarem sua opinião."
+            ],
+            correct: 1,
+            explanation: "Discussões por mensagem escrita perdem o tom de voz e são facilmente mal interpretadas, piorando os conflitos. Conversar com calma é sempre melhor."
+        },
+
+        // CATEGORIA: PENSAMENTO COMPUTACIONAL
+        {
+            category: "computacao",
+            categoryName: "Pensamento Computacional",
+            question: "No pensamento computacional, o que é um 'algoritmo'?",
+            options: [
+                "Uma fórmula matemática complexa usada apenas por cientistas da computação.",
+                "Uma sequência ordenada de passos ou instruções passo a passo para resolver um problema ou realizar uma tarefa.",
+                "O nome do processador principal de um computador moderno.",
+                "Uma pasta oculta no sistema operacional onde os arquivos são salvos."
+            ],
+            correct: 1,
+            explanation: "Algoritmos estão no nosso dia a dia, como em receitas de bolo ou instruções de montagem. Computadores seguem algoritmos para executar tarefas."
+        },
+        {
+            category: "computacao",
+            categoryName: "Pensamento Computacional",
+            question: "Se você estiver escrevendo um código e ele não funcionar como esperado devido a um erro, o processo de encontrar e corrigir esse erro é chamado de:",
+            options: [
+                "Codificação.",
+                "Decomposição.",
+                "Depuração (ou Debugging).",
+                "Reconhecimento de padrões."
+            ],
+            correct: 2,
+            explanation: "Depurar é analisar o código passo a passo para encontrar onde a lógica falhou e aplicar a correção necessária para o programa funcionar."
+        },
+        {
+            category: "computacao",
+            categoryName: "Pensamento Computacional",
+            question: "No Scratch, qual bloco você deve usar para fazer com que um personagem repita o movimento de andar 10 passos continuamente, sem ter que arrastar vários blocos iguais?",
+            options: [
+                "Bloco 'se... então'.",
+                "Bloco de loop, como 'repita' ou 'sempre'.",
+                "Bloco 'diga Olá'.",
+                "Bloco 'espere 1 segundo'."
+            ],
+            correct: 1,
+            explanation: "Os loops evitam repetições desnecessárias de código, tornando a programação mais limpa, eficiente e fácil de manter."
+        },
+        {
+            category: "computacao",
+            categoryName: "Pensamento Computacional",
+            question: "Você está jogando um desafio desplugado de direções. Para fazer o robô andar até a estrela, ele precisa dar 3 passos para frente e depois virar à esquerda. Qual sequência lógica de comandos representa essa ação?",
+            options: [
+                "Esquerda -> Frente -> Frente -> Frente.",
+                "Frente -> Frente -> Esquerda -> Frente.",
+                "Frente -> Frente -> Frente -> Esquerda.",
+                "Frente -> Esquerda -> Frente -> Esquerda."
+            ],
+            correct: 2,
+            explanation: "A ordem das instruções importa. O robô deve primeiro dar os três passos à frente para depois mudar sua direção (virar à esquerda)."
         }
     ];
+
+    // Embaralha um array (Fisher-Yates)
+    const shuffleArray = (array) => {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    };
 
     const quizStartScreen = document.getElementById('quiz-start-screen');
     const quizQuestionScreen = document.getElementById('quiz-question-screen');
@@ -921,14 +1066,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsTitle = document.getElementById('quiz-results-title');
     const resultsDescription = document.getElementById('quiz-results-description');
     
+    // Novos elementos do Quiz
+    const categoryPillsContainer = document.getElementById('quiz-category-pills');
+    const resultCategoryElement = document.getElementById('quiz-result-category');
+    const badgeContainer = document.getElementById('quiz-badge-container');
+    const resultsIcon = document.getElementById('results-icon');
+
     if (quizStartScreen && quizQuestionScreen && quizResultsScreen && startQuizBtn) {
         let currentQuestionIdx = 0;
         let score = 0;
         let selectedOptionIdx = null;
+        let selectedCategory = 'all';
+        let activeQuestions = [];
+        const QUESTIONS_PER_ROUND = 5;
+
+        // Lógica de seleção de categorias por Pills
+        if (categoryPillsContainer) {
+            const pills = categoryPillsContainer.querySelectorAll('.quiz-category-pill');
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    pills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    selectedCategory = pill.getAttribute('data-category');
+                });
+            });
+        }
 
         const startQuiz = () => {
             currentQuestionIdx = 0;
             score = 0;
+            
+            // Filtra as perguntas pela categoria
+            let filteredQuestions = [];
+            if (selectedCategory === 'all') {
+                filteredQuestions = [...QUIZ_BANK];
+            } else {
+                filteredQuestions = QUIZ_BANK.filter(q => q.category === selectedCategory);
+            }
+
+            // Embaralha as perguntas filtradas
+            const shuffled = shuffleArray(filteredQuestions);
+            
+            // Seleciona a quantidade definida por rodada (limita ao tamanho disponível caso seja menor)
+            activeQuestions = shuffled.slice(0, Math.min(QUESTIONS_PER_ROUND, shuffled.length));
+
             quizStartScreen.classList.remove('active');
             quizResultsScreen.classList.remove('active');
             quizQuestionScreen.classList.add('active');
@@ -936,43 +1117,51 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const showQuestion = () => {
-            const currentQ = quizQuestions[currentQuestionIdx];
+            const currentQ = activeQuestions[currentQuestionIdx];
             selectedOptionIdx = null;
             
             feedbackBox.classList.remove('active');
             
-            questionNumberText.textContent = `Pergunta ${currentQuestionIdx + 1} de ${quizQuestions.length}`;
-            const progressPercent = (currentQuestionIdx / quizQuestions.length) * 100;
+            questionNumberText.textContent = `Pergunta ${currentQuestionIdx + 1} de ${activeQuestions.length}`;
+            const progressPercent = (currentQuestionIdx / activeQuestions.length) * 100;
             progressFill.style.width = `${progressPercent}%`;
             
             questionText.textContent = currentQ.question;
             optionsContainer.innerHTML = '';
             
-            currentQ.options.forEach((optText, idx) => {
+            // Embaralha as opções também para evitar posições repetidas
+            const optionsWithOriginalIndex = currentQ.options.map((text, idx) => ({ text, idx }));
+            const shuffledOptions = shuffleArray(optionsWithOriginalIndex);
+
+            shuffledOptions.forEach((opt, buttonIdx) => {
                 const btn = document.createElement('button');
                 btn.className = 'quiz-option-btn';
-                btn.innerHTML = `<span class="opt-letter">${String.fromCharCode(65 + idx)})</span> ${optText}`;
-                btn.setAttribute('aria-label', `Opção ${String.fromCharCode(65 + idx)}: ${optText}`);
-                btn.addEventListener('click', () => selectOption(idx));
+                btn.innerHTML = `<span class="opt-letter">${String.fromCharCode(65 + buttonIdx)})</span> ${opt.text}`;
+                btn.setAttribute('aria-label', `Opção ${String.fromCharCode(65 + buttonIdx)}: ${opt.text}`);
+                btn.setAttribute('data-original-index', opt.idx);
+                btn.addEventListener('click', () => selectOption(opt.idx, btn));
                 optionsContainer.appendChild(btn);
             });
         };
 
-        const selectOption = (optIndex) => {
+        const selectOption = (optOriginalIndex, clickedBtn) => {
             if (selectedOptionIdx !== null) return;
             
-            selectedOptionIdx = optIndex;
-            const currentQ = quizQuestions[currentQuestionIdx];
+            selectedOptionIdx = optOriginalIndex;
+            const currentQ = activeQuestions[currentQuestionIdx];
             const optionBtns = optionsContainer.querySelectorAll('.quiz-option-btn');
             
-            const isCorrect = optIndex === currentQ.correct;
+            const isCorrect = optOriginalIndex === currentQ.correct;
             if (isCorrect) score++;
 
-            optionBtns.forEach((btn, idx) => {
+            // Mapeia os botões para aplicar classes corretas baseadas no atributo data-original-index
+            optionBtns.forEach(btn => {
                 btn.disabled = true;
-                if (idx === currentQ.correct) {
+                const btnOriginalIdx = parseInt(btn.getAttribute('data-original-index'), 10);
+                
+                if (btnOriginalIdx === currentQ.correct) {
                     btn.classList.add('correct');
-                } else if (idx === optIndex) {
+                } else if (btnOriginalIdx === optOriginalIndex && !isCorrect) {
                     btn.classList.add('wrong');
                 } else {
                     btn.classList.add('fade-out');
@@ -990,10 +1179,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedbackExplanation.textContent = currentQ.explanation;
             }
 
-            const progressPercent = ((currentQuestionIdx + 1) / quizQuestions.length) * 100;
+            const progressPercent = ((currentQuestionIdx + 1) / activeQuestions.length) * 100;
             progressFill.style.width = `${progressPercent}%`;
 
-            if (currentQuestionIdx === quizQuestions.length - 1) {
+            if (currentQuestionIdx === activeQuestions.length - 1) {
                 nextQuestionBtn.textContent = "Ver Resultado";
             } else {
                 nextQuestionBtn.textContent = "Próxima Pergunta";
@@ -1001,7 +1190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const handleNext = () => {
-            if (currentQuestionIdx === quizQuestions.length - 1) {
+            if (currentQuestionIdx === activeQuestions.length - 1) {
                 showResults();
             } else {
                 currentQuestionIdx++;
@@ -1013,17 +1202,51 @@ document.addEventListener('DOMContentLoaded', () => {
             quizQuestionScreen.classList.remove('active');
             quizResultsScreen.classList.add('active');
             
-            scoreText.textContent = `${score}/${quizQuestions.length}`;
+            // Traduz a categoria para texto amigável
+            let categoryName = "Aleatório (Geral)";
+            if (selectedCategory !== 'all') {
+                const matchedQ = QUIZ_BANK.find(q => q.category === selectedCategory);
+                if (matchedQ) categoryName = matchedQ.categoryName;
+            }
+            if (resultCategoryElement) {
+                resultCategoryElement.textContent = categoryName;
+            }
+
+            scoreText.textContent = `${score}/${activeQuestions.length}`;
             
-            if (score === quizQuestions.length) {
+            // Limpa o badge anterior
+            if (badgeContainer) badgeContainer.innerHTML = '';
+
+            if (score === activeQuestions.length) {
                 resultsTitle.textContent = "Cidadão Digital Nota 10! 🏆";
                 resultsDescription.textContent = "Excelente! Você demonstrou domínio pleno de segurança na rede, criação de senhas robustas, identificação de fake news e empatia nas relações online. Continue agindo assim e ensinando seus colegas!";
-            } else if (score >= 2) {
-                resultsTitle.textContent = "Bom trabalho! Cidadão em Evolução 🌟";
-                resultsDescription.textContent = "Você compreende os princípios básicos da segurança e ética digital, mas ainda restam alguns detalhes para polir. Continue navegando pelo portal para fixar o aprendizado!";
+                
+                if (resultsIcon) resultsIcon.style.display = 'none';
+
+                // Cria o Badge Animado de Vitória Total
+                if (badgeContainer) {
+                    badgeContainer.style.display = 'block';
+                    badgeContainer.innerHTML = `
+                        <div class="quiz-master-badge-wrapper">
+                            <div class="quiz-master-badge">
+                                <span class="badge-star">🏅</span>
+                                <span class="badge-label">Mestre Digital</span>
+                            </div>
+                            <div class="badge-sparkles">⭐✨🎯✨⭐</div>
+                        </div>
+                    `;
+                }
             } else {
-                resultsTitle.textContent = "Que tal aprender mais? 📚";
-                resultsDescription.textContent = "Cidadania e segurança digital são essenciais hoje em dia. Recomendamos ler com carinho os materiais curriculares do portal para reforçar os conceitos de comportamento e privacidade online.";
+                if (resultsIcon) resultsIcon.style.display = 'block';
+                if (badgeContainer) badgeContainer.style.display = 'none';
+
+                if (score >= 3) {
+                    resultsTitle.textContent = "Bom trabalho! Cidadão em Evolução 🌟";
+                    resultsDescription.textContent = "Você compreende os princípios básicos da segurança e ética digital, mas ainda restam alguns detalhes para polir. Continue navegando pelo portal para fixar o aprendizado!";
+                } else {
+                    resultsTitle.textContent = "Que tal aprender mais? 📚";
+                    resultsDescription.textContent = "Cidadania e segurança digital são essenciais hoje em dia. Recomendamos ler com carinho os materiais curriculares do portal para reforçar os conceitos de comportamento e privacidade online.";
+                }
             }
         };
 
@@ -1031,4 +1254,513 @@ document.addEventListener('DOMContentLoaded', () => {
         nextQuestionBtn.addEventListener('click', handleNext);
         restartQuizBtn.addEventListener('click', startQuiz);
     }
+
+
+    // ==========================================
+    // BOTÃO "COPIAR LINK" NOS BIMESTRES
+    // ==========================================
+
+    // Cria o toast global uma única vez
+    const toast = document.createElement('div');
+    toast.className = 'copy-toast';
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>Link copiado!</span>`;
+    document.body.appendChild(toast);
+
+    let toastTimer = null;
+
+    const showToast = () => {
+        toast.classList.add('visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('visible'), 2500);
+    };
+
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            // Fallback para browsers mais antigos
+            const el = document.createElement('textarea');
+            el.value = text;
+            el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+    };
+
+    // ==========================================
+    // DATASET DE DETALHES DE MATERIAIS
+    // ==========================================
+    const MATERIAL_DATA = {
+        // Planejamentos Anuais
+        'planejamento-1-1': {
+            subtitle: '1º Bimestre - Planejamento',
+            category: 'desplugada',
+            badgeText: '#Desplugada',
+            title: 'Algoritmos Desplugados e Direções',
+            description: 'Introdução lúdica ao conceito de sequenciamento de passos lógicos e controle direcional. Os alunos atuam corporalmente no papel de "robôs" e "programadores" para atravessar circuitos físicos.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Pensamento Computacional (EF01CO01), Lógica de Sequências Espaciais.',
+            objectives: [
+                'Compreender noções direcionais básicas (frente, trás, esquerda, direita).',
+                'Escrever e executar sequências simples de passos lógicos para atingir um alvo.',
+                'Identificar e depurar (corrigir) erros em sequências corporais.'
+            ],
+            url: 'https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/preview'
+        },
+        'planejamento-1-2': {
+            subtitle: '2º Bimestre - Planejamento',
+            category: 'desplugada',
+            badgeText: '#Desplugada',
+            title: 'Pensamento Computacional e Lógica',
+            description: 'Exploração de padrões visuais, decomposição de tarefas cotidianas e lógica de sequenciamento por meio de brincadeiras e cartões de atividades desplugadas.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Pensamento Computacional (EF01CO02), Reconhecimento de Padrões.',
+            objectives: [
+                'Identificar padrões geométricos e de cores simples.',
+                'Dividir uma tarefa diária (como escovar os dentes) em pequenas etapas ordenadas.',
+                'Criar e seguir instruções passo a passo usando cartões visuais.'
+            ],
+            url: 'https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/preview'
+        },
+        'planejamento-2-1': {
+            subtitle: '1º Bimestre - Planejamento',
+            category: 'desplugada',
+            badgeText: '#Desplugada',
+            title: 'Segurança Online e Senhas Fortes',
+            description: 'Noções básicas de proteção no espaço digital. Atividades desplugadas focadas na construção lógica de senhas fortes, conceitos de privacidade e cuidado ao compartilhar informações.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Cidadania Digital (EF02CO02), Segurança da Informação.',
+            objectives: [
+                'Compreender o conceito de senha e por que ela deve ser secreta.',
+                'Aprender regras básicas para construir senhas seguras (letras, números e símbolos).',
+                'Identificar que tipo de dados são pessoais e não devem ser divulgados online.'
+            ],
+            url: 'https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/preview'
+        },
+        'planejamento-2-2': {
+            subtitle: '2º Bimestre - Planejamento',
+            category: 'cidadania',
+            badgeText: '#Cidadania',
+            title: 'Cidadania Digital e Cyberbullying',
+            description: 'Foco na empatia digital, comunicação respeitosa no ambiente online e noções fundamentais de direitos e deveres em redes e plataformas de interação.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Cultura Digital / Empatia (EF02CO03), Resolução de Conflitos.',
+            objectives: [
+                'Refletir sobre o impacto das palavras usadas em conversas digitais.',
+                'Diferenciar interações saudáveis de comportamentos hostis (cyberbullying).',
+                'Saber a quem recorrer (professores/pais) em caso de desconforto online.'
+            ],
+            url: 'https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/preview'
+        },
+        'planejamento-3-1': {
+            subtitle: '1º Bimestre - Planejamento',
+            category: 'desplugada',
+            badgeText: '#Desplugada',
+            title: 'Algoritmos e Jogos Desplugados',
+            description: 'Aprofundamento em lógica e tomada de decisões condicionais ("SE/SENÃO"). Os alunos exercitam algoritmos através de regras de tabuleiro e jogos de cartas desplugados.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Algoritmos (EF03CO01), Estruturas Condicionais.',
+            objectives: [
+                'Formular tomadas de decisão lógicas usando "Se... Então... Senão...".',
+                'Resolver fluxos complexos em tabuleiros físicos.',
+                'Documentar e otimizar passos lógicos para resolver uma tarefa em menos etapas.'
+            ],
+            url: 'https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/preview'
+        },
+        'planejamento-3-2': {
+            subtitle: '2º Bimestre - Planejamento',
+            category: 'scratch',
+            badgeText: '#Scratch',
+            title: 'Histórias Interativas no Scratch',
+            description: 'Primeiros passos na programação por blocos no Scratch. Criação de animações dialógicas, controle de cenários e movimentos de personagens usando lógica de programação básica.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Programação Criativa (EF03CO02), Linguagem de Blocos.',
+            objectives: [
+                'Familiarizar-se com a área de trabalho do Scratch (palco, blocos, atores).',
+                'Utilizar blocos de movimento, fala e eventos (ex: "quando clicar na bandeira verde").',
+                'Sincronizar diálogos entre dois ou mais personagens usando blocos de tempo.'
+            ],
+            url: 'https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/preview'
+        },
+        'planejamento-4-1': {
+            subtitle: '1º Bimestre - Planejamento',
+            category: 'cidadania',
+            badgeText: '#Cidadania',
+            title: 'Combate a Fake News e Desinformação',
+            description: 'Capacitação para leitura crítica de mídias digitais. O foco está no reconhecimento de boatos, verificação de fontes jornalísticas e entendimento de como conteúdos falsos se espalham online.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Cultura Digital / Leitura Crítica (EF04LP15), Análise de Fontes.',
+            objectives: [
+                'Diferenciar fatos de boatos ou opiniões pessoais em notícias online.',
+                'Aplicar regras básicas de checagem (autor, data, outros sites de busca).',
+                'Compreender o papel e o impacto negativo da desinformação na sociedade.'
+            ],
+            url: 'https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/preview'
+        },
+        'planejamento-4-2': {
+            subtitle: '2º Bimestre - Planejamento',
+            category: 'scratch',
+            badgeText: '#Scratch',
+            title: 'Jogos Educativos no Scratch',
+            description: 'Criação de projetos gamificados de lógica no Scratch. Introdução a estruturas lógicas mais complexas como variáveis de pontuação e loops infinitos de checagem.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Lógica de Programação (EF04CO02), Gamificação.',
+            objectives: [
+                'Entender e aplicar o conceito de variáveis para armazenar dados (como pontos).',
+                'Programar loops condicionados a eventos (ex: "repita até encostar na borda").',
+                'Conceber mecânicas básicas de jogo (colisão, pontuação e condições de fim).'
+            ],
+            url: 'https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/preview'
+        },
+        'planejamento-5-1': {
+            subtitle: '1º Bimestre - Planejamento',
+            category: 'robotica',
+            badgeText: '#Robótica',
+            title: 'Robótica Prática com Sucata',
+            description: 'Introdução à cultura Maker. Os estudantes planejam, desenham e montam protótipos mecânicos usando papelão e sucata para exercitar engenharia de papel e design de produto.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Cultura Maker (EF05CO03), Engenharia Básica.',
+            objectives: [
+                'Planejar e desenhar em papel o esboço tridimensional de um robô.',
+                'Utilizar e reaproveitar materiais recicláveis com segurança.',
+                'Construir mecanismos articulados (como garras ou dobradiças) com papelão.'
+            ],
+            url: 'https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/preview'
+        },
+        'planejamento-5-2': {
+            subtitle: '2º Bimestre - Planejamento',
+            category: 'robotica',
+            badgeText: '#Robótica',
+            title: 'Automação com Sensores e Motores',
+            description: 'Modelagem teórica e física de sistemas automotivos simples. Estudo de como circuitos recebem estimulação através de sensores e geram reações físicas com atuadores e motores.',
+            duration: '4 aulas (50 min cada)',
+            skills: 'Computação - Robótica e Automação (EF05CO04), Lógica Computacional.',
+            objectives: [
+                'Diferenciar componentes de entrada (sensores) e saída (atuadores/motores).',
+                'Simular e mapear fluxogramas de automação simples (ex: semáforo de trânsito).',
+                'Compreender a aplicação prática de sistemas automatizados no dia a dia da cidade.'
+            ],
+            url: 'https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true',
+            previewUrl: 'https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/preview'
+        },
+
+        // Atividades Práticas (Pastas do Drive)
+        'atividade-2-1': {
+            subtitle: '1º Bimestre - Atividade Prática',
+            category: 'desplugada',
+            badgeText: '#Desplugada',
+            title: 'Pixel Art no Papel Quadriculado',
+            description: 'Atividade lúdica desplugada para demonstrar como imagens digitais são codificadas e representadas em computadores por meio de matrizes bidimensionais e conjuntos binários simples.',
+            duration: '2 aulas (50 min cada)',
+            skills: 'Pensamento Computacional, Representação de Imagens e Dados.',
+            objectives: [
+                'Entender a menor unidade de uma imagem digital (o pixel).',
+                'Decodificar códigos binários simples em representações de cores em grade quadriculada.',
+                'Criar e criptografar o próprio desenho em código para que um colega decifre.'
+            ],
+            url: 'https://drive.google.com/drive/folders/13jyFSO2ewcOAF9jYGLYEx6xRvGRF7o9-?usp=sharing',
+            previewUrl: null
+        },
+        'atividade-2-2': {
+            subtitle: '2º Bimestre - Atividade Prática',
+            category: 'cidadania',
+            badgeText: '#Cidadania',
+            title: 'Jogo da Chave e Senhas Seguras',
+            description: 'Jogo interativo desplugado com foco em demonstrar como robôs e invasores tentam adivinhar senhas fáceis por força bruta, ensinando técnicas de criação de senhas fortes.',
+            duration: '2 aulas (50 min cada)',
+            skills: 'Segurança Digital, Autenticação de Usuário.',
+            objectives: [
+                'Reconhecer a importância lógica de senhas pessoais intransferíveis.',
+                'Utilizar o método dos cartões chave para criar combinações criptográficas fortes.',
+                'Entender o perigo do uso de informações comuns (datas de nascimento, nomes) em senhas.'
+            ],
+            url: 'https://drive.google.com/drive/folders/1CV-1vJXkLfrxWSs2emvJjs8a-3c6PE8z?usp=sharing',
+            previewUrl: null
+        },
+        'atividade-3-2': {
+            subtitle: '2º Bimestre - Atividade Prática',
+            category: 'scratch',
+            badgeText: '#Scratch',
+            title: 'Siga o Algoritmo e Movimentos',
+            description: 'Atividade prática em laboratório de informática focada na programação livre de trajetos. Os alunos desenham rotas e utilizam a programação em blocos para guiar personagens.',
+            duration: '2 aulas (50 min cada)',
+            skills: 'Programação de Jogos, Algoritmos Direcionais.',
+            objectives: [
+                'Programar trajetos lineares e curvos no Scratch usando repetições.',
+                'Aplicar coordenadas simples e limites de tela.',
+                'Depurar percursos com erros de posicionamento ou ângulo.'
+            ],
+            url: 'https://drive.google.com/drive/folders/1pUjVDb9GyJIEaTaZ4IY-m807ApamEYsC?usp=sharing',
+            previewUrl: null
+        },
+        'atividade-4-1': {
+            subtitle: '1º Bimestre - Atividade Prática',
+            category: 'cidadania',
+            badgeText: '#Cidadania',
+            title: 'Verificador de Notícias e Fatos',
+            description: 'Dinâmica escolar que simula uma agência de checagem. Os alunos analisam notícias reais e fake news aplicando um checklist detalhado de validação de fontes e veracidade.',
+            duration: '3 aulas (50 min cada)',
+            skills: 'Mídia-Educação, Análise Crítica e Cidadania Digital.',
+            objectives: [
+                'Identificar os principais tipos de boatos na web (manchetes sensacionalistas, imagens alteradas).',
+                'Aprender a buscar fontes e datas originais no buscador.',
+                'Elaborar um relatório escolar classificando a veracidade de uma informação estudada.'
+            ],
+            url: 'https://drive.google.com/drive/folders/1E7nrhcV8AxaS92d0HS0wiNNvfwL8x1sn?usp=drive_link',
+            previewUrl: null
+        },
+        'atividade-5-1': {
+            subtitle: '1º Bimestre - Atividade Prática',
+            category: 'robotica',
+            badgeText: '#Robótica',
+            title: 'Semáforo Inteligente com Sucata',
+            description: 'Construção física de maquete de cruzamento urbano utilizando papelão, LEDs e fios para simular o comportamento elétrico e de temporização de semáforos reais.',
+            duration: '3 aulas (50 min cada)',
+            skills: 'Cultura Maker, Pensamento de Engenharia Mecânica.',
+            objectives: [
+                'Construir conexões físicas simples (ligar LEDs à bateria com chaves).',
+                'Simular e discutir a lógica de tempo necessária para evitar colisões.',
+                'Trabalhar de forma cooperativa na construção e decoração da maquete.'
+            ],
+            url: 'https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link',
+            previewUrl: null
+        },
+        'atividade-5-2': {
+            subtitle: '2º Bimestre - Atividade Prática',
+            category: 'robotica',
+            badgeText: '#Robótica',
+            title: 'Robô Segue-Linha Desplugado',
+            description: 'Atividade desplugada com foco em ilustrar como sensores industriais e robôs móveis operam em fábricas seguindo marcações pintadas ou faixas refletivas no chão.',
+            duration: '3 aulas (50 min cada)',
+            skills: 'Lógica Industrial, Introdução a Controle e Sensores.',
+            objectives: [
+                'Escrever as regras lógicas de direção baseadas no que o robô "enxerga" (ex: "Se enxergar preto, vire à esquerda").',
+                'Simular em grupo pistas complexas com bifurcações e retornos.',
+                'Compreender de maneira prática loops de controle lógico com realimentação instantânea.'
+            ],
+            url: 'https://drive.google.com/drive/folders/1FZdietHnQiuzco7l2zmHGzMXC4NZ6tKB?usp=sharing',
+            previewUrl: null
+        }
+    };
+
+    // Elementos do Modal de Materiais
+    const materialModal = document.getElementById('material-modal');
+    const materialModalClose = document.getElementById('material-modal-close');
+    const mSubtitle = document.getElementById('material-modal-subtitle');
+    const mBadge = document.getElementById('material-modal-badge');
+    const mTitle = document.getElementById('material-modal-title');
+    const mDescription = document.getElementById('material-modal-description');
+    const mDuration = document.getElementById('material-modal-duration');
+    const mSkills = document.getElementById('material-modal-skills');
+    const mObjectivesList = document.getElementById('material-modal-objectives-list');
+    const mAccessBtn = document.getElementById('material-modal-access-btn');
+    const mPdfBtn = document.getElementById('material-modal-pdf-btn');
+    const mCopyBtn = document.getElementById('material-modal-copy-btn');
+    const mPreviewContainer = document.getElementById('material-modal-preview-container');
+
+    let currentMaterialUrl = '';
+
+    // Gera URL de exportação PDF a partir de uma URL Google Docs
+    const getGoogleDocPdfUrl = (url) => {
+        try {
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match) return `https://docs.google.com/document/d/${match[1]}/export?format=pdf`;
+        } catch (e) {}
+        return null;
+    };
+
+    // Abre o modal de material e popula os dados
+    const openMaterialModal = (id) => {
+        const data = MATERIAL_DATA[id];
+        if (!data) return;
+
+        currentMaterialUrl = data.url;
+
+        // Limpa e popula dados de texto
+        mSubtitle.textContent = data.subtitle;
+        mTitle.textContent = data.title;
+        mDescription.textContent = data.description;
+        mDuration.textContent = data.duration;
+        mSkills.textContent = data.skills;
+
+        // Configura a tag de categoria
+        mBadge.textContent = data.badgeText;
+        mBadge.className = `category-badge badge-${data.category}`;
+
+        // Popula os objetivos
+        mObjectivesList.innerHTML = '';
+        data.objectives.forEach(obj => {
+            const li = document.createElement('li');
+            li.textContent = obj;
+            mObjectivesList.appendChild(li);
+        });
+
+        // Configura o botão de acesso e de cópia
+        mAccessBtn.setAttribute('href', data.url);
+        mCopyBtn.setAttribute('data-url', data.url);
+
+        // Configura o botão de PDF (apenas para Google Docs, não para pastas Drive)
+        if (mPdfBtn) {
+            const pdfUrl = data.previewUrl ? getGoogleDocPdfUrl(data.url) : null;
+            if (pdfUrl) {
+                mPdfBtn.setAttribute('href', pdfUrl);
+                mPdfBtn.style.display = '';
+            } else {
+                mPdfBtn.style.display = 'none';
+            }
+        }
+
+        // Prepara a visualização (Iframe vs Placeholder de Pasta)
+        mPreviewContainer.innerHTML = '';
+        if (data.previewUrl) {
+            // Se for Google Doc, exibe o Iframe de visualização
+            const iframe = document.createElement('iframe');
+            iframe.className = 'material-modal-iframe';
+            iframe.src = data.previewUrl;
+            iframe.title = `Pré-visualização de ${data.title}`;
+            iframe.setAttribute('loading', 'lazy');
+            mPreviewContainer.appendChild(iframe);
+        } else {
+            // Se for pasta do Drive, exibe o placeholder estilizado
+            const placeholder = document.createElement('div');
+            placeholder.className = 'folder-preview-placeholder';
+            placeholder.innerHTML = `
+                <div class="folder-preview-icon">📂</div>
+                <p><strong>Pasta de Recursos no Google Drive</strong></p>
+                <p>Esta atividade prática inclui materiais complementares como matrizes para impressão, slides explicativos e arquivos de suporte.</p>
+                <a href="${data.url}" class="btn-material-action" target="_blank" rel="noopener noreferrer" style="margin-top:0.5rem; display:inline-flex; align-items:center; gap:4px;">
+                    Abrir no Google Drive
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            `;
+            mPreviewContainer.appendChild(placeholder);
+        }
+
+        // Abre o modal de fato
+        materialModal.classList.add('active');
+        materialModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // Evita scroll do body
+    };
+
+    // Fecha o modal de material
+    const closeMaterialModal = () => {
+        materialModal.classList.remove('active');
+        materialModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; // Restaura scroll
+        
+        // Destrói o iframe para economizar memória e parar carregamento
+        mPreviewContainer.innerHTML = '';
+    };
+
+    // Vincula clique do botão abrir modal
+    document.querySelectorAll('.btn-open-material').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.getAttribute('data-material-id');
+            openMaterialModal(id);
+        });
+    });
+
+    // Eventos de fechamento do modal
+    if (materialModalClose) {
+        materialModalClose.addEventListener('click', closeMaterialModal);
+    }
+
+    // Fecha ao clicar fora do container (no backdrop overlay)
+    materialModal.addEventListener('click', (e) => {
+        if (e.target === materialModal) {
+            closeMaterialModal();
+        }
+    });
+
+    // Fecha ao pressionar ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && materialModal.classList.contains('active')) {
+            closeMaterialModal();
+        }
+    });
+
+    // Lógica do botão de cópia dentro do modal
+    if (mCopyBtn) {
+        mCopyBtn.addEventListener('click', async () => {
+            await copyToClipboard(currentMaterialUrl);
+            
+            mCopyBtn.classList.add('copied');
+            mCopyBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>`;
+
+            showToast();
+
+            setTimeout(() => {
+                mCopyBtn.classList.remove('copied');
+                mCopyBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>`;
+            }, 2000);
+        });
+    // Inicialização da Barra de Progresso dos Accordions (Materiais)
+    const initAccordionProgress = () => {
+        const accordions = document.querySelectorAll('#planejamentos .accordion-item');
+        accordions.forEach(accordion => {
+            const header = accordion.querySelector('.accordion-header');
+            const content = accordion.querySelector('.accordion-content');
+            if (!header || !content) return;
+
+            const cards = content.querySelectorAll('.material-card');
+            const total = cards.length;
+            if (total === 0) return;
+
+            const active = Array.from(cards).filter(card => !card.classList.contains('disabled')).length;
+            const percentage = (active / total) * 100;
+
+            // Cria o container do progresso
+            const progressWrapper = document.createElement('div');
+            progressWrapper.className = 'accordion-progress-wrapper';
+            progressWrapper.innerHTML = `
+                <span class="accordion-progress-text">${active}/${total} disponíveis</span>
+                <div class="accordion-progress-bar">
+                    <div class="accordion-progress-fill" style="width: ${percentage}%;"></div>
+                </div>
+            `;
+
+            // Insere o progresso antes do chevron
+            const chevron = header.querySelector('.accordion-chevron');
+            if (chevron) {
+                header.insertBefore(progressWrapper, chevron);
+            } else {
+                header.appendChild(progressWrapper);
+            }
+        });
+    };
+
+    initAccordionProgress();
 });
