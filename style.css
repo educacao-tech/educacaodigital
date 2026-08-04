@@ -578,36 +578,65 @@ html[data-theme="dark"] .social-links a:hover {
     color: var(--white); /* Texto branco no hover do modo escuro */
 }
 
-/* Seção de Parceiros */
+/* Seção de Parceiros e Realização */
 .partners-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
-    padding: 1rem;
+    gap: 2rem;
+    padding: 1rem 0;
 }
-.partner-item {
-    max-width: 200px;
-    filter: grayscale(1);
-    opacity: 0.7;
-    transition: all 0.3s ease;
+.partner-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 280px;
 }
-.partner-item:hover {
-    filter: grayscale(0);
-    opacity: 1;
-    transform: scale(1.05);
+.partner-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.14);
+    border-color: rgba(37, 99, 235, 0.35);
 }
-.partner-item img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+.partner-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
 }
-html[data-theme="dark"] .partner-item {
-    filter: grayscale(1) invert(0.8);
+html[data-theme="dark"] .partner-icon {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
 }
-html[data-theme="dark"] .partner-item:hover {
-    filter: grayscale(0) invert(0);
+.partner-card:hover .partner-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+.partner-info h3 {
+    font-size: 1.15rem;
+    color: var(--secondary-color);
+    margin: 0;
+    font-weight: 700;
+}
+html[data-theme="dark"] .partner-info h3 {
+    color: var(--primary-color);
+}
+.partner-info p {
+    font-size: 0.88rem;
+    color: var(--text-color);
+    opacity: 0.85;
+    margin: 0.25rem 0 0 0;
 }
 
 /* Responsividade */
