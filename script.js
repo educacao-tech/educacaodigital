@@ -359,7 +359,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "m-5-1", ano: 5, bimestre: 1, url: "https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-5-2", ano: 5, bimestre: 2, url: "https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-5-3", ano: 5, bimestre: 3, url: "#", status: "soon" },
-        { id: "m-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" }
+        { id: "m-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" },
+        // 1º ao 5º Ano (Geral)
+        { id: "m-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
+        { id: "m-6-2", ano: 6, bimestre: 2, url: "#", status: "soon" },
+        { id: "m-6-3", ano: 6, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
     ];
 
     const getStoredMaterials = () => {
@@ -377,32 +382,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderDynamicMaterials = () => {
         const materials = getStoredMaterials();
-        const accordionContainer = document.querySelector('.accordion-container');
-        if (!accordionContainer) return;
+        const accordionContainers = document.querySelectorAll('.accordion-container');
+        if (!accordionContainers.length) return;
 
-        const accordionItems = accordionContainer.querySelectorAll('.accordion-item');
-        accordionItems.forEach((item, index) => {
-            const anoNum = index + 1; // 1º ao 5º Ano
-            const buttons = item.querySelectorAll('.btn-bimestre');
+        accordionContainers.forEach(container => {
+            const accordionItems = container.querySelectorAll('.accordion-item');
+            accordionItems.forEach((item, index) => {
+                const attrAno = item.getAttribute('data-ano');
+                const anoNum = attrAno ? parseInt(attrAno, 10) : (index + 1);
+                const buttons = item.querySelectorAll('.btn-bimestre');
 
-            buttons.forEach((btn, bIndex) => {
-                const bimestreNum = bIndex + 1;
-                const mat = materials.find(m => m.ano === anoNum && m.bimestre === bimestreNum);
-                
-                if (mat) {
-                    if (mat.status === 'active' && mat.url && mat.url !== '#') {
-                        btn.classList.remove('disabled');
-                        btn.setAttribute('href', mat.url);
-                        btn.setAttribute('target', '_blank');
-                        btn.setAttribute('rel', 'noopener noreferrer');
-                        btn.removeAttribute('tabindex');
-                    } else {
-                        btn.classList.add('disabled');
-                        btn.setAttribute('href', '#');
-                        btn.removeAttribute('target');
-                        btn.removeAttribute('rel');
+                buttons.forEach((btn, bIndex) => {
+                    const bimestreNum = bIndex + 1;
+                    const mat = materials.find(m => m.ano === anoNum && m.bimestre === bimestreNum);
+                    
+                    if (mat) {
+                        if (mat.status === 'active' && mat.url && mat.url !== '#') {
+                            btn.classList.remove('disabled');
+                            btn.setAttribute('href', mat.url);
+                            btn.setAttribute('target', '_blank');
+                            btn.setAttribute('rel', 'noopener noreferrer');
+                            btn.removeAttribute('tabindex');
+                        } else {
+                            btn.classList.add('disabled');
+                            btn.setAttribute('href', '#');
+                            btn.removeAttribute('target');
+                            btn.removeAttribute('rel');
+                        }
                     }
-                }
+                });
             });
         });
     };
@@ -577,9 +585,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const materials = getStoredMaterials();
         const activeCount = materials.filter(m => m.status === 'active' && m.url && m.url !== '#').length;
-        const percentage = Math.round((activeCount / 20) * 100);
+        const totalCount = materials.length;
+        const percentage = totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0;
 
-        textEl.textContent = `${activeCount} de 20 bimestres configurados (${percentage}%)`;
+        textEl.textContent = `${activeCount} de ${totalCount} bimestres configurados (${percentage}%)`;
         fillEl.style.width = `${percentage}%`;
     };
 
@@ -634,8 +643,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `<a href="${mat.url}" target="_blank" style="color: var(--primary-color); word-break: break-all;">${mat.url.substring(0, 45)}...</a>` 
                 : `<span style="color: #94a3b8;">Nenhum link cadastrado</span>`;
 
+            const anoLabel = mat.ano === 6 ? '📚 1º ao 5º Geral' : `${mat.ano}º Ano`;
+
             tr.innerHTML = `
-                <td><strong>${mat.ano}º Ano</strong></td>
+                <td><strong>${anoLabel}</strong></td>
                 <td>${mat.bimestre}º Bimestre</td>
                 <td>${statusBadge}</td>
                 <td>${displayUrl}</td>
