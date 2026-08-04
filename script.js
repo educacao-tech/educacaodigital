@@ -113,11 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     accordion.classList.add('is-open');
                     
                     requestAnimationFrame(() => {
-                        content.style.maxHeight = content.scrollHeight + 'px';
+                        content.style.maxHeight = (content.scrollHeight + 60) + 'px';
                     });
 
                     content.addEventListener('transitionend', () => {
                         accordion.classList.remove('is-animating');
+                        content.style.maxHeight = 'none'; // Libera a altura para evitar corte de conteúdo ao dobrar linha
                     }, { once: true });
                 }
             });
