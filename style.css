@@ -1124,6 +1124,40 @@ html[data-theme="dark"] .admin-progress-bar-bg {
     border-color: var(--primary-color);
 }
 
+/* Abas de Navegação (Planejamentos vs Atividades) */
+.admin-type-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--bg-light);
+    padding: 0.4rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}
+.admin-tab-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.admin-tab-btn:hover {
+    background: rgba(37, 99, 235, 0.08);
+}
+.admin-tab-btn.active {
+    background: var(--white);
+    color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
 /* Matriz de Cobertura Visual de Links */
 .admin-matrix-card {
     background: var(--bg-light);

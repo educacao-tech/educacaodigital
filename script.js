@@ -367,6 +367,41 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "m-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
     ];
 
+    const DEFAULT_ACTIVITIES = [
+        // 1º Ano
+        { id: "a-1-1", ano: 1, bimestre: 1, url: "#", status: "soon" },
+        { id: "a-1-2", ano: 1, bimestre: 2, url: "#", status: "soon" },
+        { id: "a-1-3", ano: 1, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-1-4", ano: 1, bimestre: 4, url: "#", status: "soon" },
+        // 2º Ano
+        { id: "a-2-1", ano: 2, bimestre: 1, url: "https://drive.google.com/drive/folders/13jyFSO2ewcOAF9jYGLYEx6xRvGRF7o9-?usp=sharing", status: "active" },
+        { id: "a-2-2", ano: 2, bimestre: 2, url: "#", status: "soon" },
+        { id: "a-2-3", ano: 2, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-2-4", ano: 2, bimestre: 4, url: "#", status: "soon" },
+        // 3º Ano
+        { id: "a-3-1", ano: 3, bimestre: 1, url: "#", status: "soon" },
+        { id: "a-3-2", ano: 3, bimestre: 2, url: "https://drive.google.com/drive/folders/1pUjVDb9GyJIEaTaZ4IY-m807ApamEYsC?usp=sharing", status: "active" },
+        { id: "a-3-3", ano: 3, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-3-4", ano: 3, bimestre: 4, url: "#", status: "soon" },
+        // 4º Ano
+        { id: "a-4-1", ano: 4, bimestre: 1, url: "https://drive.google.com/drive/folders/1E7nrhcV8AxaS92d0HS0wiNNvfwL8x1sn?usp=drive_link", status: "active" },
+        { id: "a-4-2", ano: 4, bimestre: 2, url: "#", status: "soon" },
+        { id: "a-4-3", ano: 4, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-4-4", ano: 4, bimestre: 4, url: "#", status: "soon" },
+        // 5º Ano
+        { id: "a-5-1", ano: 5, bimestre: 1, url: "https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link", status: "active" },
+        { id: "a-5-2", ano: 5, bimestre: 2, url: "#", status: "soon" },
+        { id: "a-5-3", ano: 5, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" },
+        // 1º ao 5º Ano (Geral)
+        { id: "a-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
+        { id: "a-6-2", ano: 6, bimestre: 2, url: "#", status: "soon" },
+        { id: "a-6-3", ano: 6, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
+    ];
+
+    let currentAdminType = 'planejamentos'; // 'planejamentos' ou 'atividades'
+
     const getStoredMaterials = () => {
         const data = localStorage.getItem('edumidia_materials');
         if (data) {
@@ -380,43 +415,100 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDynamicMaterials();
     };
 
+    const getStoredActivities = () => {
+        const data = localStorage.getItem('edumidia_activities');
+        if (data) {
+            try { return JSON.parse(data); } catch(e) { return DEFAULT_ACTIVITIES; }
+        }
+        return DEFAULT_ACTIVITIES;
+    };
+
+    const saveStoredActivities = (activities) => {
+        localStorage.setItem('edumidia_activities', JSON.stringify(activities));
+        renderDynamicActivities();
+    };
+
+    const getActiveStore = () => {
+        return currentAdminType === 'atividades' ? getStoredActivities() : getStoredMaterials();
+    };
+
+    const saveActiveStore = (items) => {
+        if (currentAdminType === 'atividades') {
+            saveStoredActivities(items);
+        } else {
+            saveStoredMaterials(items);
+        }
+    };
+
     const renderDynamicMaterials = () => {
         const materials = getStoredMaterials();
-        const accordionContainers = document.querySelectorAll('.accordion-container');
-        if (!accordionContainers.length) return;
+        const container = document.querySelector('#planejamentos .accordion-container');
+        if (!container) return;
 
-        accordionContainers.forEach(container => {
-            const accordionItems = container.querySelectorAll('.accordion-item');
-            accordionItems.forEach((item, index) => {
-                const attrAno = item.getAttribute('data-ano');
-                const anoNum = attrAno ? parseInt(attrAno, 10) : (index + 1);
-                const buttons = item.querySelectorAll('.btn-bimestre');
+        const accordionItems = container.querySelectorAll('.accordion-item');
+        accordionItems.forEach((item, index) => {
+            const attrAno = item.getAttribute('data-ano');
+            const anoNum = attrAno ? parseInt(attrAno, 10) : (index + 1);
+            const buttons = item.querySelectorAll('.btn-bimestre');
 
-                buttons.forEach((btn, bIndex) => {
-                    const bimestreNum = bIndex + 1;
-                    const mat = materials.find(m => m.ano === anoNum && m.bimestre === bimestreNum);
-                    
-                    if (mat) {
-                        if (mat.status === 'active' && mat.url && mat.url !== '#') {
-                            btn.classList.remove('disabled');
-                            btn.setAttribute('href', mat.url);
-                            btn.setAttribute('target', '_blank');
-                            btn.setAttribute('rel', 'noopener noreferrer');
-                            btn.removeAttribute('tabindex');
-                        } else {
-                            btn.classList.add('disabled');
-                            btn.setAttribute('href', '#');
-                            btn.removeAttribute('target');
-                            btn.removeAttribute('rel');
-                        }
+            buttons.forEach((btn, bIndex) => {
+                const bimestreNum = bIndex + 1;
+                const mat = materials.find(m => m.ano === anoNum && m.bimestre === bimestreNum);
+                
+                if (mat) {
+                    if (mat.status === 'active' && mat.url && mat.url !== '#') {
+                        btn.classList.remove('disabled');
+                        btn.setAttribute('href', mat.url);
+                        btn.setAttribute('target', '_blank');
+                        btn.setAttribute('rel', 'noopener noreferrer');
+                        btn.removeAttribute('tabindex');
+                    } else {
+                        btn.classList.add('disabled');
+                        btn.setAttribute('href', '#');
+                        btn.removeAttribute('target');
+                        btn.removeAttribute('rel');
                     }
-                });
+                }
+            });
+        });
+    };
+
+    const renderDynamicActivities = () => {
+        const activities = getStoredActivities();
+        const container = document.querySelector('#atividades .accordion-container');
+        if (!container) return;
+
+        const accordionItems = container.querySelectorAll('.accordion-item');
+        accordionItems.forEach((item, index) => {
+            const attrAno = item.getAttribute('data-ano');
+            const anoNum = attrAno ? parseInt(attrAno, 10) : (index + 1);
+            const buttons = item.querySelectorAll('.btn-bimestre');
+
+            buttons.forEach((btn, bIndex) => {
+                const bimestreNum = bIndex + 1;
+                const act = activities.find(a => a.ano === anoNum && a.bimestre === bimestreNum);
+                
+                if (act) {
+                    if (act.status === 'active' && act.url && act.url !== '#') {
+                        btn.classList.remove('disabled');
+                        btn.setAttribute('href', act.url);
+                        btn.setAttribute('target', '_blank');
+                        btn.setAttribute('rel', 'noopener noreferrer');
+                        btn.removeAttribute('tabindex');
+                    } else {
+                        btn.classList.add('disabled');
+                        btn.setAttribute('href', '#');
+                        btn.removeAttribute('target');
+                        btn.removeAttribute('rel');
+                    }
+                }
             });
         });
     };
 
     // Renderiza inicialmente na carga da página
     renderDynamicMaterials();
+    renderDynamicActivities();
 
     // Modais e Login Admin
     const openLoginBtn = document.getElementById('open-admin-login-btn');
@@ -508,11 +600,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Manipulador das Abas de Tipo (Planejamentos vs Atividades Práticas)
+    const typeTabsContainer = document.getElementById('admin-type-tabs');
+    if (typeTabsContainer) {
+        typeTabsContainer.querySelectorAll('.admin-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeTabsContainer.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentAdminType = btn.getAttribute('data-type');
+
+                const formTitle = document.getElementById('admin-form-title');
+                if (formTitle) {
+                    formTitle.textContent = currentAdminType === 'atividades' 
+                        ? '➕ Inserir / Atualizar Atividade Prática' 
+                        : '➕ Inserir / Atualizar Planejamento';
+                }
+
+                updateAdminProgress();
+                renderCoverageMatrix();
+                renderAdminTable();
+                loadSelectedMaterialToForm();
+            });
+        });
+    }
+
     const loadSelectedMaterialToForm = () => {
         if (!selectAno || !selectBimestre || !inputUrl || !selectStatus) return;
         const ano = parseInt(selectAno.value, 10);
         const bimestre = parseInt(selectBimestre.value, 10);
-        const materials = getStoredMaterials();
+        const materials = getActiveStore();
         const mat = materials.find(m => m.ano === ano && m.bimestre === bimestre);
 
         if (mat && mat.url && mat.url !== '#') {
@@ -544,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = inputUrl.value.trim();
             const status = selectStatus.value;
 
-            let materials = getStoredMaterials();
+            let materials = getActiveStore();
             const index = materials.findIndex(m => m.ano === ano && m.bimestre === bimestre);
 
             if (index !== -1) {
@@ -552,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 materials[index].status = status;
             } else {
                 materials.push({
-                    id: `m-${ano}-${bimestre}`,
+                    id: `${currentAdminType === 'atividades' ? 'a' : 'm'}-${ano}-${bimestre}`,
                     ano,
                     bimestre,
                     url,
@@ -560,12 +676,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            saveStoredMaterials(materials);
+            saveActiveStore(materials);
             updateAdminProgress();
             renderCoverageMatrix();
             renderAdminTable();
             loadSelectedMaterialToForm();
-            alert(`Link do ${ano === 6 ? '1º ao 5º Ano (Geral)' : `${ano}º Ano`} (${bimestre}º Bimestre) salvo com sucesso!`);
+            const categoryLabel = currentAdminType === 'atividades' ? 'Atividade Prática' : 'Planejamento';
+            alert(`Link de ${categoryLabel} (${ano === 6 ? '1º ao 5º Ano Geral' : `${ano}º Ano`} - ${bimestre}º Bimestre) salvo com sucesso!`);
         });
 
         if (clearBtn) {
@@ -585,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const summaryEl = document.getElementById('admin-pending-summary');
         if (!matrixGrid || !summaryEl) return;
 
-        const materials = getStoredMaterials();
+        const materials = getActiveStore();
         const seriesList = [
             { ano: 1, label: "1º Ano" },
             { ano: 2, label: "2º Ano" },
@@ -644,8 +761,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Renderiza o resumo de pendências
+        const storeName = currentAdminType === 'atividades' ? 'Atividades Práticas' : 'Planejamentos';
         if (pendingBySeries.length === 0) {
-            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os 24 bimestres estão com links ativos!</h4>`;
+            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os 24 bimestres de ${storeName} estão com links ativos!</h4>`;
             summaryEl.style.background = '#dcfce7';
             summaryEl.style.color = '#15803d';
             summaryEl.style.borderColor = '#bbf7d0';
@@ -654,7 +772,7 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryEl.style.color = '';
             summaryEl.style.borderColor = '';
             const totalMissing = pendingBySeries.reduce((acc, curr) => acc + curr.missing.length, 0);
-            let html = `<h4>⚠️ Relatório de Pendências (${totalMissing} de 24 bimestres faltantes):</h4><ul>`;
+            let html = `<h4>⚠️ Relatório de Pendências - ${storeName} (${totalMissing} de 24 bimestres faltantes):</h4><ul>`;
             pendingBySeries.forEach(p => {
                 html += `<li><strong>${p.label}:</strong> Faltam ${p.missing.join(', ')}</li>`;
             });
@@ -669,12 +787,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const fillEl = document.getElementById('admin-progress-fill');
         if (!textEl || !fillEl) return;
 
-        const materials = getStoredMaterials();
+        const materials = getActiveStore();
         const activeCount = materials.filter(m => m.status === 'active' && m.url && m.url !== '#').length;
         const totalCount = materials.length;
         const percentage = totalCount > 0 ? Math.round((activeCount / totalCount) * 100) : 0;
+        const storeName = currentAdminType === 'atividades' ? 'Atividades Práticas' : 'Planejamentos';
 
-        textEl.textContent = `${activeCount} de ${totalCount} bimestres configurados (${percentage}%)`;
+        textEl.textContent = `${storeName}: ${activeCount} de ${totalCount} bimestres configurados (${percentage}%)`;
         fillEl.style.width = `${percentage}%`;
     };
 
@@ -697,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.getElementById('admin-materials-tbody');
         if (!tbody) return;
 
-        let materials = getStoredMaterials();
+        let materials = getActiveStore();
         materials.sort((a, b) => a.ano - b.ano || a.bimestre - b.bimestre);
 
         // Aplica o filtro selecionado
@@ -767,11 +886,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 const ano = parseInt(btn.getAttribute('data-ano'), 10);
                 const bimestre = parseInt(btn.getAttribute('data-bimestre'), 10);
-                let allMats = getStoredMaterials();
+                let allMats = getActiveStore();
                 const index = allMats.findIndex(m => m.ano === ano && m.bimestre === bimestre);
                 if (index !== -1) {
                     allMats[index].status = allMats[index].status === 'active' ? 'soon' : 'active';
-                    saveStoredMaterials(allMats);
+                    saveActiveStore(allMats);
                     updateAdminProgress();
                     renderCoverageMatrix();
                     renderAdminTable();
@@ -797,7 +916,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (exportHtmlBtn && htmlModal) {
         exportHtmlBtn.addEventListener('click', () => {
-            const accordionSection = document.getElementById('planejamentos');
+            const sectionId = currentAdminType === 'atividades' ? 'atividades' : 'planejamentos';
+            const accordionSection = document.getElementById(sectionId);
             if (accordionSection && htmlArea) {
                 htmlArea.value = accordionSection.outerHTML;
             }
@@ -860,7 +980,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                let materials = getStoredMaterials();
+                let materials = getActiveStore();
                 lines.forEach((url, i) => {
                     if (i < 4) {
                         const bimestre = i + 1;
@@ -872,7 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                saveStoredMaterials(materials);
+                saveActiveStore(materials);
                 updateAdminProgress();
                 renderCoverageMatrix();
                 renderAdminTable();
