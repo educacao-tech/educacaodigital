@@ -652,13 +652,28 @@ document.addEventListener('DOMContentLoaded', () => {
         selectBimestre.addEventListener('change', loadSelectedMaterialToForm);
     }
 
+    if (inputUrl && selectStatus) {
+        inputUrl.addEventListener('input', () => {
+            const val = inputUrl.value.trim();
+            if (val && val !== '#' && (val.startsWith('http') || val.length > 5)) {
+                selectStatus.value = 'active';
+            }
+        });
+    }
+
     if (materialForm) {
         materialForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const ano = parseInt(selectAno.value, 10);
             const bimestre = parseInt(selectBimestre.value, 10);
             const url = inputUrl.value.trim();
-            const status = selectStatus.value;
+            let status = selectStatus.value;
+
+            // Se inseriu uma URL válida, ativa automaticamente o status
+            if (url && url !== '#' && (url.startsWith('http') || url.length > 5)) {
+                status = 'active';
+                selectStatus.value = 'active';
+            }
 
             let materials = getActiveStore();
             const index = materials.findIndex(m => m.ano === ano && m.bimestre === bimestre);
