@@ -156,11 +156,15 @@ document.addEventListener('DOMContentLoaded', () => {
         yearElement.textContent = new Date().getFullYear();
     }
 
-    // Previne pulo de página em links vazios (#)
-    document.querySelectorAll('a[href="#"]').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-        });
+    // Previne pulo de página apenas se o link for efetivamente desabilitado ou apontar para "#"
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link) {
+            const href = link.getAttribute('href');
+            if (href === '#' || link.classList.contains('disabled')) {
+                e.preventDefault();
+            }
+        }
     });
 
     // Controle do Botão "Voltar ao Topo"
