@@ -252,6 +252,25 @@ document.addEventListener('DOMContentLoaded', () => {
         sections.forEach(section => observer.observe(section));
     }
 
+    // Animações de Rolagem (Scroll Reveal para cards e títulos)
+    const revealElements = document.querySelectorAll('.section-title, .card, .accordion-item');
+    if (revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Anima uma única vez
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    }
+
     // Controle do Tema (Dark/Light Mode)
     const themeToggleButton = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
