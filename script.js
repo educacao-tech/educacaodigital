@@ -680,13 +680,18 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const ano = parseInt(selectAno.value, 10);
             const bimestre = parseInt(selectBimestre.value, 10);
-            const url = inputUrl.value.trim();
+            let url = inputUrl.value.trim();
             let status = selectStatus.value;
 
             // Se inseriu uma URL válida, ativa automaticamente o status
             if (url && url !== '#' && (url.startsWith('http') || url.length > 5)) {
                 status = 'active';
                 selectStatus.value = 'active';
+            } else {
+                // Se deixou em branco ou limpou, reseta o link e desabilita o status
+                url = '#';
+                status = 'soon';
+                selectStatus.value = 'soon';
             }
 
             let materials = getActiveStore();
