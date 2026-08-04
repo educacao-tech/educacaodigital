@@ -404,10 +404,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getStoredMaterials = () => {
         const data = localStorage.getItem('edumidia_materials');
-        if (data) {
-            try { return JSON.parse(data); } catch(e) { return DEFAULT_MATERIALS; }
+        if (!data) return DEFAULT_MATERIALS;
+        try {
+            const parsed = JSON.parse(data);
+            if (!Array.isArray(parsed)) return DEFAULT_MATERIALS;
+            return DEFAULT_MATERIALS.map(def => {
+                const found = parsed.find(item => item.ano === def.ano && item.bimestre === def.bimestre);
+                return found ? found : def;
+            });
+        } catch(e) {
+            return DEFAULT_MATERIALS;
         }
-        return DEFAULT_MATERIALS;
     };
 
     const saveStoredMaterials = (materials) => {
@@ -417,10 +424,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getStoredActivities = () => {
         const data = localStorage.getItem('edumidia_activities');
-        if (data) {
-            try { return JSON.parse(data); } catch(e) { return DEFAULT_ACTIVITIES; }
+        if (!data) return DEFAULT_ACTIVITIES;
+        try {
+            const parsed = JSON.parse(data);
+            if (!Array.isArray(parsed)) return DEFAULT_ACTIVITIES;
+            return DEFAULT_ACTIVITIES.map(def => {
+                const found = parsed.find(item => item.ano === def.ano && item.bimestre === def.bimestre);
+                return found ? found : def;
+            });
+        } catch(e) {
+            return DEFAULT_ACTIVITIES;
         }
-        return DEFAULT_ACTIVITIES;
     };
 
     const saveStoredActivities = (activities) => {
