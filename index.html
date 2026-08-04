@@ -443,6 +443,17 @@
             </div>
 
             <div class="admin-dashboard-content">
+                <!-- Barra de Progresso do Currículo -->
+                <div class="admin-progress-card">
+                    <div class="admin-progress-info">
+                        <strong>📊 Progresso dos Planejamentos:</strong>
+                        <span id="admin-progress-text">0 de 20 bimestres configurados (0%)</span>
+                    </div>
+                    <div class="admin-progress-bar-bg">
+                        <div class="admin-progress-bar-fill" id="admin-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
                 <!-- Formulário de Edição/Adição de Link -->
                 <form id="admin-material-form" class="admin-card-form">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
@@ -473,17 +484,20 @@
                             </select>
                         </div>
 
-                        <div class="admin-form-group admin-full-width">
-                            <label for="admin-drive-url">URL do Google Drive / Docs</label>
-                            <input type="url" id="admin-drive-url" placeholder="https://docs.google.com/document/d/... ou https://drive.google.com/..." required>
-                        </div>
-
                         <div class="admin-form-group">
                             <label for="admin-select-status">Status do Material</label>
                             <select id="admin-select-status" required>
                                 <option value="active">Ativo / Disponível</option>
                                 <option value="soon">Em breve (Desabilitado)</option>
                             </select>
+                        </div>
+
+                        <div class="admin-form-group admin-full-width">
+                            <label for="admin-drive-url">URL do Google Drive / Docs</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="url" id="admin-drive-url" placeholder="https://docs.google.com/document/d/... ou https://drive.google.com/..." required style="flex-grow: 1;">
+                                <button type="button" class="btn-admin-secondary" id="admin-test-link-btn" title="Abrir URL em nova aba para testar">🔗 Testar Link</button>
+                            </div>
                         </div>
                     </div>
 
@@ -495,7 +509,21 @@
 
                 <!-- Tabela de Links Cadastrados -->
                 <div class="admin-materials-table-wrapper">
-                    <h3>📋 Lista de Materiais por Ano/Bimestre</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+                        <h3 style="margin: 0;">📋 Lista de Materiais por Ano/Bimestre</h3>
+                        <!-- Pílulas de Filtro -->
+                        <div class="admin-table-filters" id="admin-table-filters">
+                            <button type="button" class="admin-filter-pill active" data-filter="all">Todos</button>
+                            <button type="button" class="admin-filter-pill" data-filter="active">✅ Concluídos</button>
+                            <button type="button" class="admin-filter-pill" data-filter="soon">⚠️ Pendentes</button>
+                            <button type="button" class="admin-filter-pill" data-filter="ano-1">1º Ano</button>
+                            <button type="button" class="admin-filter-pill" data-filter="ano-2">2º Ano</button>
+                            <button type="button" class="admin-filter-pill" data-filter="ano-3">3º Ano</button>
+                            <button type="button" class="admin-filter-pill" data-filter="ano-4">4º Ano</button>
+                            <button type="button" class="admin-filter-pill" data-filter="ano-5">5º Ano</button>
+                        </div>
+                    </div>
+
                     <table class="admin-materials-table">
                         <thead>
                             <tr>
@@ -512,20 +540,90 @@
                     </table>
                 </div>
 
-                <!-- Barra de Backup e Ferramentas -->
+                <!-- Barra de Backup e Ferramentas Avançadas -->
                 <div class="admin-backup-bar">
                     <div>
-                        <strong>💾 Ferramentas de Backup (JSON):</strong>
-                        <span style="font-size: 0.85rem; color: #666; display: block;">Exporte ou importe seus dados para sincronizar com outro computador.</span>
+                        <strong>🛠️ Ferramentas Avançadas:</strong>
+                        <span style="font-size: 0.85rem; color: #666; display: block;">Exportação, importação em lote e configurações de segurança.</span>
                     </div>
                     <div class="admin-backup-buttons">
-                        <button type="button" class="btn-admin-secondary" id="admin-export-json-btn">📥 Exportar Backup</button>
-                        <button type="button" class="btn-admin-secondary" id="admin-import-json-btn">📤 Importar Backup</button>
+                        <button type="button" class="btn-admin-secondary" id="admin-batch-modal-btn">⚡ Colar em Lote</button>
+                        <button type="button" class="btn-admin-secondary" id="admin-export-html-btn">📋 Exportar HTML</button>
+                        <button type="button" class="btn-admin-secondary" id="admin-export-json-btn">📥 Backup JSON</button>
+                        <button type="button" class="btn-admin-secondary" id="admin-import-json-btn">📤 Importar JSON</button>
                         <input type="file" id="admin-import-file-input" accept=".json" style="display: none;">
-                        <button type="button" class="btn-admin-danger" id="admin-reset-default-btn">🔄 Restaurar Padrão</button>
+                        <button type="button" class="btn-admin-secondary" id="admin-change-password-btn">🔐 Alterar Senha</button>
+                        <button type="button" class="btn-admin-danger" id="admin-reset-default-btn">🔄 Padrão Original</button>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Exportar Código HTML -->
+    <div class="admin-modal-overlay" id="admin-html-modal" aria-hidden="true">
+        <div class="admin-modal-box" style="max-width: 700px; padding: 2rem;">
+            <button class="admin-modal-close" id="admin-html-close">&times;</button>
+            <h3>📋 Código HTML Gerado para o Repositório</h3>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Copie este código para substituir a seção <code>#planejamentos</code> em index.html se desejar atualizar os arquivos permanentemente.</p>
+            <textarea id="admin-html-code-area" style="width: 100%; height: 250px; font-family: monospace; font-size: 0.82rem; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-light); color: var(--text-color);" readonly></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                <button type="button" class="btn-admin-cancel" id="admin-html-cancel-btn">Fechar</button>
+                <button type="button" class="btn-admin-primary" id="admin-copy-html-btn">Copiar Código HTML</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Colar em Lote -->
+    <div class="admin-modal-overlay" id="admin-batch-modal" aria-hidden="true">
+        <div class="admin-modal-box" style="max-width: 650px; padding: 2rem;">
+            <button class="admin-modal-close" id="admin-batch-close">&times;</button>
+            <h3>⚡ Preenchimento de Links em Lote</h3>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Selecione a série e cole até 4 URLs do Google Drive (uma por linha) para cadastrar os 4 bimestres de uma só vez.</p>
+            
+            <div class="admin-form-group" style="margin-bottom: 1rem;">
+                <label for="admin-batch-select-ano">Selecione a Série</label>
+                <select id="admin-batch-select-ano">
+                    <option value="1">1º Ano (EF1)</option>
+                    <option value="2">2º Ano (EF1)</option>
+                    <option value="3">3º Ano (EF1)</option>
+                    <option value="4">4º Ano (EF1)</option>
+                    <option value="5">5º Ano (EF1)</option>
+                </select>
+            </div>
+            
+            <div class="admin-form-group">
+                <label for="admin-batch-urls-area">URLs (uma por linha para 1º, 2º, 3º e 4º Bimestres)</label>
+                <textarea id="admin-batch-urls-area" placeholder="https://docs.google.com/... (1º Bimestre)&#10;https://docs.google.com/... (2º Bimestre)&#10;https://docs.google.com/... (3º Bimestre)&#10;https://docs.google.com/... (4º Bimestre)" style="width: 100%; height: 160px; font-family: monospace; font-size: 0.88rem; padding: 0.8rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-light); color: var(--text-color);"></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                <button type="button" class="btn-admin-cancel" id="admin-batch-cancel-btn">Cancelar</button>
+                <button type="button" class="btn-admin-primary" id="admin-batch-save-btn">Salvar 4 Bimestres</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Alterar Senha -->
+    <div class="admin-modal-overlay" id="admin-password-modal" aria-hidden="true">
+        <div class="admin-modal-box" style="max-width: 420px; padding: 2rem;">
+            <button class="admin-modal-close" id="admin-password-close">&times;</button>
+            <h3>🔐 Alterar Senha Administrativa</h3>
+            <form id="admin-change-password-form" style="margin-top: 1rem;">
+                <div class="admin-form-group">
+                    <label for="admin-new-password">Nova Senha</label>
+                    <input type="password" id="admin-new-password" placeholder="Digite a nova senha..." required>
+                </div>
+                <div class="admin-form-group">
+                    <label for="admin-confirm-password">Confirme a Nova Senha</label>
+                    <input type="password" id="admin-confirm-password" placeholder="Repita a nova senha..." required>
+                </div>
+                <div id="admin-password-error" class="admin-error-msg" style="display: none;">As senhas não coincidem.</div>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" class="btn-admin-cancel" id="admin-password-cancel-btn">Cancelar</button>
+                    <button type="submit" class="btn-admin-primary">Salvar Nova Senha</button>
+                </div>
+            </form>
         </div>
     </div>
 

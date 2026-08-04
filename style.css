@@ -1063,6 +1063,67 @@ html[data-theme="dark"] .partner-info h3 {
     flex-wrap: wrap;
 }
 
+/* Barra de Progresso do Currículo */
+.admin-progress-card {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.admin-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.92rem;
+    color: var(--text-color);
+}
+.admin-progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(226, 232, 240, 0.8);
+    border-radius: 50px;
+    overflow: hidden;
+}
+html[data-theme="dark"] .admin-progress-bar-bg {
+    background: #334155;
+}
+.admin-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb 0%, #16a34a 100%);
+    border-radius: 50px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Pílulas de Filtro de Tabela */
+.admin-table-filters {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+.admin-filter-pill {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.admin-filter-pill:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+.admin-filter-pill.active {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
 @media (max-width: 768px) {
     .admin-form-grid {
         grid-template-columns: 1fr;
@@ -1072,5 +1133,10 @@ html[data-theme="dark"] .partner-info h3 {
     }
     .admin-dashboard-box {
         max-height: 95vh;
+    }
+    .admin-progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
     }
 }

@@ -421,7 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dashboardModal = document.getElementById('admin-dashboard-modal');
     const dashboardCloseBtn = document.getElementById('admin-dashboard-close');
 
-    const ADMIN_PASSWORD_HASH = "batatais2026"; // Senha padrão de acesso
+    // Senha de Acesso Admin (com suporte a alteração salva no localStorage)
+    const getAdminPassword = () => localStorage.getItem('edumidia_admin_password') || "batatais2026";
+    const setAdminPassword = (newPass) => localStorage.setItem('edumidia_admin_password', newPass);
 
     if (openLoginBtn && loginModal) {
         openLoginBtn.addEventListener('click', () => {
@@ -444,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const passInput = document.getElementById('admin-password');
-                if (passInput && passInput.value === ADMIN_PASSWORD_HASH) {
+                if (passInput && passInput.value === getAdminPassword()) {
                     closeLoginModal();
                     openDashboardModal();
                 } else {
@@ -458,6 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dashboardModal) {
             dashboardModal.classList.add('active');
             dashboardModal.setAttribute('aria-hidden', 'false');
+            updateAdminProgress();
             renderAdminTable();
             loadSelectedMaterialToForm();
         }
@@ -481,7 +484,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputUrl = document.getElementById('admin-drive-url');
     const selectStatus = document.getElementById('admin-select-status');
     const clearBtn = document.getElementById('admin-form-clear-btn');
+    const testLinkBtn = document.getElementById('admin-test-link-btn');
     const statusFeedback = document.getElementById('admin-form-status-feedback');
+
+    // Botão Testar Link
+    if (testLinkBtn && inputUrl) {
+        testLinkBtn.addEventListener('click', () => {
+            const url = inputUrl.value.trim();
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            } else {
+                alert('Digite ou cole uma URL válida para testar.');
+            }
+        });
+    }
 
     const loadSelectedMaterialToForm = () => {
         if (!selectAno || !selectBimestre || !inputUrl || !selectStatus) return;
@@ -536,6 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             saveStoredMaterials(materials);
+            updateAdminProgress();
             renderAdminTable();
             loadSelectedMaterialToForm();
             alert(`Link do ${ano}º Ano (${bimestre}º Bimestre) salvo com sucesso!`);
@@ -552,16 +569,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Atualização da Barra de Progresso do Admin
+    const updateAdminProgress = () => {
+        const textEl = document.getElementById('admin-progress-text');
+        const fillEl = document.getElementById('admin-progress-fill');
+        if (!textEl || !fillEl) return;
+
+        const materials = getStoredMaterials();
+        const activeCount = materials.filter(m => m.status === 'active' && m.url && m.url !== '#').length;
+        const percentage = Math.round((activeCount / 20) * 100);
+
+        textEl.textContent = `${activeCount} de 20 bimestres configurados (${percentage}%)`;
+        fillEl.style.width = `${percentage}%`;
+    };
+
+    // Estado e Manipulação dos Filtros de Tabela
+    let currentAdminFilter = 'all';
+    const filterContainer = document.getElementById('admin-table-filters');
+    if (filterContainer) {
+        filterContainer.querySelectorAll('.admin-filter-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                filterContainer.querySelectorAll('.admin-filter-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                currentAdminFilter = pill.getAttribute('data-filter');
+                renderAdminTable();
+            });
+        });
+    }
+
     // Tabela Administrativa
     const renderAdminTable = () => {
         const tbody = document.getElementById('admin-materials-tbody');
         if (!tbody) return;
 
-        const materials = getStoredMaterials();
-        // Ordena por Ano e Bimestre
+        let materials = getStoredMaterials();
         materials.sort((a, b) => a.ano - b.ano || a.bimestre - b.bimestre);
 
+        // Aplica o filtro selecionado
+        if (currentAdminFilter === 'active') {
+            materials = materials.filter(m => m.status === 'active' && m.url && m.url !== '#');
+        } else if (currentAdminFilter === 'soon') {
+            materials = materials.filter(m => m.status === 'soon' || !m.url || m.url === '#');
+        } else if (currentAdminFilter.startsWith('ano-')) {
+            const targetAno = parseInt(currentAdminFilter.replace('ano-', ''), 10);
+            materials = materials.filter(m => m.ano === targetAno);
+        }
+
         tbody.innerHTML = '';
+
+        if (materials.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 1.5rem;">Nenhum material encontrado para este filtro.</td></tr>`;
+            return;
+        }
 
         materials.forEach(mat => {
             const tr = document.createElement('tr');
@@ -584,6 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="admin-table-actions">
                         <button class="btn-admin-table btn-edit" data-ano="${mat.ano}" data-bimestre="${mat.bimestre}">✏️ Editar</button>
                         <button class="btn-admin-table btn-toggle" data-ano="${mat.ano}" data-bimestre="${mat.bimestre}">🔄 Alternar</button>
+                        ${mat.url && mat.url !== '#' ? `<button class="btn-admin-table btn-open" data-url="${mat.url}">🔗 Testar</button>` : ''}
                     </div>
                 </td>
             `;
@@ -610,15 +670,169 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 const ano = parseInt(btn.getAttribute('data-ano'), 10);
                 const bimestre = parseInt(btn.getAttribute('data-bimestre'), 10);
-                const index = materials.findIndex(m => m.ano === ano && m.bimestre === bimestre);
+                let allMats = getStoredMaterials();
+                const index = allMats.findIndex(m => m.ano === ano && m.bimestre === bimestre);
                 if (index !== -1) {
-                    materials[index].status = materials[index].status === 'active' ? 'soon' : 'active';
-                    saveStoredMaterials(materials);
+                    allMats[index].status = allMats[index].status === 'active' ? 'soon' : 'active';
+                    saveStoredMaterials(allMats);
+                    updateAdminProgress();
                     renderAdminTable();
                 }
             });
         });
+
+        tbody.querySelectorAll('.btn-open').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-url');
+                if (url && url !== '#') window.open(url, '_blank');
+            });
+        });
     };
+
+    // Modal Exportar Código HTML
+    const htmlModal = document.getElementById('admin-html-modal');
+    const exportHtmlBtn = document.getElementById('admin-export-html-btn');
+    const htmlCloseBtn = document.getElementById('admin-html-close');
+    const htmlCancelBtn = document.getElementById('admin-html-cancel-btn');
+    const copyHtmlBtn = document.getElementById('admin-copy-html-btn');
+    const htmlArea = document.getElementById('admin-html-code-area');
+
+    if (exportHtmlBtn && htmlModal) {
+        exportHtmlBtn.addEventListener('click', () => {
+            const accordionSection = document.getElementById('planejamentos');
+            if (accordionSection && htmlArea) {
+                htmlArea.value = accordionSection.outerHTML;
+            }
+            htmlModal.classList.add('active');
+            htmlModal.setAttribute('aria-hidden', 'false');
+        });
+
+        const closeHtmlModal = () => {
+            htmlModal.classList.remove('active');
+            htmlModal.setAttribute('aria-hidden', 'true');
+        };
+
+        if (htmlCloseBtn) htmlCloseBtn.addEventListener('click', closeHtmlModal);
+        if (htmlCancelBtn) htmlCancelBtn.addEventListener('click', closeHtmlModal);
+
+        if (copyHtmlBtn && htmlArea) {
+            copyHtmlBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(htmlArea.value).then(() => {
+                    alert('Código HTML copiado para a área de transferência com sucesso!');
+                }).catch(() => {
+                    htmlArea.select();
+                    document.execCommand('copy');
+                    alert('Código HTML copiado!');
+                });
+            });
+        }
+    }
+
+    // Modal Colar em Lote
+    const batchModal = document.getElementById('admin-batch-modal');
+    const batchModalBtn = document.getElementById('admin-batch-modal-btn');
+    const batchCloseBtn = document.getElementById('admin-batch-close');
+    const batchCancelBtn = document.getElementById('admin-batch-cancel-btn');
+    const batchSaveBtn = document.getElementById('admin-batch-save-btn');
+    const batchAnoSelect = document.getElementById('admin-batch-select-ano');
+    const batchArea = document.getElementById('admin-batch-urls-area');
+
+    if (batchModalBtn && batchModal) {
+        batchModalBtn.addEventListener('click', () => {
+            batchModal.classList.add('active');
+            batchModal.setAttribute('aria-hidden', 'false');
+            if (batchArea) batchArea.value = '';
+        });
+
+        const closeBatchModal = () => {
+            batchModal.classList.remove('active');
+            batchModal.setAttribute('aria-hidden', 'true');
+        };
+
+        if (batchCloseBtn) batchCloseBtn.addEventListener('click', closeBatchModal);
+        if (batchCancelBtn) batchCancelBtn.addEventListener('click', closeBatchModal);
+
+        if (batchSaveBtn && batchAnoSelect && batchArea) {
+            batchSaveBtn.addEventListener('click', () => {
+                const targetAno = parseInt(batchAnoSelect.value, 10);
+                const lines = batchArea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+                if (lines.length === 0) {
+                    alert('Cole pelo menos uma URL válida.');
+                    return;
+                }
+
+                let materials = getStoredMaterials();
+                lines.forEach((url, i) => {
+                    if (i < 4) {
+                        const bimestre = i + 1;
+                        const idx = materials.findIndex(m => m.ano === targetAno && m.bimestre === bimestre);
+                        if (idx !== -1) {
+                            materials[idx].url = url;
+                            materials[idx].status = 'active';
+                        }
+                    }
+                });
+
+                saveStoredMaterials(materials);
+                updateAdminProgress();
+                renderAdminTable();
+                loadSelectedMaterialToForm();
+                closeBatchModal();
+                alert(`Links em lote para o ${targetAno}º Ano salvos com sucesso!`);
+            });
+        }
+    }
+
+    // Modal Alterar Senha
+    const passwordModal = document.getElementById('admin-password-modal');
+    const changePasswordBtn = document.getElementById('admin-change-password-btn');
+    const passwordCloseBtn = document.getElementById('admin-password-close');
+    const passwordCancelBtn = document.getElementById('admin-password-cancel-btn');
+    const changePasswordForm = document.getElementById('admin-change-password-form');
+    const newPassInput = document.getElementById('admin-new-password');
+    const confirmPassInput = document.getElementById('admin-confirm-password');
+    const passwordError = document.getElementById('admin-password-error');
+
+    if (changePasswordBtn && passwordModal) {
+        changePasswordBtn.addEventListener('click', () => {
+            passwordModal.classList.add('active');
+            passwordModal.setAttribute('aria-hidden', 'false');
+            if (newPassInput) newPassInput.value = '';
+            if (confirmPassInput) confirmPassInput.value = '';
+            if (passwordError) passwordError.style.display = 'none';
+        });
+
+        const closePasswordModal = () => {
+            passwordModal.classList.remove('active');
+            passwordModal.setAttribute('aria-hidden', 'true');
+        };
+
+        if (passwordCloseBtn) passwordCloseBtn.addEventListener('click', closePasswordModal);
+        if (passwordCancelBtn) passwordCancelBtn.addEventListener('click', closePasswordModal);
+
+        if (changePasswordForm) {
+            changePasswordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newPass = newPassInput.value.trim();
+                const confirmPass = confirmPassInput.value.trim();
+
+                if (newPass.length < 4) {
+                    alert('A nova senha deve ter pelo menos 4 caracteres.');
+                    return;
+                }
+
+                if (newPass !== confirmPass) {
+                    if (passwordError) passwordError.style.display = 'block';
+                    return;
+                }
+
+                setAdminPassword(newPass);
+                closePasswordModal();
+                alert('Senha administrativa alterada com sucesso!');
+            });
+        }
+    }
 
     // Ferramentas de Backup (Exportar / Importar / Resetar)
     const exportBtn = document.getElementById('admin-export-json-btn');
@@ -652,6 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const importedData = JSON.parse(event.target.result);
                     if (Array.isArray(importedData)) {
                         saveStoredMaterials(importedData);
+                        updateAdminProgress();
                         renderAdminTable();
                         alert('Backup importado com sucesso!');
                     } else {
@@ -669,6 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetBtn.addEventListener('click', () => {
             if (confirm('Tem certeza que deseja restaurar a lista padrão de links originais? Suas edições locais serão substituídas.')) {
                 saveStoredMaterials(DEFAULT_MATERIALS);
+                updateAdminProgress();
                 renderAdminTable();
                 alert('Links padrão restaurados com sucesso!');
             }
