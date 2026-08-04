@@ -469,6 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboardModal.classList.add('active');
             dashboardModal.setAttribute('aria-hidden', 'false');
             updateAdminProgress();
+            renderCoverageMatrix();
             renderAdminTable();
             loadSelectedMaterialToForm();
         }
@@ -561,9 +562,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             saveStoredMaterials(materials);
             updateAdminProgress();
+            renderCoverageMatrix();
             renderAdminTable();
             loadSelectedMaterialToForm();
-            alert(`Link do ${ano}º Ano (${bimestre}º Bimestre) salvo com sucesso!`);
+            alert(`Link do ${ano === 6 ? '1º ao 5º Ano (Geral)' : `${ano}º Ano`} (${bimestre}º Bimestre) salvo com sucesso!`);
         });
 
         if (clearBtn) {
@@ -576,6 +578,90 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // Matriz de Cobertura Visual de Links
+    const renderCoverageMatrix = () => {
+        const matrixGrid = document.getElementById('admin-matrix-grid');
+        const summaryEl = document.getElementById('admin-pending-summary');
+        if (!matrixGrid || !summaryEl) return;
+
+        const materials = getStoredMaterials();
+        const seriesList = [
+            { ano: 1, label: "1º Ano" },
+            { ano: 2, label: "2º Ano" },
+            { ano: 3, label: "3º Ano" },
+            { ano: 4, label: "4º Ano" },
+            { ano: 5, label: "5º Ano" },
+            { ano: 6, label: "📚 1º a 5º Geral" }
+        ];
+
+        matrixGrid.innerHTML = '';
+        const pendingBySeries = [];
+
+        seriesList.forEach(s => {
+            const row = document.createElement('div');
+            row.className = 'admin-matrix-row';
+
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'admin-matrix-label';
+            labelSpan.textContent = s.label;
+            row.appendChild(labelSpan);
+
+            const chipsDiv = document.createElement('div');
+            chipsDiv.className = 'admin-matrix-chips';
+
+            const missingBimestres = [];
+
+            for (let b = 1; b <= 4; b++) {
+                const mat = materials.find(m => m.ano === s.ano && m.bimestre === b);
+                const isActive = mat && mat.status === 'active' && mat.url && mat.url !== '#';
+
+                const chip = document.createElement('span');
+                chip.className = `admin-matrix-chip ${isActive ? 'active' : 'soon'}`;
+                chip.innerHTML = isActive ? `✅ ${b}º Bim` : `🔴 ${b}º Bim`;
+                chip.title = isActive ? `${s.label} (${b}º Bimestre): Link Cadastrado` : `${s.label} (${b}º Bimestre): Clique para cadastrar!`;
+
+                chip.addEventListener('click', () => {
+                    selectAno.value = s.ano;
+                    selectBimestre.value = b;
+                    loadSelectedMaterialToForm();
+                    inputUrl.focus();
+                });
+
+                chipsDiv.appendChild(chip);
+
+                if (!isActive) {
+                    missingBimestres.push(`${b}º Bimestre`);
+                }
+            }
+
+            row.appendChild(chipsDiv);
+            matrixGrid.appendChild(row);
+
+            if (missingBimestres.length > 0) {
+                pendingBySeries.push({ label: s.label, missing: missingBimestres });
+            }
+        });
+
+        // Renderiza o resumo de pendências
+        if (pendingBySeries.length === 0) {
+            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os 24 bimestres estão com links ativos!</h4>`;
+            summaryEl.style.background = '#dcfce7';
+            summaryEl.style.color = '#15803d';
+            summaryEl.style.borderColor = '#bbf7d0';
+        } else {
+            summaryEl.style.background = '';
+            summaryEl.style.color = '';
+            summaryEl.style.borderColor = '';
+            const totalMissing = pendingBySeries.reduce((acc, curr) => acc + curr.missing.length, 0);
+            let html = `<h4>⚠️ Relatório de Pendências (${totalMissing} de 24 bimestres faltantes):</h4><ul>`;
+            pendingBySeries.forEach(p => {
+                html += `<li><strong>${p.label}:</strong> Faltam ${p.missing.join(', ')}</li>`;
+            });
+            html += `</ul>`;
+            summaryEl.innerHTML = html;
+        }
+    };
 
     // Atualização da Barra de Progresso do Admin
     const updateAdminProgress = () => {
@@ -687,6 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     allMats[index].status = allMats[index].status === 'active' ? 'soon' : 'active';
                     saveStoredMaterials(allMats);
                     updateAdminProgress();
+                    renderCoverageMatrix();
                     renderAdminTable();
                 }
             });
@@ -787,10 +874,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 saveStoredMaterials(materials);
                 updateAdminProgress();
+                renderCoverageMatrix();
                 renderAdminTable();
                 loadSelectedMaterialToForm();
                 closeBatchModal();
-                alert(`Links em lote para o ${targetAno}º Ano salvos com sucesso!`);
+                alert(`Links em lote salvos com sucesso!`);
             });
         }
     }
@@ -878,6 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (Array.isArray(importedData)) {
                         saveStoredMaterials(importedData);
                         updateAdminProgress();
+                        renderCoverageMatrix();
                         renderAdminTable();
                         alert('Backup importado com sucesso!');
                     } else {
@@ -896,6 +985,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (confirm('Tem certeza que deseja restaurar a lista padrão de links originais? Suas edições locais serão substituídas.')) {
                 saveStoredMaterials(DEFAULT_MATERIALS);
                 updateAdminProgress();
+                renderCoverageMatrix();
                 renderAdminTable();
                 alert('Links padrão restaurados com sucesso!');
             }

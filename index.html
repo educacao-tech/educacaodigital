@@ -473,10 +473,28 @@
                 <div class="admin-progress-card">
                     <div class="admin-progress-info">
                         <strong>📊 Progresso dos Planejamentos:</strong>
-                        <span id="admin-progress-text">0 de 20 bimestres configurados (0%)</span>
+                        <span id="admin-progress-text">0 de 24 bimestres configurados (0%)</span>
                     </div>
                     <div class="admin-progress-bar-bg">
                         <div class="admin-progress-bar-fill" id="admin-progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Matriz de Cobertura Visual de Links (Grade 6x4) -->
+                <div class="admin-matrix-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <strong>🗺️ Matriz de Cobertura de Links (Clique em um bimestre para cadastrar):</strong>
+                        <span style="font-size: 0.82rem; color: var(--text-color); opacity: 0.8;">🟢 Cadastrado | 🔴 Faltando</span>
+                    </div>
+
+                    <!-- Grade Interativa de Séries x Bimestres -->
+                    <div class="admin-matrix-grid" id="admin-matrix-grid">
+                        <!-- Gerado dinamicamente via JS -->
+                    </div>
+
+                    <!-- Resumo Consolidado de Pendências -->
+                    <div class="admin-pending-summary" id="admin-pending-summary">
+                        <!-- Gerado dinamicamente via JS -->
                     </div>
                 </div>
 
