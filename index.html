@@ -402,8 +402,129 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </a>
             </div>
+            <div style="margin-top: 1rem;">
+                <button class="btn-admin-access" id="open-admin-login-btn" title="Área Administrativa de Gestão de Links">⚙️ Gestão de Links (Admin)</button>
+            </div>
         </div>
     </footer>
+
+    <!-- Modal de Login Admin -->
+    <div class="admin-modal-overlay" id="admin-login-modal" aria-hidden="true">
+        <div class="admin-modal-box admin-login-box">
+            <button class="admin-modal-close" id="admin-login-close">&times;</button>
+            <div class="admin-modal-header">
+                <span class="admin-modal-icon">🔐</span>
+                <h3>Área Administrativa</h3>
+                <p>Digite a senha de acesso para gerenciar os links do portal.</p>
+            </div>
+            <form id="admin-login-form">
+                <div class="admin-form-group">
+                    <label for="admin-password">Senha de Acesso</label>
+                    <input type="password" id="admin-password" placeholder="Digite a senha..." required>
+                </div>
+                <div id="admin-login-error" class="admin-error-msg" style="display: none;">Senha incorreta. Tente novamente.</div>
+                <div class="admin-modal-actions">
+                    <button type="button" class="btn-admin-cancel" id="admin-login-cancel-btn">Cancelar</button>
+                    <button type="submit" class="btn-admin-primary">Acessar Painel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal do Painel Administrativo -->
+    <div class="admin-modal-overlay" id="admin-dashboard-modal" aria-hidden="true">
+        <div class="admin-modal-box admin-dashboard-box">
+            <div class="admin-dashboard-header">
+                <div>
+                    <h2>⚙️ Painel de Gestão de Links</h2>
+                    <p>Cadastre e gerencie os links do Google Drive para Planejamentos e Atividades.</p>
+                </div>
+                <button class="admin-modal-close" id="admin-dashboard-close">&times;</button>
+            </div>
+
+            <div class="admin-dashboard-content">
+                <!-- Formulário de Edição/Adição de Link -->
+                <form id="admin-material-form" class="admin-card-form">
+                    <h3 id="admin-form-title">➕ Inserir / Atualizar Link</h3>
+                    <input type="hidden" id="admin-material-id">
+
+                    <div class="admin-form-grid">
+                        <div class="admin-form-group">
+                            <label for="admin-select-ano">Ano Letivo</label>
+                            <select id="admin-select-ano" required>
+                                <option value="1">1º Ano</option>
+                                <option value="2">2º Ano</option>
+                                <option value="3">3º Ano</option>
+                                <option value="4">4º Ano</option>
+                                <option value="5">5º Ano</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label for="admin-select-bimestre">Bimestre</label>
+                            <select id="admin-select-bimestre" required>
+                                <option value="1">1º Bimestre</option>
+                                <option value="2">2º Bimestre</option>
+                                <option value="3">3º Bimestre</option>
+                                <option value="4">4º Bimestre</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-form-group admin-full-width">
+                            <label for="admin-drive-url">URL do Google Drive / Docs</label>
+                            <input type="url" id="admin-drive-url" placeholder="https://docs.google.com/document/d/... ou https://drive.google.com/..." required>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label for="admin-select-status">Status do Material</label>
+                            <select id="admin-select-status" required>
+                                <option value="active">Ativo / Disponível</option>
+                                <option value="soon">Em breve (Desabilitado)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-actions">
+                        <button type="button" class="btn-admin-cancel" id="admin-form-clear-btn">Limpar Campos</button>
+                        <button type="submit" class="btn-admin-primary">💾 Salvar Link</button>
+                    </div>
+                </form>
+
+                <!-- Tabela de Links Cadastrados -->
+                <div class="admin-materials-table-wrapper">
+                    <h3>📋 Lista de Materiais por Ano/Bimestre</h3>
+                    <table class="admin-materials-table">
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>Bimestre</th>
+                                <th>Status</th>
+                                <th>Link do Google Drive</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-materials-tbody">
+                            <!-- Preenchido dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Barra de Backup e Ferramentas -->
+                <div class="admin-backup-bar">
+                    <div>
+                        <strong>💾 Ferramentas de Backup (JSON):</strong>
+                        <span style="font-size: 0.85rem; color: #666; display: block;">Exporte ou importe seus dados para sincronizar com outro computador.</span>
+                    </div>
+                    <div class="admin-backup-buttons">
+                        <button type="button" class="btn-admin-secondary" id="admin-export-json-btn">📥 Exportar Backup</button>
+                        <button type="button" class="btn-admin-secondary" id="admin-import-json-btn">📤 Importar Backup</button>
+                        <input type="file" id="admin-import-file-input" accept=".json" style="display: none;">
+                        <button type="button" class="btn-admin-danger" id="admin-reset-default-btn">🔄 Restaurar Padrão</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Botão Voltar ao Topo -->
     <a href="#" class="back-to-top" id="back-to-top" aria-label="Voltar ao topo da página">

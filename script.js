@@ -332,4 +332,313 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 250);
         });
     }
+
+    // --- LÓGICA DA ÁREA ADMINISTRATIVA E GESTÃO DE LINKS ---
+    const DEFAULT_MATERIALS = [
+        // 1º Ano
+        { id: "m-1-1", ano: 1, bimestre: 1, url: "https://docs.google.com/document/d/1Yap9AJU2w4FlBpXHMqNaRo4miaqiYMAX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-1-2", ano: 1, bimestre: 2, url: "https://docs.google.com/document/d/1xrtDpPec3h6yzkN8uqB-TX6gZMGlA6Xo/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-1-3", ano: 1, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-1-4", ano: 1, bimestre: 4, url: "#", status: "soon" },
+        // 2º Ano
+        { id: "m-2-1", ano: 2, bimestre: 1, url: "https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-2-2", ano: 2, bimestre: 2, url: "https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-2-3", ano: 2, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-2-4", ano: 2, bimestre: 4, url: "#", status: "soon" },
+        // 3º Ano
+        { id: "m-3-1", ano: 3, bimestre: 1, url: "https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-3-2", ano: 3, bimestre: 2, url: "https://docs.google.com/document/d/1w4AdxPuXF0QpY_iKUUCXLCt9DG7YeriX/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-3-3", ano: 3, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-3-4", ano: 3, bimestre: 4, url: "#", status: "soon" },
+        // 4º Ano
+        { id: "m-4-1", ano: 4, bimestre: 1, url: "https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-4-2", ano: 4, bimestre: 2, url: "https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-4-3", ano: 4, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-4-4", ano: 4, bimestre: 4, url: "#", status: "soon" },
+        // 5º Ano
+        { id: "m-5-1", ano: 5, bimestre: 1, url: "https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-5-2", ano: 5, bimestre: 2, url: "https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
+        { id: "m-5-3", ano: 5, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" }
+    ];
+
+    const getStoredMaterials = () => {
+        const data = localStorage.getItem('edumidia_materials');
+        if (data) {
+            try { return JSON.parse(data); } catch(e) { return DEFAULT_MATERIALS; }
+        }
+        return DEFAULT_MATERIALS;
+    };
+
+    const saveStoredMaterials = (materials) => {
+        localStorage.setItem('edumidia_materials', JSON.stringify(materials));
+        renderDynamicMaterials();
+    };
+
+    const renderDynamicMaterials = () => {
+        const materials = getStoredMaterials();
+        const accordionContainer = document.querySelector('.accordion-container');
+        if (!accordionContainer) return;
+
+        const accordionItems = accordionContainer.querySelectorAll('.accordion-item');
+        accordionItems.forEach((item, index) => {
+            const anoNum = index + 1; // 1º ao 5º Ano
+            const buttons = item.querySelectorAll('.btn-bimestre');
+
+            buttons.forEach((btn, bIndex) => {
+                const bimestreNum = bIndex + 1;
+                const mat = materials.find(m => m.ano === anoNum && m.bimestre === bimestreNum);
+                
+                if (mat) {
+                    if (mat.status === 'active' && mat.url && mat.url !== '#') {
+                        btn.classList.remove('disabled');
+                        btn.setAttribute('href', mat.url);
+                        btn.setAttribute('target', '_blank');
+                        btn.setAttribute('rel', 'noopener noreferrer');
+                        btn.removeAttribute('tabindex');
+                    } else {
+                        btn.classList.add('disabled');
+                        btn.setAttribute('href', '#');
+                        btn.removeAttribute('target');
+                        btn.removeAttribute('rel');
+                    }
+                }
+            });
+        });
+    };
+
+    // Renderiza inicialmente na carga da página
+    renderDynamicMaterials();
+
+    // Modais e Login Admin
+    const openLoginBtn = document.getElementById('open-admin-login-btn');
+    const loginModal = document.getElementById('admin-login-modal');
+    const loginCloseBtn = document.getElementById('admin-login-close');
+    const loginCancelBtn = document.getElementById('admin-login-cancel-btn');
+    const loginForm = document.getElementById('admin-login-form');
+    const loginError = document.getElementById('admin-login-error');
+
+    const dashboardModal = document.getElementById('admin-dashboard-modal');
+    const dashboardCloseBtn = document.getElementById('admin-dashboard-close');
+
+    const ADMIN_PASSWORD_HASH = "batatais2026"; // Senha padrão de acesso
+
+    if (openLoginBtn && loginModal) {
+        openLoginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+            loginModal.setAttribute('aria-hidden', 'false');
+            const passInput = document.getElementById('admin-password');
+            if (passInput) passInput.value = '';
+            if (loginError) loginError.style.display = 'none';
+        });
+
+        const closeLoginModal = () => {
+            loginModal.classList.remove('active');
+            loginModal.setAttribute('aria-hidden', 'true');
+        };
+
+        if (loginCloseBtn) loginCloseBtn.addEventListener('click', closeLoginModal);
+        if (loginCancelBtn) loginCancelBtn.addEventListener('click', closeLoginModal);
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const passInput = document.getElementById('admin-password');
+                if (passInput && passInput.value === ADMIN_PASSWORD_HASH) {
+                    closeLoginModal();
+                    openDashboardModal();
+                } else {
+                    if (loginError) loginError.style.display = 'block';
+                }
+            });
+        }
+    }
+
+    const openDashboardModal = () => {
+        if (dashboardModal) {
+            dashboardModal.classList.add('active');
+            dashboardModal.setAttribute('aria-hidden', 'false');
+            renderAdminTable();
+        }
+    };
+
+    const closeDashboardModal = () => {
+        if (dashboardModal) {
+            dashboardModal.classList.remove('active');
+            dashboardModal.setAttribute('aria-hidden', 'true');
+        }
+    };
+
+    if (dashboardCloseBtn) {
+        dashboardCloseBtn.addEventListener('click', closeDashboardModal);
+    }
+
+    // Formulário de Cadastro/Edição de Links no Dashboard
+    const materialForm = document.getElementById('admin-material-form');
+    const selectAno = document.getElementById('admin-select-ano');
+    const selectBimestre = document.getElementById('admin-select-bimestre');
+    const inputUrl = document.getElementById('admin-drive-url');
+    const selectStatus = document.getElementById('admin-select-status');
+    const clearBtn = document.getElementById('admin-form-clear-btn');
+
+    if (materialForm) {
+        materialForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const ano = parseInt(selectAno.value, 10);
+            const bimestre = parseInt(selectBimestre.value, 10);
+            const url = inputUrl.value.trim();
+            const status = selectStatus.value;
+
+            let materials = getStoredMaterials();
+            const index = materials.findIndex(m => m.ano === ano && m.bimestre === bimestre);
+
+            if (index !== -1) {
+                materials[index].url = url;
+                materials[index].status = status;
+            } else {
+                materials.push({
+                    id: `m-${ano}-${bimestre}`,
+                    ano,
+                    bimestre,
+                    url,
+                    status
+                });
+            }
+
+            saveStoredMaterials(materials);
+            renderAdminTable();
+            alert(`Link do ${ano}º Ano (${bimestre}º Bimestre) salvo com sucesso!`);
+        });
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                inputUrl.value = '';
+                selectStatus.value = 'active';
+            });
+        }
+    }
+
+    // Tabela Administrativa
+    const renderAdminTable = () => {
+        const tbody = document.getElementById('admin-materials-tbody');
+        if (!tbody) return;
+
+        const materials = getStoredMaterials();
+        // Ordena por Ano e Bimestre
+        materials.sort((a, b) => a.ano - b.ano || a.bimestre - b.bimestre);
+
+        tbody.innerHTML = '';
+
+        materials.forEach(mat => {
+            const tr = document.createElement('tr');
+            
+            const isSoon = mat.status === 'soon' || !mat.url || mat.url === '#';
+            const statusBadge = isSoon 
+                ? `<span class="admin-badge-status soon">Em breve</span>` 
+                : `<span class="admin-badge-status active">Ativo</span>`;
+
+            const displayUrl = mat.url && mat.url !== '#' 
+                ? `<a href="${mat.url}" target="_blank" style="color: var(--primary-color); word-break: break-all;">${mat.url.substring(0, 45)}...</a>` 
+                : `<span style="color: #94a3b8;">Nenhum link cadastrado</span>`;
+
+            tr.innerHTML = `
+                <td><strong>${mat.ano}º Ano</strong></td>
+                <td>${mat.bimestre}º Bimestre</td>
+                <td>${statusBadge}</td>
+                <td>${displayUrl}</td>
+                <td>
+                    <div class="admin-table-actions">
+                        <button class="btn-admin-table btn-edit" data-ano="${mat.ano}" data-bimestre="${mat.bimestre}">✏️ Editar</button>
+                        <button class="btn-admin-table btn-toggle" data-ano="${mat.ano}" data-bimestre="${mat.bimestre}">🔄 Alternar</button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+
+        // Eventos nos botões da tabela
+        tbody.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const ano = parseInt(btn.getAttribute('data-ano'), 10);
+                const bimestre = parseInt(btn.getAttribute('data-bimestre'), 10);
+                const mat = materials.find(m => m.ano === ano && m.bimestre === bimestre);
+                if (mat) {
+                    selectAno.value = mat.ano;
+                    selectBimestre.value = mat.bimestre;
+                    inputUrl.value = mat.url === '#' ? '' : mat.url;
+                    selectStatus.value = mat.status;
+                    inputUrl.focus();
+                }
+            });
+        });
+
+        tbody.querySelectorAll('.btn-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const ano = parseInt(btn.getAttribute('data-ano'), 10);
+                const bimestre = parseInt(btn.getAttribute('data-bimestre'), 10);
+                const index = materials.findIndex(m => m.ano === ano && m.bimestre === bimestre);
+                if (index !== -1) {
+                    materials[index].status = materials[index].status === 'active' ? 'soon' : 'active';
+                    saveStoredMaterials(materials);
+                    renderAdminTable();
+                }
+            });
+        });
+    };
+
+    // Ferramentas de Backup (Exportar / Importar / Resetar)
+    const exportBtn = document.getElementById('admin-export-json-btn');
+    const importBtn = document.getElementById('admin-import-json-btn');
+    const fileInput = document.getElementById('admin-import-file-input');
+    const resetBtn = document.getElementById('admin-reset-default-btn');
+
+    if (exportBtn) {
+        exportBtn.addEventListener('click', () => {
+            const materials = getStoredMaterials();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(materials, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `materiais_educacao_digital_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        });
+    }
+
+    if (importBtn && fileInput) {
+        importBtn.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const importedData = JSON.parse(event.target.result);
+                    if (Array.isArray(importedData)) {
+                        saveStoredMaterials(importedData);
+                        renderAdminTable();
+                        alert('Backup importado com sucesso!');
+                    } else {
+                        alert('Formato de arquivo JSON inválido.');
+                    }
+                } catch (err) {
+                    alert('Erro ao carregar o arquivo JSON. Verifique se o formato está correto.');
+                }
+            };
+            reader.readAsText(file);
+        });
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja restaurar a lista padrão de links originais? Suas edições locais serão substituídas.')) {
+                saveStoredMaterials(DEFAULT_MATERIALS);
+                renderAdminTable();
+                alert('Links padrão restaurados com sucesso!');
+            }
+        });
+    }
 });

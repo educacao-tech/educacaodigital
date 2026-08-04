@@ -714,3 +714,363 @@ html[data-theme="dark"] .partner-info h3 {
     .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
     a[href]:after { content: " (" attr(href) ")"; font-size: 0.8em; } /* Exibe URLs na impressão */
 }
+
+/* Botão de Acesso Admin no Rodapé */
+.btn-admin-access {
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-color);
+    opacity: 0.7;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.btn-admin-access:hover {
+    opacity: 1;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(37, 99, 235, 0.05);
+}
+
+/* Modais Administrativos Overlay */
+.admin-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.admin-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.admin-modal-box {
+    background: var(--white);
+    color: var(--text-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.admin-modal-overlay.active .admin-modal-box {
+    transform: scale(1) translateY(0);
+}
+
+.admin-modal-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: transparent;
+    border: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: #94a3b8;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.admin-modal-close:hover {
+    color: #ef4444;
+}
+
+/* Login Modal */
+.admin-login-box {
+    max-width: 420px;
+    padding: 2.25rem;
+}
+.admin-modal-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.admin-modal-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.admin-modal-header h3 {
+    font-size: 1.4rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.4rem;
+}
+.admin-modal-header p {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+/* Formulários Admin */
+.admin-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+}
+.admin-form-group label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+.admin-form-group input,
+.admin-form-group select {
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.92rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.admin-form-group input:focus,
+.admin-form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.admin-error-msg {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.admin-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.btn-admin-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #ffffff;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-admin-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-admin-cancel {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.7rem 1.2rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.btn-admin-cancel:hover {
+    background: var(--bg-light);
+}
+
+.btn-admin-secondary {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-admin-secondary:hover {
+    background: #e2e8f0;
+}
+
+.btn-admin-danger {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.btn-admin-danger:hover {
+    background: #fee2e2;
+}
+
+/* Painel Dashboard Box */
+.admin-dashboard-box {
+    max-width: 900px;
+    padding: 0;
+}
+.admin-dashboard-header {
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    color: #ffffff;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.admin-dashboard-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+}
+.admin-dashboard-header p {
+    font-size: 0.88rem;
+    opacity: 0.9;
+}
+.admin-dashboard-header .admin-modal-close {
+    color: #ffffff;
+    top: 1.75rem;
+    right: 2rem;
+}
+
+.admin-dashboard-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Card de Formulário */
+.admin-card-form {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+}
+.admin-card-form h3 {
+    font-size: 1.15rem;
+    margin-bottom: 1.25rem;
+    color: var(--secondary-color);
+}
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.admin-full-width {
+    grid-column: span 3;
+}
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+/* Tabela de Materiais */
+.admin-materials-table-wrapper {
+    overflow-x: auto;
+}
+.admin-materials-table-wrapper h3 {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+.admin-materials-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+}
+.admin-materials-table th,
+.admin-materials-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.admin-materials-table th {
+    background: var(--bg-light);
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+.admin-materials-table tr:hover {
+    background: rgba(37, 99, 235, 0.03);
+}
+
+.admin-badge-status {
+    padding: 0.25rem 0.6rem;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+.admin-badge-status.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+.admin-badge-status.soon {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.admin-table-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+.btn-admin-table {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+}
+.btn-admin-table:hover {
+    background: var(--bg-light);
+    border-color: var(--primary-color);
+}
+
+/* Barra de Backup */
+.admin-backup-bar {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.admin-backup-buttons {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .admin-full-width {
+        grid-column: span 1;
+    }
+    .admin-dashboard-box {
+        max-height: 95vh;
+    }
+}
