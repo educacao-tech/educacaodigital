@@ -1061,11 +1061,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
-            const materials = getStoredMaterials();
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(materials, null, 2));
+            const data = getActiveStore();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `materiais_educacao_digital_${new Date().toISOString().slice(0,10)}.json`);
+            downloadAnchor.setAttribute("download", `${currentAdminType}_educacao_digital_${new Date().toISOString().slice(0,10)}.json`);
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -1084,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const importedData = JSON.parse(event.target.result);
                     if (Array.isArray(importedData)) {
-                        saveStoredMaterials(importedData);
+                        saveActiveStore(importedData);
                         updateAdminProgress();
                         renderCoverageMatrix();
                         renderAdminTable();
@@ -1102,8 +1102,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja restaurar a lista padrão de links originais? Suas edições locais serão substituídas.')) {
-                saveStoredMaterials(DEFAULT_MATERIALS);
+            if (confirm(`Tem certeza que deseja restaurar a lista padrão de ${currentAdminType === 'atividades' ? 'Atividades Práticas' : 'Planejamentos'}?`)) {
+                if (currentAdminType === 'atividades') {
+                    saveStoredActivities(DEFAULT_ACTIVITIES);
+                } else {
+                    saveStoredMaterials(DEFAULT_MATERIALS);
+                }
                 updateAdminProgress();
                 renderCoverageMatrix();
                 renderAdminTable();
