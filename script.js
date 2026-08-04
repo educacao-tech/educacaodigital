@@ -459,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboardModal.classList.add('active');
             dashboardModal.setAttribute('aria-hidden', 'false');
             renderAdminTable();
+            loadSelectedMaterialToForm();
         }
     };
 
@@ -480,6 +481,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputUrl = document.getElementById('admin-drive-url');
     const selectStatus = document.getElementById('admin-select-status');
     const clearBtn = document.getElementById('admin-form-clear-btn');
+    const statusFeedback = document.getElementById('admin-form-status-feedback');
+
+    const loadSelectedMaterialToForm = () => {
+        if (!selectAno || !selectBimestre || !inputUrl || !selectStatus) return;
+        const ano = parseInt(selectAno.value, 10);
+        const bimestre = parseInt(selectBimestre.value, 10);
+        const materials = getStoredMaterials();
+        const mat = materials.find(m => m.ano === ano && m.bimestre === bimestre);
+
+        if (mat && mat.url && mat.url !== '#') {
+            inputUrl.value = mat.url;
+            selectStatus.value = mat.status || 'active';
+            if (statusFeedback) {
+                const statusLabel = (mat.status === 'active') ? '🟢 Ativo' : '🟠 Em breve';
+                statusFeedback.innerHTML = `<span style="color: #15803d; background: #dcfce7; padding: 0.25rem 0.68rem; border-radius: 50px; font-weight: 600; font-size: 0.82rem;">✅ Link Cadastrado (${statusLabel})</span>`;
+            }
+        } else {
+            inputUrl.value = '';
+            selectStatus.value = 'soon';
+            if (statusFeedback) {
+                statusFeedback.innerHTML = `<span style="color: #b45309; background: #fef3c7; padding: 0.25rem 0.68rem; border-radius: 50px; font-weight: 600; font-size: 0.82rem;">⚠️ Nenhum link cadastrado</span>`;
+            }
+        }
+    };
+
+    if (selectAno && selectBimestre) {
+        selectAno.addEventListener('change', loadSelectedMaterialToForm);
+        selectBimestre.addEventListener('change', loadSelectedMaterialToForm);
+    }
 
     if (materialForm) {
         materialForm.addEventListener('submit', (e) => {
@@ -507,13 +537,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             saveStoredMaterials(materials);
             renderAdminTable();
+            loadSelectedMaterialToForm();
             alert(`Link do ${ano}º Ano (${bimestre}º Bimestre) salvo com sucesso!`);
         });
 
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
                 inputUrl.value = '';
-                selectStatus.value = 'active';
+                selectStatus.value = 'soon';
+                if (statusFeedback) {
+                    statusFeedback.innerHTML = `<span style="color: #b45309; background: #fef3c7; padding: 0.25rem 0.68rem; border-radius: 50px; font-weight: 600; font-size: 0.82rem;">⚠️ Nenhum link cadastrado</span>`;
+                }
             });
         }
     }
@@ -566,8 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (mat) {
                     selectAno.value = mat.ano;
                     selectBimestre.value = mat.bimestre;
-                    inputUrl.value = mat.url === '#' ? '' : mat.url;
-                    selectStatus.value = mat.status;
+                    loadSelectedMaterialToForm();
                     inputUrl.focus();
                 }
             });
