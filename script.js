@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1º ao 5º Ano (Geral)
         { id: "a-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
         { id: "a-6-2", ano: 6, bimestre: 2, url: "#", status: "soon" },
-        { id: "a-6-3", ano: 6, bimestre: 3, url: "#", status: "soon" },
+        { id: "a-6-3", ano: 6, bimestre: 3, url: "https://drive.google.com/drive/folders/1HbSmBeQSGio4k3Jer942hrqQD9-uiU8x?usp=sharing", status: "active" },
         { id: "a-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
     ];
 
