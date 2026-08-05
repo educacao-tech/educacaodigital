@@ -5,7 +5,7 @@
   "main": "script.js",
   "scripts": {
     "start": "live-server",
-    "publish": "git add . && git commit -m \"Atualização automática de links e arquivos\" && git push origin main",
+    "publish": "git add . && (git commit -m \"Atualização automática de links e arquivos\" || echo Sem alterações para salvar) && git push origin main",
     "push": "npm run publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
