@@ -52,6 +52,16 @@ const autoPublishToGit = (type, ano, bimestre) => {
 };
 
 const server = http.createServer((req, res) => {
+    // Permite CORS para que requisições vindas do Live Server (ex: porta 5500) funcionem
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        res.writeHead(204);
+        return res.end();
+    }
+
     if (req.method === 'POST' && req.url === '/api/save-link') {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });

@@ -725,27 +725,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const anoLabel = ano === 6 ? '1º ao 5º Ano Geral' : `${ano}º Ano`;
 
             // Enviar para a API local para gravar no arquivo físico script.js e disparar git push
-            fetch('/api/save-link', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type: currentAdminType,
-                    ano,
-                    bimestre,
-                    url,
-                    status
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
+            const payload = { type: currentAdminType, ano, bimestre, url, status };
+            const saveApi = async () => {
+                try {
+                    let res = await fetch('/api/save-link', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) return await res.json();
+                } catch(e) {}
+
+                try {
+                    let res = await fetch('http://localhost:3000/api/save-link', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) return await res.json();
+                } catch(e) {}
+
+                return { success: false, message: 'Servidor Node local (server.js) não está em execução no momento.' };
+            };
+
+            saveApi().then(data => {
                 if (data.success) {
                     alert(`✅ Link de ${categoryLabel} (${anoLabel} - ${bimestre}º Bimestre) gravado com sucesso no arquivo físico script.js e publicado no GitHub!`);
                 } else {
-                    alert(`Link salvo na memória local: ${data.message}`);
+                    alert(`⚠️ ${data.message}\n(O link foi salvo temporariamente no navegador)`);
                 }
-            })
-            .catch(err => {
-                alert(`Link de ${categoryLabel} (${anoLabel} - ${bimestre}º Bimestre) salvo com sucesso no navegador!`);
             });
         });
 
