@@ -720,8 +720,33 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCoverageMatrix();
             renderAdminTable();
             loadSelectedMaterialToForm();
+
             const categoryLabel = currentAdminType === 'atividades' ? 'Atividade Prática' : 'Planejamento';
-            alert(`Link de ${categoryLabel} (${ano === 6 ? '1º ao 5º Ano Geral' : `${ano}º Ano`} - ${bimestre}º Bimestre) salvo com sucesso!`);
+            const anoLabel = ano === 6 ? '1º ao 5º Ano Geral' : `${ano}º Ano`;
+
+            // Enviar para a API local para gravar no arquivo físico script.js e disparar git push
+            fetch('/api/save-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: currentAdminType,
+                    ano,
+                    bimestre,
+                    url,
+                    status
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`✅ Link de ${categoryLabel} (${anoLabel} - ${bimestre}º Bimestre) gravado com sucesso no arquivo físico script.js e publicado no GitHub!`);
+                } else {
+                    alert(`Link salvo na memória local: ${data.message}`);
+                }
+            })
+            .catch(err => {
+                alert(`Link de ${categoryLabel} (${anoLabel} - ${bimestre}º Bimestre) salvo com sucesso no navegador!`);
+            });
         });
 
         if (clearBtn) {
