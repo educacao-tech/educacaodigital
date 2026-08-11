@@ -459,6 +459,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Comunicação com a API do servidor Node para gravação física no script.js e publicação automática no GitHub
+    const saveSingleLinkToApi = async (payload) => {
+        try {
+            let res = await fetch('/api/save-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) return await res.json();
+        } catch(e) {}
+
+        try {
+            let res = await fetch('http://localhost:3000/api/save-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) return await res.json();
+        } catch(e) {}
+
+        return { success: false, message: 'Servidor Node local (server.js) não está em execução no momento.' };
+    };
+
+    const saveBatchLinksToApi = async (payload) => {
+        try {
+            let res = await fetch('/api/save-batch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) return await res.json();
+        } catch(e) {}
+
+        try {
+            let res = await fetch('http://localhost:3000/api/save-batch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) return await res.json();
+        } catch(e) {}
+
+        return { success: false, message: 'Servidor Node local (server.js) não está em execução no momento.' };
+    };
+
     const renderDynamicMaterials = () => {
         const materials = getStoredMaterials();
         const container = document.querySelector('#planejamentos .accordion-container');
@@ -726,35 +771,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const categoryLabel = currentAdminType === 'atividades' ? 'Atividade Prática' : 'Planejamento';
             const anoLabel = ano === 6 ? '1º ao 5º Ano Geral' : `${ano}º Ano`;
 
-            // Enviar para a API local para gravar no arquivo físico script.js e disparar git push
+            // Enviar para a API local para gravar no arquivo físico script.js e disparar git push no GitHub
             const payload = { type: currentAdminType, ano, bimestre, url, status };
-            const saveApi = async () => {
-                try {
-                    let res = await fetch('/api/save-link', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (res.ok) return await res.json();
-                } catch(e) {}
-
-                try {
-                    let res = await fetch('http://localhost:3000/api/save-link', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (res.ok) return await res.json();
-                } catch(e) {}
-
-                return { success: false, message: 'Servidor Node local (server.js) não está em execução no momento.' };
-            };
-
-            saveApi().then(data => {
+            saveSingleLinkToApi(payload).then(data => {
                 if (data.success) {
-                    alert(`✅ Link de ${categoryLabel} (${anoLabel} - ${bimestre}º Bimestre) gravado com sucesso no arquivo físico script.js e publicado no GitHub!`);
+                    alert(`✅ Link de ${categoryLabel} (${anoLabel} - ${bimestre}º Bimestre) gravado e publicado automaticamente no GitHub!`);
                 } else {
-                    alert(`⚠️ ${data.message}\n(O link foi salvo temporariamente no navegador)`);
+                    alert(`⚠️ Link salvo no seu navegador.\n(${data.message})`);
                 }
             });
         });
@@ -968,6 +991,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateAdminProgress();
                     renderCoverageMatrix();
                     renderAdminTable();
+
+                    // Dispara a sincronização do novo status no GitHub
+                    const mat = allMats[index];
+                    saveSingleLinkToApi({
+                        type: currentAdminType,
+                        ano: mat.ano,
+                        bimestre: mat.bimestre,
+                        url: mat.url,
+                        status: mat.status
+                    });
                 }
             });
         });
@@ -1072,7 +1105,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderAdminTable();
                 loadSelectedMaterialToForm();
                 closeBatchModal();
-                alert(`Links em lote salvos com sucesso!`);
+
+                const batchItems = [];
+                lines.forEach((url, i) => {
+                    if (i < 4) {
+                        batchItems.push({
+                            ano: targetAno,
+                            bimestre: i + 1,
+                            url: url,
+                            status: 'active'
+                        });
+                    }
+                });
+
+                const catName = currentAdminType === 'atividades' ? 'Atividades Práticas' : 'Planejamentos';
+                const anoName = targetAno === 6 ? '1º ao 5º Ano Geral' : `${targetAno}º Ano`;
+
+                saveBatchLinksToApi({
+                    type: currentAdminType,
+                    items: batchItems,
+                    label: `${catName} - ${anoName}`
+                }).then(data => {
+                    if (data.success) {
+                        alert(`✅ Links em lote para o ${anoName} salvos em script.js e publicados no GitHub automaticamente!`);
+                    } else {
+                        alert(`⚠️ Links salvos no seu navegador.\n(${data.message})`);
+                    }
+                });
             });
         }
     }

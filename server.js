@@ -36,18 +36,48 @@ const updateScriptJs = (type, ano, bimestre, url, status) => {
     return false;
 };
 
-const autoPublishToGit = (type, ano, bimestre) => {
-    const label = type === 'atividades' ? 'Atividade Prática' : 'Planejamento';
-    const commitMsg = `Atualizar link no script.js: ${label} - ${ano}º Ano (${bimestre}º Bimestre)`;
-    
-    const cmd = `git add script.js && (git commit -m "${commitMsg}" || echo Sem alteracoes) && git push origin main`;
-    
-    exec(cmd, { cwd: __dirname }, (error, stdout, stderr) => {
-        if (error) {
-            console.error('Erro no auto push:', error.message);
-        } else {
-            console.log('Publicado no GitHub com sucesso:\n', stdout);
+const updateScriptJsBatch = (type, items) => {
+    const scriptPath = path.join(__dirname, 'script.js');
+    let content = fs.readFileSync(scriptPath, 'utf8');
+    let updatedCount = 0;
+
+    items.forEach(item => {
+        const prefix = (type === 'atividades') ? 'a' : 'm';
+        const targetId = `${prefix}-${item.ano}-${item.bimestre}`;
+        const regex = new RegExp(`{\\s*id:\\s*["']${targetId}["'][^}]*}`);
+        const replacement = `{ id: "${targetId}", ano: ${item.ano}, bimestre: ${item.bimestre}, url: "${item.url}", status: "${item.status || 'active'}" }`;
+
+        if (regex.test(content)) {
+            content = content.replace(regex, replacement);
+            updatedCount++;
         }
+    });
+
+    if (updatedCount > 0) {
+        fs.writeFileSync(scriptPath, content, 'utf8');
+        return true;
+    }
+    return false;
+};
+
+const autoPublishToGit = (commitMsg = 'Atualizar links no script.js') => {
+    return new Promise((resolve) => {
+        const safeMsg = commitMsg.replace(/"/g, '\\"');
+        const cmd = `git add script.js && git commit -m "${safeMsg}" && git push origin main`;
+
+        exec(cmd, { cwd: __dirname }, (error, stdout, stderr) => {
+            if (error) {
+                const combined = (stdout || '') + (stderr || '') + (error.message || '');
+                if (combined.includes('nothing to commit') || combined.includes('Sem alteracoes') || combined.includes('clean')) {
+                    console.log('ℹ️ Nenhuma alteração pendente para commit no Git.');
+                    return resolve({ success: true, message: 'Nenhuma alteração pendente no Git.' });
+                }
+                console.error('❌ Erro ao publicar no Git:', combined);
+                return resolve({ success: false, message: 'Aviso do Git Push: ' + (error.message || stderr) });
+            }
+            console.log('✅ Publicado no GitHub com sucesso:\n', stdout);
+            return resolve({ success: true, message: 'Publicado no GitHub com sucesso!' });
+        });
     });
 };
 
@@ -65,7 +95,7 @@ const server = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/api/save-link') {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+        req.on('end', async () => {
             try {
                 const data = JSON.parse(body);
                 const { type, ano, bimestre, url, status } = data;
@@ -77,17 +107,59 @@ const server = http.createServer((req, res) => {
 
                 const updated = updateScriptJs(type, ano, bimestre, url, status);
                 if (updated) {
-                    // Dispara a publicação no Git em segundo plano
-                    autoPublishToGit(type, ano, bimestre);
+                    const label = type === 'atividades' ? 'Atividade Prática' : 'Planejamento';
+                    const commitMsg = `Atualizar link: ${label} - ${ano}º Ano (${bimestre}º Bimestre)`;
+                    const gitResult = await autoPublishToGit(commitMsg);
 
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     return res.end(JSON.stringify({
                         success: true,
-                        message: 'Link gravado com sucesso no arquivo físico script.js e enviado para o GitHub!'
+                        publishedToGit: gitResult.success,
+                        message: gitResult.success 
+                            ? 'Link gravado com sucesso em script.js e publicado no GitHub!' 
+                            : `Link salvo em script.js local (${gitResult.message})`
                     }));
                 } else {
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     return res.end(JSON.stringify({ success: false, message: 'ID do item não encontrado no script.js.' }));
+                }
+            } catch (err) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                return res.end(JSON.stringify({ success: false, message: err.message }));
+            }
+        });
+        return;
+    }
+
+    if (req.method === 'POST' && req.url === '/api/save-batch') {
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', async () => {
+            try {
+                const data = JSON.parse(body);
+                const { type, items, label } = data;
+
+                if (!type || !Array.isArray(items) || items.length === 0) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ success: false, message: 'Dados em lote inválidos.' }));
+                }
+
+                const updated = updateScriptJsBatch(type, items);
+                if (updated) {
+                    const commitMsg = `Atualizar links em lote: ${label || type}`;
+                    const gitResult = await autoPublishToGit(commitMsg);
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({
+                        success: true,
+                        publishedToGit: gitResult.success,
+                        message: gitResult.success 
+                            ? 'Links em lote atualizados em script.js e publicados no GitHub!' 
+                            : `Links salvos em script.js local (${gitResult.message})`
+                    }));
+                } else {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ success: false, message: 'Nenhum item correspondente encontrado para atualização.' }));
                 }
             } catch (err) {
                 res.writeHead(500, { 'Content-Type': 'application/json' });
