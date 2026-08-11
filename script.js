@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4º Ano
         { id: "m-4-1", ano: 4, bimestre: 1, url: "https://docs.google.com/document/d/1Gb1KxdgwZmd1afpzB70JcXEpoXv5Bx0o/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-4-2", ano: 4, bimestre: 2, url: "https://docs.google.com/document/d/1rBlNC-1iRzlSdaqTOtt0GmbqDF15ADy9/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
-        { id: "m-4-3", ano: 4, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-4-3", ano: 4, bimestre: 3, url: "https://docs.google.com/document/d/1eoSuejeAicffwc4iZueqw2rGMI-RBnFi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-4-4", ano: 4, bimestre: 4, url: "#", status: "soon" },
         // 5º Ano
         { id: "m-5-1", ano: 5, bimestre: 1, url: "https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
