@@ -364,12 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "m-5-1", ano: 5, bimestre: 1, url: "https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-5-2", ano: 5, bimestre: 2, url: "https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-5-3", ano: 5, bimestre: 3, url: "https://docs.google.com/document/d/1XUBNH05jTNyxdLDHSpr-cf80XeYe8zAl/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
-        { id: "m-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" },
-        // 1º ao 5º Ano (Geral)
-        { id: "m-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
-        { id: "m-6-2", ano: 6, bimestre: 2, url: "#", status: "soon" },
-        { id: "m-6-3", ano: 6, bimestre: 3, url: "#", status: "soon" },
-        { id: "m-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
+        { id: "m-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" }
     ];
 
     const DEFAULT_ACTIVITIES = [
@@ -397,12 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "a-5-1", ano: 5, bimestre: 1, url: "https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link", status: "active" },
         { id: "a-5-2", ano: 5, bimestre: 2, url: "#", status: "soon" },
         { id: "a-5-3", ano: 5, bimestre: 3, url: "#", status: "soon" },
-        { id: "a-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" },
-        // 1º ao 5º Ano (Geral)
-        { id: "a-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
-        { id: "a-6-2", ano: 6, bimestre: 2, url: "#", status: "soon" },
-        { id: "a-6-3", ano: 6, bimestre: 3, url: "https://drive.google.com/drive/folders/1HbSmBeQSGio4k3Jer942hrqQD9-uiU8x?usp=sharing", status: "active" },
-        { id: "a-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
+        { id: "a-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" }
     ];
 
     let currentAdminType = 'planejamentos'; // 'planejamentos' ou 'atividades'
@@ -805,8 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { ano: 2, label: "2º Ano" },
             { ano: 3, label: "3º Ano" },
             { ano: 4, label: "4º Ano" },
-            { ano: 5, label: "5º Ano" },
-            { ano: 6, label: "📚 1º a 5º Geral" }
+            { ano: 5, label: "5º Ano" }
         ];
 
         matrixGrid.innerHTML = '';
@@ -860,7 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Renderiza o resumo de pendências
         const storeName = currentAdminType === 'atividades' ? 'Atividades Práticas' : 'Planejamentos';
         if (pendingBySeries.length === 0) {
-            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os 24 bimestres de ${storeName} estão com links ativos!</h4>`;
+            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os 20 bimestres de ${storeName} estão com links ativos!</h4>`;
             summaryEl.style.background = '#dcfce7';
             summaryEl.style.color = '#15803d';
             summaryEl.style.borderColor = '#bbf7d0';
@@ -869,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryEl.style.color = '';
             summaryEl.style.borderColor = '';
             const totalMissing = pendingBySeries.reduce((acc, curr) => acc + curr.missing.length, 0);
-            let html = `<h4>⚠️ Relatório de Pendências - ${storeName} (${totalMissing} de 24 bimestres faltantes):</h4><ul>`;
+            let html = `<h4>⚠️ Relatório de Pendências - ${storeName} (${totalMissing} de 20 bimestres faltantes):</h4><ul>`;
             pendingBySeries.forEach(p => {
                 html += `<li><strong>${p.label}:</strong> Faltam ${p.missing.join(', ')}</li>`;
             });
