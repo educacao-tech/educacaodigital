@@ -67,18 +67,19 @@ header {
     transition: background-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; 
 }
 
-nav { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-.logo { display: flex; align-items: center; gap: 0.8rem; font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
-.logo img { height: 40px; width: auto; }
+nav { max-width: 1320px; margin: 0 auto; padding: 0.75rem 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: nowrap; }
+.logo { display: flex; align-items: center; gap: 0.6rem; font-size: 1.15rem; font-weight: 700; color: var(--primary-color); white-space: nowrap; flex-shrink: 0; }
+.logo img { height: 38px; width: auto; flex-shrink: 0; }
+.logo-text { font-size: 1.05rem; font-weight: 700; white-space: nowrap; }
 
 html[data-theme="dark"] .logo img {
     filter: invert(10%) sepia(100%) saturate(200%) hue-rotate(180deg) brightness(1.2);
 }
 html[data-theme="dark"] header { background: rgba(17, 24, 39, 0.85); }
 
-.nav-controls { display: flex; align-items: center; gap: 1.5rem; }
+.nav-controls { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
 
-.nav-links { display: flex; gap: 1rem; list-style: none; font-size: 0.95rem; }
+.nav-links { display: flex; gap: 0.65rem; list-style: none; font-size: 0.88rem; align-items: center; flex-shrink: 1; }
 .nav-links a:hover { color: var(--primary-color); font-weight: 600; }
 
 /* Estilo para o link ativo (ScrollSpy) */
@@ -674,14 +675,15 @@ html[data-theme="dark"] .partner-info h3 {
     margin: 0.25rem 0 0 0;
 }
 
-/* Responsividade */
-@media (max-width: 1100px) {
-    .logo-text { display: none; } /* Esconde o texto do logo em telas médias para dar espaço ao menu */
+/* Responsividade do Cabeçalho */
+@media (max-width: 1250px) {
+    .logo-text { display: none; } /* Esconde o texto do logo para preservar exibição em linha única nas telas médias */
+    .nav-links { gap: 0.8rem; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .mobile-menu-icon { display: block; }
-    .nav-controls { position: relative; z-index: 100000; }
+    .nav-controls { position: relative; z-index: 100000; gap: 0.3rem; }
     
     .nav-links {
         display: flex;
