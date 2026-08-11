@@ -111,6 +111,41 @@ html[data-theme="dark"] .theme-toggle .sun-icon {
     display: none;
 }
 
+/* Header Admin Toggle Gear Button */
+.admin-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.admin-toggle .gear-icon {
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.admin-toggle:hover {
+    background-color: var(--bg-light);
+    color: var(--secondary-color);
+}
+
+.admin-toggle:hover .gear-icon {
+    transform: rotate(90deg);
+}
+
+html[data-theme="dark"] .admin-toggle {
+    color: var(--accent-color);
+}
+
+html[data-theme="dark"] .admin-toggle:hover {
+    background-color: var(--white);
+}
+
 /* Mobile Menu Icon */
 .mobile-menu-icon { display: none; cursor: pointer; background: none; border: none; padding: 0.5rem; }
 .hamburger-icon {

@@ -24,8 +24,8 @@ const updateScriptJs = (type, ano, bimestre, url, status) => {
     const prefix = (type === 'atividades') ? 'a' : 'm';
     const targetId = `${prefix}-${ano}-${bimestre}`;
 
-    // Regex para encontrar o objeto pelo id (ex: id: "m-1-1" ou id: "a-2-1")
-    const regex = new RegExp(`{\\s*id:\\s*"${targetId}"[^}]*}`);
+    // Regex para encontrar o objeto pelo id (suporta aspas simples ou duplas)
+    const regex = new RegExp(`{\\s*id:\\s*["']${targetId}["'][^}]*}`);
     const replacement = `{ id: "${targetId}", ano: ${ano}, bimestre: ${bimestre}, url: "${url}", status: "${status}" }`;
 
     if (regex.test(content)) {
