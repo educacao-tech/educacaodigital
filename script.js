@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2º Ano
         { id: "m-2-1", ano: 2, bimestre: 1, url: "https://docs.google.com/document/d/1kMJxrP_-snqlOaO3NiIUPd0WyFiGIv23/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-2-2", ano: 2, bimestre: 2, url: "https://docs.google.com/document/d/1a8Kyf0DlwlfVISwTOat0YMhsqdd5dNNb/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
-        { id: "m-2-3", ano: 2, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-2-3", ano: 2, bimestre: 3, url: "https://docs.google.com/document/d/1RkSNVmdUl2pUe1R3dnuf8hMTGtv6M4tG/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-2-4", ano: 2, bimestre: 4, url: "#", status: "soon" },
         // 3º Ano
         { id: "m-3-1", ano: 3, bimestre: 1, url: "https://docs.google.com/document/d/15mv2PLWIofSjykP1Htj5tALmpmhcOfIr/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDynamicActivities();
 
     // Modais e Login Admin
-    const openLoginBtn = document.getElementById('open-admin-login-btn');
+    const openLoginBtns = document.querySelectorAll('#open-admin-login-btn, #open-admin-login-btn-header, .admin-toggle, .btn-admin-access');
     const loginModal = document.getElementById('admin-login-modal');
     const loginCloseBtn = document.getElementById('admin-login-close');
     const loginCancelBtn = document.getElementById('admin-login-cancel-btn');
@@ -544,13 +544,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const getAdminPassword = () => localStorage.getItem('edumidia_admin_password') || "batatais2026";
     const setAdminPassword = (newPass) => localStorage.setItem('edumidia_admin_password', newPass);
 
-    if (openLoginBtn && loginModal) {
-        openLoginBtn.addEventListener('click', () => {
-            loginModal.classList.add('active');
-            loginModal.setAttribute('aria-hidden', 'false');
-            const passInput = document.getElementById('admin-password');
-            if (passInput) passInput.value = '';
-            if (loginError) loginError.style.display = 'none';
+    if (openLoginBtns.length > 0 && loginModal) {
+        openLoginBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loginModal.classList.add('active');
+                loginModal.setAttribute('aria-hidden', 'false');
+                const passInput = document.getElementById('admin-password');
+                if (passInput) passInput.value = '';
+                if (loginError) loginError.style.display = 'none';
+            });
         });
 
         const closeLoginModal = () => {
