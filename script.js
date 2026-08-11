@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5º Ano
         { id: "m-5-1", ano: 5, bimestre: 1, url: "https://docs.google.com/document/d/1nTNyjvjkbR6pbNYuNhHkC8eOeBxWJ1lD/edit?usp=drive_link&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-5-2", ano: 5, bimestre: 2, url: "https://docs.google.com/document/d/1BMmrFi28vyWUC65kh-j58yoiVsb8KHDi/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
-        { id: "m-5-3", ano: 5, bimestre: 3, url: "#", status: "soon" },
+        { id: "m-5-3", ano: 5, bimestre: 3, url: "https://docs.google.com/document/d/1XUBNH05jTNyxdLDHSpr-cf80XeYe8zAl/edit?usp=sharing&ouid=105490380319692087161&rtpof=true&sd=true", status: "active" },
         { id: "m-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" },
         // 1º ao 5º Ano (Geral)
         { id: "m-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
