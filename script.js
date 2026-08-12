@@ -392,7 +392,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: "a-5-1", ano: 5, bimestre: 1, url: "https://drive.google.com/drive/folders/1srF9D3WW-WsWEH5WrDUspiAinBfjEE2_?usp=drive_link", status: "active" },
         { id: "a-5-2", ano: 5, bimestre: 2, url: "#", status: "soon" },
         { id: "a-5-3", ano: 5, bimestre: 3, url: "#", status: "soon" },
-        { id: "a-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" }
+        { id: "a-5-4", ano: 5, bimestre: 4, url: "#", status: "soon" },
+        // 1º ao 5º Ano (Geral)
+        { id: "a-6-1", ano: 6, bimestre: 1, url: "#", status: "soon" },
+        { id: "a-6-2", ano: 6, bimestre: 2, url: "#", status: "soon" },
+        { id: "a-6-3", ano: 6, bimestre: 3, url: "https://drive.google.com/drive/folders/1HbSmBeQSGio4k3Jer942hrqQD9-uiU8x?usp=sharing", status: "active" },
+        { id: "a-6-4", ano: 6, bimestre: 4, url: "#", status: "soon" }
     ];
 
     let currentAdminType = 'planejamentos'; // 'planejamentos' ou 'atividades'
@@ -449,7 +454,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Comunicação com a API do servidor Node para gravação física no script.js e publicação automática no GitHub
+    // Comunicação e carregamento dinâmico de dados do data/links.json
+    const loadRemoteLinksData = async () => {
+        try {
+            let res = await fetch('/api/links');
+            if (!res.ok) {
+                res = await fetch('data/links.json');
+            }
+            if (res.ok) {
+                const data = await res.json();
+                if (data.planejamentos && Array.isArray(data.planejamentos)) {
+                    localStorage.setItem('edumidia_materials', JSON.stringify(data.planejamentos));
+                }
+                if (data.atividades && Array.isArray(data.atividades)) {
+                    localStorage.setItem('edumidia_activities', JSON.stringify(data.atividades));
+                }
+                renderDynamicMaterials();
+                renderDynamicActivities();
+            }
+        } catch (e) {
+            console.log('ℹ️ data/links.json ou /api/links não puderam ser carregados remotamente, usando dados locais.');
+        }
+    };
+
+    // Comunicação com a API do servidor Node para gravação física no data/links.json e publicação automática no GitHub
     const saveSingleLinkToApi = async (payload) => {
         try {
             let res = await fetch('/api/save-link', {
@@ -494,6 +522,113 @@ document.addEventListener('DOMContentLoaded', () => {
         return { success: false, message: 'Servidor Node local (server.js) não está em execução no momento.' };
     };
 
+    // Sistema de Notificações Toast e Cópia para Área de Transferência
+    const showToast = (message, icon = '📋') => {
+        let toast = document.getElementById('edumidia-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'edumidia-toast';
+            toast.className = 'toast-notification';
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+        toast.classList.add('show');
+
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3200);
+    };
+
+    const copyToClipboard = async (text, successMessage = 'Link copiado para a área de transferência!') => {
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            }
+            showToast(successMessage, '📋');
+            return true;
+        } catch (err) {
+            console.error('Erro ao copiar:', err);
+            showToast('Não foi possível copiar o link.', '⚠️');
+            return false;
+        }
+    };
+
+    const setupBimestreCopyButton = (btn, url, isAvailable, labelInfo) => {
+        let parent = btn.parentElement;
+        if (!parent || !parent.classList.contains('bimestre-group')) {
+            parent = document.createElement('div');
+            parent.className = 'bimestre-group';
+            btn.parentNode.insertBefore(parent, btn);
+            parent.appendChild(btn);
+        }
+
+        let copyBtn = parent.querySelector('.btn-copy-link');
+        if (!copyBtn) {
+            copyBtn = document.createElement('button');
+            copyBtn.className = 'btn-copy-link';
+            copyBtn.setAttribute('type', 'button');
+            copyBtn.innerHTML = `<svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+            parent.appendChild(copyBtn);
+        }
+
+        if (isAvailable && url && url !== '#') {
+            copyBtn.style.display = 'inline-flex';
+            copyBtn.setAttribute('title', `Copiar link do ${labelInfo} para WhatsApp`);
+            copyBtn.setAttribute('aria-label', `Copiar link do ${labelInfo}`);
+            
+            copyBtn.onclick = async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const copied = await copyToClipboard(url, `Link do ${labelInfo} copiado! Pronto para colar no WhatsApp.`);
+                if (copied) {
+                    copyBtn.classList.add('copied');
+                    copyBtn.innerHTML = `<svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                    setTimeout(() => {
+                        copyBtn.classList.remove('copied');
+                        copyBtn.innerHTML = `<svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                    }, 2000);
+                }
+            };
+        } else {
+            copyBtn.style.display = 'none';
+        }
+    };
+
+    const DOWNLOAD_SVG_ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+
+    const updateBimestreButtonState = (btn, isAvailable, url) => {
+        if (isAvailable) {
+            btn.classList.remove('disabled');
+            btn.setAttribute('href', url);
+            btn.setAttribute('target', '_blank');
+            btn.setAttribute('rel', 'noopener noreferrer');
+            btn.removeAttribute('tabindex');
+            btn.removeAttribute('aria-disabled');
+            if (!btn.querySelector('svg')) {
+                btn.insertAdjacentHTML('beforeend', DOWNLOAD_SVG_ICON);
+            }
+        } else {
+            btn.classList.add('disabled');
+            btn.setAttribute('href', '#');
+            btn.setAttribute('aria-disabled', 'true');
+            btn.setAttribute('tabindex', '-1');
+            btn.removeAttribute('target');
+            btn.removeAttribute('rel');
+            btn.querySelector('svg')?.remove();
+        }
+    };
+
     const renderDynamicMaterials = () => {
         const materials = getStoredMaterials();
         const container = document.querySelector('#planejamentos .accordion-container');
@@ -508,20 +643,12 @@ document.addEventListener('DOMContentLoaded', () => {
             buttons.forEach((btn, bIndex) => {
                 const bimestreNum = bIndex + 1;
                 const mat = materials.find(m => m.ano === anoNum && m.bimestre === bimestreNum);
+                const labelInfo = `Planejamento ${anoNum}º Ano (${bimestreNum}º Bimestre)`;
                 
                 if (mat) {
-                    if (mat.status === 'active' && mat.url && mat.url !== '#') {
-                        btn.classList.remove('disabled');
-                        btn.setAttribute('href', mat.url);
-                        btn.setAttribute('target', '_blank');
-                        btn.setAttribute('rel', 'noopener noreferrer');
-                        btn.removeAttribute('tabindex');
-                    } else {
-                        btn.classList.add('disabled');
-                        btn.setAttribute('href', '#');
-                        btn.removeAttribute('target');
-                        btn.removeAttribute('rel');
-                    }
+                    const isAvailable = mat.status === 'active' && mat.url && mat.url !== '#';
+                    updateBimestreButtonState(btn, isAvailable, mat.url);
+                    setupBimestreCopyButton(btn, mat.url, isAvailable, labelInfo);
                 }
             });
         });
@@ -541,28 +668,21 @@ document.addEventListener('DOMContentLoaded', () => {
             buttons.forEach((btn, bIndex) => {
                 const bimestreNum = bIndex + 1;
                 const act = activities.find(a => a.ano === anoNum && a.bimestre === bimestreNum);
+                const labelInfo = `Atividade ${anoNum}º Ano (${bimestreNum}º Bimestre)`;
                 
                 if (act) {
-                    if (act.status === 'active' && act.url && act.url !== '#') {
-                        btn.classList.remove('disabled');
-                        btn.setAttribute('href', act.url);
-                        btn.setAttribute('target', '_blank');
-                        btn.setAttribute('rel', 'noopener noreferrer');
-                        btn.removeAttribute('tabindex');
-                    } else {
-                        btn.classList.add('disabled');
-                        btn.setAttribute('href', '#');
-                        btn.removeAttribute('target');
-                        btn.removeAttribute('rel');
-                    }
+                    const isAvailable = act.status === 'active' && act.url && act.url !== '#';
+                    updateBimestreButtonState(btn, isAvailable, act.url);
+                    setupBimestreCopyButton(btn, act.url, isAvailable, labelInfo);
                 }
             });
         });
     };
 
-    // Renderiza inicialmente na carga da página
+    // Renderiza inicialmente na carga da página e tenta carregar data/links.json remoto
     renderDynamicMaterials();
     renderDynamicActivities();
+    loadRemoteLinksData();
 
     // Modais e Login Admin
     const openLoginBtns = document.querySelectorAll('#open-admin-login-btn, #open-admin-login-btn-header, .admin-toggle, .btn-admin-access');
@@ -798,6 +918,12 @@ document.addEventListener('DOMContentLoaded', () => {
             { ano: 5, label: "5º Ano" }
         ];
 
+        if (currentAdminType === 'atividades') {
+            seriesList.push({ ano: 6, label: "📚 1º a 5º Geral" });
+        }
+
+        const totalBimestresCount = seriesList.length * 4;
+
         matrixGrid.innerHTML = '';
         const pendingBySeries = [];
 
@@ -849,7 +975,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Renderiza o resumo de pendências
         const storeName = currentAdminType === 'atividades' ? 'Atividades Práticas' : 'Planejamentos';
         if (pendingBySeries.length === 0) {
-            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os 20 bimestres de ${storeName} estão com links ativos!</h4>`;
+            summaryEl.innerHTML = `<h4>🎉 Parabéns! Todos os ${totalBimestresCount} bimestres de ${storeName} estão com links ativos!</h4>`;
             summaryEl.style.background = '#dcfce7';
             summaryEl.style.color = '#15803d';
             summaryEl.style.borderColor = '#bbf7d0';
@@ -858,7 +984,7 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryEl.style.color = '';
             summaryEl.style.borderColor = '';
             const totalMissing = pendingBySeries.reduce((acc, curr) => acc + curr.missing.length, 0);
-            let html = `<h4>⚠️ Relatório de Pendências - ${storeName} (${totalMissing} de 20 bimestres faltantes):</h4><ul>`;
+            let html = `<h4>⚠️ Relatório de Pendências - ${storeName} (${totalMissing} de ${totalBimestresCount} bimestres faltantes):</h4><ul>`;
             pendingBySeries.forEach(p => {
                 html += `<li><strong>${p.label}:</strong> Faltam ${p.missing.join(', ')}</li>`;
             });
@@ -945,7 +1071,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="admin-table-actions">
                         <button class="btn-admin-table btn-edit" data-ano="${mat.ano}" data-bimestre="${mat.bimestre}">✏️ Editar</button>
                         <button class="btn-admin-table btn-toggle" data-ano="${mat.ano}" data-bimestre="${mat.bimestre}">🔄 Alternar</button>
-                        ${mat.url && mat.url !== '#' ? `<button class="btn-admin-table btn-open" data-url="${mat.url}">🔗 Testar</button>` : ''}
+                        ${mat.url && mat.url !== '#' ? `
+                            <button class="btn-admin-table btn-copy-table" data-url="${mat.url}" data-label="${anoLabel} - ${mat.bimestre}º Bim">📋 Copiar</button>
+                            <button class="btn-admin-table btn-open" data-url="${mat.url}">🔗 Testar</button>
+                        ` : ''}
                     </div>
                 </td>
             `;
@@ -954,6 +1083,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Eventos nos botões da tabela
+        tbody.querySelectorAll('.btn-copy-table').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-url');
+                const label = btn.getAttribute('data-label');
+                copyToClipboard(url, `Link (${label}) copiado para a área de transferência!`);
+            });
+        });
+
         tbody.querySelectorAll('.btn-edit').forEach(btn => {
             btn.addEventListener('click', () => {
                 const ano = parseInt(btn.getAttribute('data-ano'), 10);

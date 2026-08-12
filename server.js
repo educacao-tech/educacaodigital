@@ -4,6 +4,7 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const PORT = 3000;
+const DATA_FILE_PATH = path.join(__dirname, 'data', 'links.json');
 
 const MIME_TYPES = {
     '.html': 'text/html; charset=utf-8',
@@ -17,53 +18,90 @@ const MIME_TYPES = {
     '.ico': 'image/x-icon'
 };
 
-const updateScriptJs = (type, ano, bimestre, url, status) => {
-    const scriptPath = path.join(__dirname, 'script.js');
-    let content = fs.readFileSync(scriptPath, 'utf8');
+const getLinksData = () => {
+    try {
+        if (fs.existsSync(DATA_FILE_PATH)) {
+            const raw = fs.readFileSync(DATA_FILE_PATH, 'utf8');
+            return JSON.parse(raw);
+        }
+    } catch (err) {
+        console.error('❌ Erro ao ler data/links.json:', err);
+    }
+    return { planejamentos: [], atividades: [] };
+};
 
+const saveLinksDataToFile = (data) => {
+    const dir = path.dirname(DATA_FILE_PATH);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(data, null, 2), 'utf8');
+};
+
+const updateLinksJson = (type, ano, bimestre, url, status) => {
+    const data = getLinksData();
+    const category = (type === 'atividades') ? 'atividades' : 'planejamentos';
     const prefix = (type === 'atividades') ? 'a' : 'm';
     const targetId = `${prefix}-${ano}-${bimestre}`;
 
-    // Regex para encontrar o objeto pelo id (suporta aspas simples ou duplas)
-    const regex = new RegExp(`{\\s*id:\\s*["']${targetId}["'][^}]*}`);
-    const replacement = `{ id: "${targetId}", ano: ${ano}, bimestre: ${bimestre}, url: "${url}", status: "${status}" }`;
-
-    if (regex.test(content)) {
-        content = content.replace(regex, replacement);
-        fs.writeFileSync(scriptPath, content, 'utf8');
-        return true;
+    if (!Array.isArray(data[category])) {
+        data[category] = [];
     }
-    return false;
+
+    const index = data[category].findIndex(item => item.id === targetId || (item.ano == ano && item.bimestre == bimestre));
+    const updatedItem = {
+        id: targetId,
+        ano: Number(ano),
+        bimestre: Number(bimestre),
+        url: url,
+        status: status || 'active'
+    };
+
+    if (index >= 0) {
+        data[category][index] = updatedItem;
+    } else {
+        data[category].push(updatedItem);
+    }
+
+    saveLinksDataToFile(data);
+    return true;
 };
 
-const updateScriptJsBatch = (type, items) => {
-    const scriptPath = path.join(__dirname, 'script.js');
-    let content = fs.readFileSync(scriptPath, 'utf8');
-    let updatedCount = 0;
+const updateLinksJsonBatch = (type, items) => {
+    const data = getLinksData();
+    const category = (type === 'atividades') ? 'atividades' : 'planejamentos';
+    const prefix = (type === 'atividades') ? 'a' : 'm';
+
+    if (!Array.isArray(data[category])) {
+        data[category] = [];
+    }
 
     items.forEach(item => {
-        const prefix = (type === 'atividades') ? 'a' : 'm';
         const targetId = `${prefix}-${item.ano}-${item.bimestre}`;
-        const regex = new RegExp(`{\\s*id:\\s*["']${targetId}["'][^}]*}`);
-        const replacement = `{ id: "${targetId}", ano: ${item.ano}, bimestre: ${item.bimestre}, url: "${item.url}", status: "${item.status || 'active'}" }`;
+        const index = data[category].findIndex(existing => existing.id === targetId || (existing.ano == item.ano && existing.bimestre == item.bimestre));
+        const updatedItem = {
+            id: targetId,
+            ano: Number(item.ano),
+            bimestre: Number(item.bimestre),
+            url: item.url,
+            status: item.status || 'active'
+        };
 
-        if (regex.test(content)) {
-            content = content.replace(regex, replacement);
-            updatedCount++;
+        if (index >= 0) {
+            data[category][index] = updatedItem;
+        } else {
+            data[category].push(updatedItem);
         }
     });
 
-    if (updatedCount > 0) {
-        fs.writeFileSync(scriptPath, content, 'utf8');
-        return true;
-    }
-    return false;
+    saveLinksDataToFile(data);
+    return true;
 };
 
-const autoPublishToGit = (commitMsg = 'Atualizar links no script.js') => {
+const autoPublishToGit = (commitMsg = 'Atualizar links em data/links.json') => {
     return new Promise((resolve) => {
         const safeMsg = commitMsg.replace(/"/g, '\\"');
-        const cmd = `git add script.js && git commit -m "${safeMsg}" && git push origin main`;
+        const cmd = `git add data/links.json && git commit -m "${safeMsg}" && git push origin main`;
 
         exec(cmd, { cwd: __dirname }, (error, stdout, stderr) => {
             if (error) {
@@ -92,6 +130,12 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
 
+    if (req.method === 'GET' && req.url === '/api/links') {
+        const data = getLinksData();
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(data));
+    }
+
     if (req.method === 'POST' && req.url === '/api/save-link') {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
@@ -105,7 +149,7 @@ const server = http.createServer((req, res) => {
                     return res.end(JSON.stringify({ success: false, message: 'Dados inválidos.' }));
                 }
 
-                const updated = updateScriptJs(type, ano, bimestre, url, status);
+                const updated = updateLinksJson(type, ano, bimestre, url, status);
                 if (updated) {
                     const label = type === 'atividades' ? 'Atividade Prática' : 'Planejamento';
                     const commitMsg = `Atualizar link: ${label} - ${ano}º Ano (${bimestre}º Bimestre)`;
@@ -116,12 +160,12 @@ const server = http.createServer((req, res) => {
                         success: true,
                         publishedToGit: gitResult.success,
                         message: gitResult.success 
-                            ? 'Link gravado com sucesso em script.js e publicado no GitHub!' 
-                            : `Link salvo em script.js local (${gitResult.message})`
+                            ? 'Link gravado com sucesso em data/links.json e publicado no GitHub!' 
+                            : `Link salvo em data/links.json local (${gitResult.message})`
                     }));
                 } else {
                     res.writeHead(500, { 'Content-Type': 'application/json' });
-                    return res.end(JSON.stringify({ success: false, message: 'ID do item não encontrado no script.js.' }));
+                    return res.end(JSON.stringify({ success: false, message: 'Erro ao atualizar data/links.json.' }));
                 }
             } catch (err) {
                 res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -144,7 +188,7 @@ const server = http.createServer((req, res) => {
                     return res.end(JSON.stringify({ success: false, message: 'Dados em lote inválidos.' }));
                 }
 
-                const updated = updateScriptJsBatch(type, items);
+                const updated = updateLinksJsonBatch(type, items);
                 if (updated) {
                     const commitMsg = `Atualizar links em lote: ${label || type}`;
                     const gitResult = await autoPublishToGit(commitMsg);
@@ -154,8 +198,8 @@ const server = http.createServer((req, res) => {
                         success: true,
                         publishedToGit: gitResult.success,
                         message: gitResult.success 
-                            ? 'Links em lote atualizados em script.js e publicados no GitHub!' 
-                            : `Links salvos em script.js local (${gitResult.message})`
+                            ? 'Links em lote atualizados em data/links.json e publicados no GitHub!' 
+                            : `Links salvos em data/links.json local (${gitResult.message})`
                     }));
                 } else {
                     res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -170,7 +214,8 @@ const server = http.createServer((req, res) => {
     }
 
     // Servidor de arquivos estáticos
-    let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+    let reqUrl = req.url.split('?')[0];
+    let filePath = path.join(__dirname, reqUrl === '/' ? 'index.html' : reqUrl);
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
@@ -192,5 +237,6 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
     console.log(`\n🚀 Servidor Educação Digital rodando em: http://localhost:${PORT}`);
-    console.log(`✨ Links salvos no painel admin serão gravados automaticamente em script.js e enviados para o GitHub!\n`);
+    console.log(`✨ Links salvos no painel admin serão gravados automaticamente em data/links.json e enviados para o GitHub!\n`);
 });
+
