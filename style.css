@@ -1421,6 +1421,225 @@ html[data-theme="dark"] .admin-pending-summary {
     align-items: center;
 }
 
+/* Busca de Habilidades BNCC Computação */
+.bncc-search-wrapper {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+}
+
+.bncc-search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 2px solid var(--border-color);
+    border-radius: 50px;
+    padding: 0.5rem 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bncc-search-bar:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+}
+
+.bncc-search-bar .search-icon {
+    font-size: 1.2rem;
+    margin-right: 0.75rem;
+    color: var(--primary-color);
+}
+
+.bncc-search-bar input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.btn-clear-search {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    display: none;
+    line-height: 1;
+}
+
+.btn-clear-search:hover {
+    color: var(--text-color);
+}
+
+.bncc-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.25rem;
+}
+
+.bncc-chip {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.bncc-chip:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.bncc-chip.active {
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.bncc-search-stats {
+    text-align: center;
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-top: 0.85rem;
+}
+
+html[data-theme="dark"] .bncc-search-stats {
+    color: #94a3b8;
+}
+
+.bncc-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1.5rem;
+}
+
+.bncc-skill-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.bncc-skill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.3);
+}
+
+.bncc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+}
+
+.bncc-code-tag {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #ffffff;
+    font-family: monospace;
+    font-weight: 800;
+    font-size: 0.92rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.bncc-ano-tag {
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 50px;
+}
+
+html[data-theme="dark"] .bncc-ano-tag {
+    background: #334155;
+    color: #cbd5e1;
+}
+
+.bncc-eixo-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.bncc-skill-card h4 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.bncc-skill-exemplo {
+    background: var(--bg-light);
+    border-left: 3px solid var(--accent-color);
+    padding: 0.6rem 0.85rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 0.84rem;
+    color: var(--text-color);
+    margin-top: 0.85rem;
+}
+
+.bncc-skill-exemplo strong {
+    color: #d97706;
+}
+
+.bncc-card-footer {
+    margin-top: 1.2rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-copy-code {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.btn-copy-code:hover {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
 @media (max-width: 768px) {
     .admin-form-grid {
         grid-template-columns: 1fr;

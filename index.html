@@ -38,11 +38,12 @@
             <!-- Substitua 'SEU-SITE' pela URL final do seu Google Sites -->
             <ul class="nav-links" id="nav-links">
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#oque-e-edm" target="_top">O que é EDM?</a></li>
+                <li><a href="https://sites.google.com/view/edumidia-batatais/#busca-bncc" target="_top">Busca BNCC</a></li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#pilares" target="_top">Eixos</a></li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#importancia" target="_top">Importância</a></li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#planejamentos" target="_top">Planejamentos</a></li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#atividades" target="_top">Atividades</a></li>
-                <li><a href="https://sites.google.com/view/edumidia-batatais/#bncc-videos" target="_top">BNCC Computação</a></li>
+                <li><a href="https://sites.google.com/view/edumidia-batatais/#bncc-videos" target="_top">BNCC Vídeos</a></li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#etapas" target="_top">Etapas</a></li>
                 <li><a href="https://sites.google.com/view/edumidia-batatais/#inclusao" target="_top">Inclusão</a></li>
             </ul>
@@ -315,6 +316,42 @@
                 <h3>Programação para Iniciantes</h3>
                 <p>Primeiros passos no mundo da programação, com exemplos e ferramentas acessíveis.</p>
             </a>
+        </div>
+    </section>
+
+    <!-- Busca Rápida de Habilidades da BNCC Computação -->
+    <section id="busca-bncc" class="section">
+        <h2 class="section-title">🔍 Busca de Habilidades BNCC Computação</h2>
+        <div class="section-intro">
+            <p>Pesquise instantaneamente por código (ex: <code>EF01CO01</code>), ano ou palavra-chave (ex: <em>algoritmos, fake news, segurança</em>) para encontrar as habilidades correspondentes.</p>
+        </div>
+
+        <div class="bncc-search-wrapper">
+            <div class="bncc-search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="bncc-search-input" placeholder="Digite um código (ex: EF01CO01) ou assunto (ex: algoritmos)..." aria-label="Pesquisar Habilidades da BNCC Computação">
+                <button type="button" id="bncc-search-clear" class="btn-clear-search" aria-label="Limpar pesquisa">&times;</button>
+            </div>
+
+            <div class="bncc-filter-chips" id="bncc-filter-chips">
+                <button type="button" class="bncc-chip active" data-filter="all">Todos os Anos</button>
+                <button type="button" class="bncc-chip" data-filter="1º Ano">1º Ano</button>
+                <button type="button" class="bncc-chip" data-filter="2º Ano">2º Ano</button>
+                <button type="button" class="bncc-chip" data-filter="3º Ano">3º Ano</button>
+                <button type="button" class="bncc-chip" data-filter="4º Ano">4º Ano</button>
+                <button type="button" class="bncc-chip" data-filter="5º Ano">5º Ano</button>
+                <button type="button" class="bncc-chip chip-eixo" data-filter="Pensamento Computacional">Pensamento Computacional</button>
+                <button type="button" class="bncc-chip chip-eixo" data-filter="Mundo Digital">Mundo Digital</button>
+                <button type="button" class="bncc-chip chip-eixo" data-filter="Cultura Digital">Cultura Digital</button>
+            </div>
+
+            <div class="bncc-search-stats" id="bncc-search-stats">
+                Mostrando <strong id="bncc-count-visible">11</strong> de 11 habilidades da BNCC Computação
+            </div>
+        </div>
+
+        <div class="bncc-cards-grid" id="bncc-cards-grid">
+            <!-- Renderizado dinamicamente via script.js -->
         </div>
     </section>
 

@@ -1374,4 +1374,222 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ==========================================
+    // Busca Rápida de Habilidades BNCC Computação
+    // ==========================================
+    const bnccHabilidadesData = [
+        {
+            codigo: 'EF01CO01',
+            ano: '1º Ano',
+            eixo: 'Mundo Digital',
+            icone: '💻',
+            descricao: 'Reconhecer que os computadores e dispositivos digitais são ferramentas construídas pelos seres humanos para realizar tarefas no cotidiano.',
+            exemplo: 'Identificação de artefatos tecnológicos na escola e em casa (tablets, celulares, computadores).'
+        },
+        {
+            codigo: 'EF01CO02',
+            ano: '1º Ano',
+            eixo: 'Pensamento Computacional',
+            icone: '🧩',
+            descricao: 'Identificar a presença de instruções sequenciais e rotinas organizadas em tarefas diárias.',
+            exemplo: 'Brincadeiras de seguir passos: lavar as mãos, receita simples, brincadeira do "Siga o Mestre".'
+        },
+        {
+            codigo: 'EF02CO01',
+            ano: '2º Ano',
+            eixo: 'Pensamento Computacional',
+            icone: '🤖',
+            descricao: 'Decompor um problema simples em pequenas etapas ou instruções ordenadas (algoritmos básicos).',
+            exemplo: 'Criação de mapa de passos no chão com flechas (computação desplugada).'
+        },
+        {
+            codigo: 'EF02CO02',
+            ano: '2º Ano',
+            eixo: 'Cultura Digital',
+            icone: '🔑',
+            descricao: 'Compreender a importância da privacidade, segurança de senhas e uso responsável da internet.',
+            exemplo: 'Discussão sobre não compartilhar senhas e fotos pessoais com desconhecidos.'
+        },
+        {
+            codigo: 'EF03CO01',
+            ano: '3º Ano',
+            eixo: 'Pensamento Computacional',
+            icone: '🔍',
+            descricao: 'Testar, identificar e corrigir erros (depurar) em sequências de instruções e códigos lógicos.',
+            exemplo: 'Encontrar a etapa errada em um caminho de labirinto ou robô de papel.'
+        },
+        {
+            codigo: 'EF03CO02',
+            ano: '3º Ano',
+            eixo: 'Mundo Digital',
+            icone: '🎬',
+            descricao: 'Reconhecer diferentes formatos de mídia (texto, imagem, áudio, vídeo) e como a informação é armazenada e transmitida.',
+            exemplo: 'Comparar um texto lido com uma gravação de áudio ou vídeo sobre o mesmo tema.'
+        },
+        {
+            codigo: 'EF04CO01',
+            ano: '4º Ano',
+            eixo: 'Pensamento Computacional',
+            icone: '🔄',
+            descricao: 'Utilizar estruturas de repetição (loops) para simplificar e otimizar algoritmos.',
+            exemplo: 'Usar a instrução "Repita 4 vezes: Siga em frente" em vez de escrever a mesma linha 4 vezes.'
+        },
+        {
+            codigo: 'EF04CO02',
+            ano: '4º Ano',
+            eixo: 'Cultura Digital',
+            icone: '🛡️',
+            descricao: 'Analisar criticamente fontes de informação na internet, identificando fake news e respeitando os direitos autorais.',
+            exemplo: 'Oficina de checagem de fatos: comparar duas notícias e identificar a fonte original.'
+        },
+        {
+            codigo: 'EF05CO01',
+            ano: '5º Ano',
+            eixo: 'Pensamento Computacional',
+            icone: '⚙️',
+            descricao: 'Desenvolver programas e jogos interativos simples utilizando variáveis e condições (Se... Então).',
+            exemplo: 'Criação de um pequeno jogo no Scratch ou blocos de código com pontuação.'
+        },
+        {
+            codigo: 'EF05CO02',
+            ano: '5º Ano',
+            eixo: 'Mundo Digital',
+            icone: '🌐',
+            descricao: 'Compreender o conceito de rede de computadores, como a internet conecta pessoas e o impacto social das tecnologias.',
+            exemplo: 'Desenho de rede conectando computadores em uma sala até um servidor central.'
+        },
+        {
+            codigo: 'EF05CO03',
+            ano: '5º Ano',
+            eixo: 'Cultura Digital',
+            icone: '🤖',
+            descricao: 'Debater os impactos da Inteligência Artificial, automação e ética no uso de ferramentas tecnológicas.',
+            exemplo: 'Discussão orientada sobre ferramentas de IA, robótica e privacidade de dados.'
+        }
+    ];
+
+    const bnccSearchInput = document.getElementById('bncc-search-input');
+    const bnccSearchClear = document.getElementById('bncc-search-clear');
+    const bnccCardsGrid = document.getElementById('bncc-cards-grid');
+    const bnccFilterChips = document.getElementById('bncc-filter-chips');
+    const bnccCountVisible = document.getElementById('bncc-count-visible');
+
+    let activeBnccFilter = 'all';
+
+    function renderBnccCards() {
+        if (!bnccCardsGrid) return;
+
+        const query = (bnccSearchInput ? bnccSearchInput.value : '').toLowerCase().trim();
+
+        const filtered = bnccHabilidadesData.filter(item => {
+            const matchesFilter = (activeBnccFilter === 'all') ||
+                (item.ano === activeBnccFilter) ||
+                (item.eixo === activeBnccFilter);
+
+            if (!matchesFilter) return false;
+
+            if (!query) return true;
+
+            const inCodigo = item.codigo.toLowerCase().includes(query);
+            const inAno = item.ano.toLowerCase().includes(query);
+            const inEixo = item.eixo.toLowerCase().includes(query);
+            const inDesc = item.descricao.toLowerCase().includes(query);
+            const inEx = item.exemplo.toLowerCase().includes(query);
+
+            return inCodigo || inAno || inEixo || inDesc || inEx;
+        });
+
+        if (bnccCountVisible) {
+            bnccCountVisible.textContent = filtered.length;
+        }
+
+        if (filtered.length === 0) {
+            bnccCardsGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--white); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+                    <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">🔍</span>
+                    <h3 style="margin-bottom: 0.5rem;">Nenhuma habilidade encontrada</h3>
+                    <p style="color: #64748b; font-size: 0.9rem;">Tente pesquisar por outros termos como "EF01CO01", "algoritmos", "segurança" ou selecione outro ano.</p>
+                </div>
+            `;
+            return;
+        }
+
+        bnccCardsGrid.innerHTML = filtered.map(item => `
+            <div class="bncc-skill-card">
+                <div>
+                    <div class="bncc-card-header">
+                        <span class="bncc-code-tag">${item.icone} ${item.codigo}</span>
+                        <span class="bncc-ano-tag">${item.ano}</span>
+                    </div>
+                    <div class="bncc-eixo-badge">
+                        <span>• ${item.eixo}</span>
+                    </div>
+                    <h4>${item.descricao}</h4>
+                    <div class="bncc-skill-exemplo">
+                        <strong>💡 Exemplo prático:</strong> ${item.exemplo}
+                    </div>
+                </div>
+                <div class="bncc-card-footer">
+                    <button type="button" class="btn-copy-code" data-code="${item.codigo}" title="Copiar código da habilidade">
+                        📋 Copiar Código
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        bnccCardsGrid.querySelectorAll('.btn-copy-code').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const code = e.currentTarget.getAttribute('data-code');
+                if (code) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        const originalText = e.currentTarget.innerHTML;
+                        e.currentTarget.innerHTML = '✅ Copiado!';
+                        e.currentTarget.style.background = '#10b981';
+                        e.currentTarget.style.color = '#ffffff';
+                        setTimeout(() => {
+                            e.currentTarget.innerHTML = originalText;
+                            e.currentTarget.style.background = '';
+                            e.currentTarget.style.color = '';
+                        }, 1800);
+                    }).catch(err => {
+                        alert(`Código ${code} pronto para copiar!`);
+                    });
+                }
+            });
+        });
+    }
+
+    if (bnccSearchInput) {
+        bnccSearchInput.addEventListener('input', () => {
+            if (bnccSearchClear) {
+                bnccSearchClear.style.display = bnccSearchInput.value.length > 0 ? 'block' : 'none';
+            }
+            renderBnccCards();
+        });
+    }
+
+    if (bnccSearchClear) {
+        bnccSearchClear.addEventListener('click', () => {
+            if (bnccSearchInput) bnccSearchInput.value = '';
+            bnccSearchClear.style.display = 'none';
+            renderBnccCards();
+            if (bnccSearchInput) bnccSearchInput.focus();
+        });
+    }
+
+    if (bnccFilterChips) {
+        bnccFilterChips.addEventListener('click', (e) => {
+            const chip = e.target.closest('.bncc-chip');
+            if (!chip) return;
+
+            bnccFilterChips.querySelectorAll('.bncc-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+
+            activeBnccFilter = chip.getAttribute('data-filter') || 'all';
+            renderBnccCards();
+        });
+    }
+
+    renderBnccCards();
 });
