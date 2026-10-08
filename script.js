@@ -696,7 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dashboardCloseBtn = document.getElementById('admin-dashboard-close');
 
     // Senha de Acesso Admin (com suporte a alteração salva no localStorage)
-    const getAdminPassword = () => localStorage.getItem('edumidia_admin_password') || "batatais2026";
+    const getAdminPassword = () => localStorage.getItem('edumidia_admin_password') || "admin123";
     const setAdminPassword = (newPass) => localStorage.setItem('edumidia_admin_password', newPass);
 
     if (openLoginBtns.length > 0 && loginModal) {
